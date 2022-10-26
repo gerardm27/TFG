@@ -150,8 +150,6 @@ const styles = StyleSheet.create({
         width: 100,
         height: 100,
         alignSelf: 'center',
-        scaleX: 1.25,
-        scaleY: 1.25,
     },
     title: {
         fontSize: 25,
