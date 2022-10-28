@@ -1,4 +1,4 @@
-import { View, Text } from 'react-native';
+import { View, Text, Image } from 'react-native';
 import React, { useState, createContext, useEffect } from 'react';
 import useAuth from '../../hooks/useAuth';
 import useProjects from '../../hooks/useProjects';
@@ -14,10 +14,19 @@ function ProjectsScreen() {
         return projects.map((project) => {
             return (
                 <View style={customStyles.coolBlockContainer}>
-                    <Text style={customStyles.coolBlockTitleContainer}>{project.name}</Text>
-                    <Text>{project.description}</Text>
+                    <View style={customStyles.coolBlockImageContainer}>
+                        {project.logo_big_url ? 
+                            <Image style={customStyles.coolBlockImage} source={project.logo_big_url}/>
+                            :
+                            <Image style={customStyles.coolBlockImage} source={require('../../../assets/images/logo.png')}/>
+                        }
+                    </View>
+                    <View style={customStyles.coolBlockTitleContainer}>
+                        <Text style={customStyles.coolBlockTitleContainer}>{project.name}</Text>
+                        <Text>{project.description}</Text>
+                    </View>
                 </View>
-            )
+            ) 
         })
     }
 
@@ -28,17 +37,14 @@ function ProjectsScreen() {
         getAuth().then(item=>{
             setUser(item)
             new Promise(r => setTimeout(r, 100)).then(() => {
-                if(!projects){
-
-                    getProjects(item?.id).then(proj=>{
-                        setProjects(proj);
-                        console.log(proj);
-                    })
-                }
+                getProjects(item?.id).then(proj=>{
+                    setProjects(proj);
+                    console.log(proj);
+                })
             })
         })
         
-    })   
+    }, []);   
     
     return(
         <View style={[customStyles.mainContainer, {height: "100%"}]}>
