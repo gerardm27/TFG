@@ -62,6 +62,8 @@ const styles = StyleSheet.create({
         width: "30%",
         aspectRatio: 1,
         backgroundColor: "#ffffff",
+        borderColor: "#eae4f6",
+        borderWidth: 2,
         borderRadius: 2000,
         justifyContent: "center",
         alignItems: "center",
@@ -204,6 +206,14 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         width: "90%",
         alignSelf: "center",
+    },
+    progressBarView: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+        marginTop: "5%",
+      },
+    progressView: {
+    width: "80%",
     },
     progressBarBackground: {
         width: "100%",
