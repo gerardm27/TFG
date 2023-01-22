@@ -10,7 +10,7 @@ function HomeScreen() {
     
     useEffect(() => {    
         getAuth().then(item=>{
-            console.log(item);
+            //console.log(item);
             setUser(item)
         })
     })   
