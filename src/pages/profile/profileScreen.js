@@ -3,14 +3,13 @@ import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import {useEffect, useState} from 'react';
 import useProjects from '../../hooks/useProjects';
 import useAuth from '../../hooks/useAuth';
-import i18n from 'react-native-i18n';
-
+import { useTranslation } from "react-i18next";
 
 function ProfileScreen() {
-
+    const { t, i18n } = useTranslation();
     const { getNumberOfProjects } = useProjects();
     const { getAuth } = useAuth();
-    const { setLanguageTranslation, languageTranslation } = useUserSettings();
+    //const { setLanguageTranslation, languageTranslation } = useUserSettings();
     //Build a use effect that gets the number of projects of the user obtained from getAuth
     const [projectNumber, setProjectNumber] = useState(0);
     const [profileImage, setProfileImage] = useState(null);
@@ -25,7 +24,6 @@ function ProfileScreen() {
                 setProfileImage(user.photo);
                 setUsername(user.username);
                 setLanguage(user.lang);
-                console.log(user);
             })
         })
     }, [])
@@ -41,16 +39,19 @@ function ProfileScreen() {
                 </View>
                 <View style={profileStyles.numberContainer}>
                     <Text style={profileStyles.numberOfProjects}>{projectNumber}</Text>
-                    <Text>Public projects</Text>
-                    <Text>a</Text>
+                    <Text>{t("profile.publicProjects")}</Text>
                 </View>
                 <View style={profileStyles.numberContainer}>
                     <Text style={profileStyles.numberOfProjects}>{projectNumber}</Text>
-                    <Text>Private Projects</Text>
+                    <Text>{t("profile.privateProjects")}</Text>
                 </View>
                 <View style={profileStyles.numberContainer}>
                     <Text style={profileStyles.numberOfProjects}>{language=="" ? "EN" : language}</Text>
-                    <Text>Language</Text>
+                    <TouchableOpacity onPress={()=>{i18n.changeLanguage("en");}}>
+                        <Text>
+                            {t('profile.language')}
+                        </Text>
+                    </TouchableOpacity>
                 </View>
             </View>
         </View>
