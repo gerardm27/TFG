@@ -4,5 +4,9 @@
   "profile.language": "Language",
   "profile.close": "Close",
   "profile.aboutMe": "About me:",
-  "profile.backToDefault": "Set device's language"
+  "profile.backToDefault": "Set device's language",
+  "profile.email": "Email:",
+  "profile.faq": "FAQs",
+  "profile.webProfile": "Profile in website",
+  "profile.editProfile": "Edit your profile"
 }

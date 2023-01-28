@@ -4,3 +4,4 @@ export * from './login';
 export * from './projects/projectListScreen';
 export * from './projects/projectScreen';
 export * from './profile/profileScreen';
+export * from './profile/editProfileScreen';

@@ -4,5 +4,8 @@
   "profile.language": "Idioma",
   "profile.close": "Tancar",
   "profile.aboutMe": "Sobre mi:",
-  "profile.backToDefault": "Establir l'idioma del dispositiu"
+  "profile.backToDefault": "Establir l'idioma del dispositiu",
+  "profile.email": "Direcció de correu:",
+  "profile.faq": "FAQs",
+  "profile.webProfile": "Perfil al web"
 }

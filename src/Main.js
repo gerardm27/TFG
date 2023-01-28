@@ -4,7 +4,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import { AuthContext } from './context/authContext';
-import { SignInScreen, SignUpScreen, HomeScreen, SettingsScreen, ProjectListScreen, ProjectScreen, ProfileScreen } from './pages';
+import { SignInScreen, SignUpScreen, HomeScreen, EditProfileScreen, ProjectListScreen, ProjectScreen, ProfileScreen } from './pages';
 import * as Font from 'expo-font';
 
 
@@ -117,16 +117,23 @@ function Main() {
                         }
                     />
                     <Tab.Screen 
+                        name="Edit Profile" 
+                        component={EditProfileScreen} 
+                        options={
+                            {
+                                title: 'Edit Profile',
+                                tabBarItemStyle: {display: "none"},
+                                //headerShown: false,
+                            }
+                        }
+                    />
+                    <Tab.Screen 
                         name="Projects" 
                         component={ProjectScreen} 
                         options={
                             {
                                 title: 'Projects',
-                                tabBarLabel: 'Projects',
                                 tabBarItemStyle: {display: "none"},
-                                tabBarIcon: ({ color, size }) => (
-                                    <Text style={{color: color, fontSize: size}}>Projects</Text>
-                                ),
                                 //headerShown: false,
                             }
                         }
