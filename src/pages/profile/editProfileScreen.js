@@ -5,7 +5,7 @@ import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
 function EditProfileScreen() {
   return (
     <View>
-      <Text>EditProfileScreen</Text>
+      <Text> EditProfileScreen </Text>
     </View>
   );
 }
