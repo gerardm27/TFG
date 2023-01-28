@@ -2,62 +2,37 @@ import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import React, { useState, createContext, useEffect } from 'react';
 import useAuth from '../../hooks/useAuth';
 import useProjects from '../../hooks/useProjects';
-import customStyles from '../../utils/customStylesheet';
+import customStyles from '../../utils/customStyleSheet.js';
 import { ScrollView } from 'react-native-gesture-handler';
 
-function ProjectScreen() {
+function ProjectScreen({navigation, route}) {
 
     const [usuario, setUser] = useState(null);
-    const [projects, setProjects] = useState(null);
+    const [project, setProject] = useState(null);
     const [projectsInfo, setProjectsInfo] = useState(null);
 
-    const generateProjectList = (projects) => {
-        return projects.map((project) => {
-            return (    
-                    <TouchableOpacity style={customStyles.coolBlockContainer} onPress={()=> {console.log(project.slug);}}>
-                        <View style={[customStyles.coolBlockTitleContainer, {height: 50}]}>
-                            <Text style={customStyles.title}>{project.name}</Text>
-                        </View>
-                        <View style={customStyles.coolBlockImageContainer}>
-                            {project.logo_big_url ? 
-                                <Image style={customStyles.coolBlockImage} source={project.logo_big_url}/>
-                                :
-                                <Image style={customStyles.coolBlockImage} source={require('../../../assets/images/logo.png')}/>
-                            }
-                        </View>
-                        <View style={customStyles.blockContentContainer}>
-                            <View style={styles.projectInfo}>
-                                <View style={styles.textView}>
-                                    <Text style={customStyles.normalText}>{project.description}</Text>
-                                </View>
-                            </View>
-                        </View>
-                    </TouchableOpacity>
-            ) 
-        })
+    const generateProjectView = (project) => {
+        return (    
+            <Text>{project.slug}</Text>
+        ) 
     }
 
     const { getAuth } = useAuth();
-    const { getProjects } = useProjects();
     
     useEffect(() => {    
-        getAuth().then(item=>{
-            setUser(item)
-            new Promise(r => setTimeout(r, 100)).then(() => {
-                getProjects(item?.id).then(proj=>{
-                    setProjects(proj);
-                    console.log(proj);
-                })
-            })
+        getAuth().then(user=>{
+            setUser(user)
+            setProject(route.params.project)
         })
         
     }, []);   
     
     return(
         <View style={[customStyles.mainContainer, {height: "100%"}]}>
-            { projects ? 
+            { project ? 
                 <ScrollView>
-                    {generateProjectList(projects)}
+                    {generateProjectView(route.params.project)}
+                    {/*console.log(project)*/}
                 </ScrollView>
                 
                 :

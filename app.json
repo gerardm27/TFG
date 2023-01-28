@@ -24,7 +24,7 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
       },
-      "package": "com.rashgaron.front"
+      "package": "com.awakt.front"
     },
     "web": {
       "favicon": "./assets/favicon.png"

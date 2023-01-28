@@ -1,9 +1,10 @@
 import React, { useContext, useEffect, useState } from 'react';
+import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import { AuthContext } from './context/authContext';
-import { SignInScreen, SignUpScreen, HomeScreen, SettingsScreen, ProjectListScreen, ProjectScreen } from './pages';
+import { SignInScreen, SignUpScreen, HomeScreen, SettingsScreen, ProjectListScreen, ProjectScreen, ProfileScreen } from './pages';
 import * as Font from 'expo-font';
 
 
@@ -63,10 +64,73 @@ function Main() {
         ) : ( 
             <NavigationContainer>
                 <Tab.Navigator>
-                    <Tab.Screen name="Home" component={HomeScreen} />
-                    <Tab.Screen name="Project List" component={ProjectListScreen} />
-                    <Tab.Screen name="Settings" component={SettingsScreen} />
-                    <Tab.Screen name="Projects" component={ProjectScreen} options={{tabBarItemStyle: {display: "none"},}}/>
+                    <Tab.Screen 
+                        name="Home" 
+                        component={HomeScreen} 
+                        options={
+                            {
+                                title: 'Home',
+                                tabBarLabel: 'Home',
+                                tabBarIcon: ({ color, size }) => (
+                                    <Text style={{color: color, fontSize: size}}>Home</Text>
+                                ),
+                                //headerShown: false,
+                            }
+                        }
+                    />
+                    <Tab.Screen 
+                        name="Project List" 
+                        component={ProjectListScreen}
+                        options={
+                            {
+                                // I want a header that is not the default name
+                                /* header : () => (
+                                    <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', backgroundColor: '#fff', height: 50, paddingHorizontal: 10}}>
+                                        <Text style={{fontSize: 20, fontWeight: 'bold'}}>Project List</Text>
+                                        <TouchableOpacity>
+                                            <Image source={require('../assets/images/logo.png')} style={{width: 30, height: 30}} />
+                                        </TouchableOpacity>
+                                    </View>
+                                ), */
+                            
+
+                                title: 'Project List',
+                                tabBarLabel: 'Project List',
+                                tabBarIcon: ({ color, size }) => (
+                                    <Text style={{color: color, fontSize: size}}>Project List</Text>
+                                ),
+                            }
+                        }
+                    />
+                    <Tab.Screen 
+                        name="Profile" 
+                        component={ProfileScreen} 
+                        options={
+                            {
+                                title: 'Profile',
+                                tabBarLabel: 'Profile',
+                                tabBarIcon: ({ color, size }) => (
+                                    <Text style={{color: color, fontSize: size}}>Profile</Text>
+                                ),
+                                //headerShown: false,
+                            }
+                        }
+                    />
+                    <Tab.Screen 
+                        name="Projects" 
+                        component={ProjectScreen} 
+                        options={
+                            {
+                                title: 'Projects',
+                                tabBarLabel: 'Projects',
+                                tabBarItemStyle: {display: "none"},
+                                tabBarIcon: ({ color, size }) => (
+                                    <Text style={{color: color, fontSize: size}}>Projects</Text>
+                                ),
+                                //headerShown: false,
+                            }
+                        }
+                    />
                 </Tab.Navigator>
             </NavigationContainer>
         )

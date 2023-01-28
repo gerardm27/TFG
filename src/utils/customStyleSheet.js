@@ -19,14 +19,17 @@ const styles = StyleSheet.create({
         width: "100%",
     },
     minimalistBlockContainer: {
-        width: "90%",
+        width: "100%",
         alignSelf: "center",
-        backgroundColor: "#fff",
+        backgroundColor: "#eae4f6",
+        borderTopLeftRadius: 30,
+        borderTopRightRadius: 30,
         padding: 20
         
     },
     coolBlockContainer: {
         marginTop: 20,
+        marginBottom: 20,
         width: "90%",
         alignSelf: "center",
         borderWidth: 2,
