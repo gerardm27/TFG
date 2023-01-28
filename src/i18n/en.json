@@ -1,5 +1,8 @@
 {
   "profile.publicProjects": "Public projects",
   "profile.privateProjects": "Private projects",
-  "profile.language": "Language"
+  "profile.language": "Language",
+  "profile.close": "Close",
+  "profile.aboutMe": "About me:",
+  "profile.backToDefault": "Set device's language"
 }

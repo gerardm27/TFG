@@ -32,7 +32,6 @@ function ProjectScreen({navigation, route}) {
             { project ? 
                 <ScrollView>
                     {generateProjectView(route.params.project)}
-                    {/*console.log(project)*/}
                 </ScrollView>
                 
                 :

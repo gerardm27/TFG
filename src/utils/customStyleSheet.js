@@ -4,7 +4,9 @@ import {StyleSheet} from 'react-native';
 
 /*
 PALETA DE COLORES
-
+    Strong purple: #c0a7f2
+    Light purple: #eae4f6 // #f3edff
+    Cancel red: #f57676
 
 */
 

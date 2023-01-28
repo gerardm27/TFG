@@ -1,5 +1,8 @@
 {
   "profile.publicProjects": "Proyectos públicos",
   "profile.privateProjects": "Proyectos privados",
-  "profile.language": "Idioma"
+  "profile.language": "Idioma",
+  "profile.close": "Cerrar",
+  "profile.aboutMe": "Acerca de mí:",
+  "profile.backToDefault": "Establecer el idioma del dispositivo"
 }

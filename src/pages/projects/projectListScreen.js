@@ -46,7 +46,6 @@ function ProjectListScreen({navigation}) {
             new Promise(r => setTimeout(r, 100)).then(() => {
                 getAllProjects(item?.id).then(proj=>{
                     setProjects(proj);
-                    //console.log(proj);
                 })
             })
         })
