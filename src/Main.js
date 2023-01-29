@@ -123,7 +123,7 @@ function Main() {
                             {
                                 title: 'Edit Profile',
                                 tabBarItemStyle: {display: "none"},
-                                //headerShown: false,
+                                headerShown: false,
                             }
                         }
                     />

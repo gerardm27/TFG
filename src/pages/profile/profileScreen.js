@@ -95,7 +95,10 @@ function ProfileScreen({navigation}) {
                 </View>
             </View>
             <View style={profileStyles.editProfileContainer}>
-                <TouchableOpacity styles={profileStyles.editProfileButtonContainer} onPress={()=>{navigation.navigate('Edit Profile')}}>
+                <TouchableOpacity 
+                    styles={profileStyles.editProfileButtonContainer} 
+                    onPress={()=>{navigation.navigate('Edit Profile', {fullName: fullName, bio: bio, email: email, profileImage: profileImage})}}
+                >
                     <View style={profileStyles.editProfileButton}>
                         <Image source={require('../../../assets/images/edit.png')} style={profileStyles.editProfileImage}/>
                         <Text style={profileStyles.editProfileText}>{t("profile.editProfile")}</Text>

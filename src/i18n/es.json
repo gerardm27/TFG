@@ -8,5 +8,7 @@
   "profile.email": "Dirección de correo:",
   "profile.faq": "FAQs",
   "profile.webProfile": "Perfil en la web",
-  "profile.editProfile": "Edita tu perfil"
+  "profile.editProfile": "Edita tu perfil",
+  "editProfile.title": "Editar Perfil",
+  "editProfile.editSuccessful": "Perfil editado correctamente"
 }
