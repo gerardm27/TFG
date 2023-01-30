@@ -1,55 +1,101 @@
 import React, { useState } from "react";
-import { View, Text, Image, StyleSheet, TouchableOpacity, ToastAndroid } from "react-native";
+import { View, Text, Image, StyleSheet, TouchableOpacity, ToastAndroid, TextInput, Button } from "react-native";
 import Ionic from "react-native-vector-icons/Ionicons";
 import { useTranslation } from "react-i18next";
+import ModalDeleteAccount from './profileComponents/modalDeleteAccount';
 
 function EditProfileScreen({navigation, route}) {
   const { t, i18n } = useTranslation();
-  const {fullName, bio, email, profileImage} = route.params;
+  const {fullName, username, bio, email, profileImage} = route.params;
   const defaultImage = require('../../../assets/images/defaultProfile.png');
   const ToastMessage = () => {
     ToastAndroid.show(t('editProfile.editSuccessful'), ToastAndroid.SHORT);
   };
+  const clearAllFields = () => {
+  }
+
+  const [deleteAccountModalVisible, setDeleteAccountModalVisible] = useState(false);
+
   return (
-    <View style={editProfileStyles.editProfileContainer}>
+    <View style={deleteAccountModalVisible ? editProfileStyles.editProfileContainerBlurred : editProfileStyles.editProfileContainer}>
       <View style={editProfileStyles.topBar}>
         <TouchableOpacity 
-          onPress = {() => navigation.navigate('Profile')}
+          onPress = {() => {
+            clearAllFields();
+            navigation.navigate('Profile')
+          }}
         >
           <Ionic name="close-outline" size={35} color="black" />
         </TouchableOpacity>
         <Text style={editProfileStyles.toBarTitle}>{t('editProfile.title')}</Text>
         <TouchableOpacity
           onPress = {() => {
+            clearAllFields();
             ToastMessage();
             navigation.navigate('Profile')}}
         >
           <Ionic name="checkmark-outline" size={35} color="#5bb05a" />
         </TouchableOpacity>
       </View>
-      <View style={editProfileStyles.profileImageTopContainer}>
+      <View style={editProfileStyles.topContainer}>
         <TouchableOpacity 
-          onPress 
           style={editProfileStyles.profileImageContainer}
         >
           <Image source={{uri: profileImage} ?? defaultImage} style={editProfileStyles.profileImage}/>
           <Image source={require('../../../assets/images/edit.png')} style={editProfileStyles.editProfileImage} />
         </TouchableOpacity>
-        <View style={editProfileStyles.editFieldsContainer}>
-          <View style={editProfileStyles.editFullNameContainer}>
-            <Text style={editProfileStyles.fullNameHeader}>{t("editProfile.fullNameHeader")}</Text>
-            <Text style={editProfileStyles.fullName}>{fullName}</Text>
-          </View>
-          <View style={editProfileStyles.editBioContainer}>
-            <Text style={editProfileStyles.bioHeader}>{t("editProfile.bioHeader")}</Text>
-            <Text style={editProfileStyles.bio}>{bio}</Text>
-          </View>
-          <View style={editProfileStyles.editEmailContainer}>
-            <Text style={editProfileStyles.emailHeader}>{t("editProfile.emailHeader")}</Text>
-            <Text style={editProfileStyles.email}>{email}</Text>
-          </View>
+        <View style={editProfileStyles.topRightContainer}>
+          <Text style={editProfileStyles.fullNameHeader}>{t("editProfile.fullNameHeader")}</Text>
+          <TextInput
+            style={editProfileStyles.editTextInput}
+            placeholder={fullName}
+          />
+          <Text style={editProfileStyles.usernameHeader}>{t("editProfile.usernameHeader")}</Text>
+          <TextInput
+            style={editProfileStyles.editTextInput}
+            placeholder={username}
+          />
         </View>
       </View>
+      <View style={editProfileStyles.emailEditContainer}>
+        <Text style={editProfileStyles.emailHeader}>{t("editProfile.emailHeader")}</Text>
+        <TextInput
+          style={editProfileStyles.editEmailInput}
+          placeholder={email}
+        />
+      </View>
+      <View style={editProfileStyles.bioEditContainer}>
+        <View style={editProfileStyles.bioHeaderContainer}>
+          <Text style={editProfileStyles.bioHeader}>{t("editProfile.bioHeader")}</Text>
+          <Text style={editProfileStyles.bioRestriction}>{t("editProfile.bioRestriction")}</Text>
+        </View>
+        <TextInput
+          style={editProfileStyles.editBioInput}
+          placeholder={bio}
+          multiline={true}
+          maxLength={210}
+        />
+      </View>
+      <TouchableOpacity
+        style={editProfileStyles.saveChangesButton}
+        onPress={() => {
+          //saveChanges();
+          ToastMessage();
+          navigation.navigate('Profile');
+        }}
+      >
+        <Text style={editProfileStyles.saveChangesText}>{t("editProfile.saveChanges")}</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={editProfileStyles.deleteAccountButton}
+        onPress={()=>{setDeleteAccountModalVisible(!deleteAccountModalVisible)}}
+      >
+        <Text style={editProfileStyles.deleteAccountText}>{t("editProfile.deleteAccount")}</Text>
+      </TouchableOpacity>
+      <ModalDeleteAccount
+        modalVisible={deleteAccountModalVisible}
+        setModalVisible={setDeleteAccountModalVisible}
+      />
     </View>
   );
 }
@@ -60,6 +106,13 @@ const editProfileStyles = StyleSheet.create({
     width: "100%",
     height: "100%",
     backgroundColor: "white",
+  },
+  editProfileContainerBlurred: {
+    flex: 1,
+    width: "100%",
+    height: "100%",
+    backgroundColor: "white",
+    opacity: 0.5,
   },
   topBar: {
     flexDirection: "row",
@@ -72,87 +125,134 @@ const editProfileStyles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "bold",
   },
-  profileImageTopContainer: {
+  topContainer: {
     alignItems: "center",
     marginTop: 20,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    paddingHorizontal: 20,
   },
   profileImageContainer: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
+    width: 150,
+    height: 150,
+    borderRadius: 100,
   },
   profileImage: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
+    width: 150,
+    height: 150,
+    borderRadius: 100,
     borderWidth: 1,
     borderColor: "black",
   },
   editProfileImage: {
-    width: 28,
-    height: 28,
+    width: 30,
+    height: 30,
     backgroundColor: "white",
     position: "absolute",
     right: 0,
-  },
-  editFieldsContainer: {
-    width: "90%",
-    height: "100%",
-    alignSelf: "center",
-    marginTop: 20,
-  },
-  editFullNameContainer: {
-    width: "100%",
-    height: 50,
-    flexDirection: "row",
-    justifyContent: "space-between",
+  },  
+  topRightContainer: {
+    paddingLeft: 20,
     alignItems: "center",
+    width: "70%",
+    alignText: "left",
+  },
+  editTextInput: {
+    width: '100%',
+    height: 40,
     borderBottomWidth: 1,
-    borderBottomColor: "black",
+    borderColor: "gray",
+    paddingHorizontal: 0,
+    alignSelf: "flex-start",
   },
   fullNameHeader: {
     fontSize: 16,
-    fontWeight: "bold",
+    alignSelf: "flex-start",
   },
-  fullName: {
+  usernameHeader: {
+    paddingTop: 15,
     fontSize: 16,
+    alignSelf: "flex-start",
   },
-  editBioContainer: {
-    width: "100%",
-    height: 50,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    borderBottomWidth: 1,
-    borderBottomColor: "black",
+  bioEditContainer: {
+    marginTop: 20,
+    paddingHorizontal: 20,
+
+  },
+  bioHeaderContainer: {
+    flexDirection: "row",    
   },
   bioHeader: {
     fontSize: 16,
-    fontWeight: "bold",
+    alignSelf: "flex-start",
   },
-  bio: {
-    fontSize: 16,
+  bioRestriction: {
+    fontSize: 14,
+    color: "gray",
+    alignSelf: "flex-start",
+    paddingLeft: 5,
+    paddingTop: 2,
   },
-  editEmailContainer: {
-    width: "100%",
-    height: 50,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
+  editBioInput: {
+    width: '100%',
     borderBottomWidth: 1,
-    borderBottomColor: "black",
+    borderColor: "gray",
+    paddingHorizontal: 0,
+    alignSelf: "flex-start",
+    textAlignVertical: "top",
+  },
+  emailEditContainer: {
+    marginTop: 20,
+    paddingHorizontal: 20,
   },
   emailHeader: {
     fontSize: 16,
+    alignSelf: "flex-start",
+  },
+  editEmailInput: {
+    width: '100%',
+    height: 40,
+    borderBottomWidth: 1,
+    borderColor: "gray",
+    paddingHorizontal: 0,
+    alignSelf: "flex-start",
+  },
+  saveChangesButton: {
+    marginTop: 20,
+    width: "60%",
+    height: 40,
+    backgroundColor: "#5bb05a",
+    color: "white",
+    justifyContent: "center",
+    alignSelf: "center",
+    borderRadius: 7,
+    borderWidth: 1,
+    borderColor: "black",
+  },
+  saveChangesText: {
+    color: "black",
+    textAlign: "center",
+    fontSize: 18,
     fontWeight: "bold",
   },
-  email: {
-    fontSize: 16,
+  deleteAccountButton: {
+    marginTop: 20,
+    width: "60%",
+    height: 40,
+    backgroundColor: "#f57676",
+    color: "white",
+    justifyContent: "center",
+    alignSelf: "center",
+    borderRadius: 7,
+    borderWidth: 1,
+    borderColor: "black",
   },
-
-  
-
-
+  deleteAccountText: {
+    color: "black",
+    textAlign: "center",
+    fontSize: 18,
+    fontWeight: "bold",
+  },
 });
 
 export {EditProfileScreen};

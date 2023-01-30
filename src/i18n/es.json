@@ -10,5 +10,16 @@
   "profile.webProfile": "Perfil en la web",
   "profile.editProfile": "Edita tu perfil",
   "editProfile.title": "Editar Perfil",
-  "editProfile.editSuccessful": "Perfil editado correctamente"
+  "editProfile.editSuccessful": "Perfil editado correctamente",
+  "editProfile.fullNameHeader": "Nombre completo",
+  "editProfile.usernameHeader": "Nombre de usuario",
+  "editProfile.emailHeader": "Dirección de correo",
+  "editProfile.bioHeader": "Bio",
+  "editProfile.bioRestriction": "(max. 210 chars)",
+  "editProfile.saveChanges": "Guardar los cambios",
+  "editProfile.deleteAccount": "Eliminar tu cuenta",
+  "editProfile.deleteAccountSure": "¿Estás seguro de que deseas eliminar tu cuenta?",
+  "editProfile.deleteAccountDescription": "Esta acción es irreversible y perderás futuro acceso a esta cuenta.",
+  "editProfile.cancel": "Cancelar",
+  "editProfile.delete": "Eliminar"
 }

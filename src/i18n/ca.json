@@ -10,5 +10,16 @@
   "profile.webProfile": "Perfil al web",
   "profile.editProfile": "Edita el teu perfil",
   "editProfile.title": "Editar Perfil",
-  "editProfile.editSuccessful": "Perfil editat correctament"
+  "editProfile.editSuccessful": "Perfil editat correctament",
+  "editProfile.fullNameHeader": "Nom complet",
+  "editProfile.usernameHeader": "Nom d'usuari",
+  "editProfile.emailHeader": "Direcció de correu",
+  "editProfile.bioHeader": "Bio",
+  "editProfile.bioRestriction": "(max. 210 chars)",
+  "editProfile.saveChanges": "Guardar els canvis",
+  "editProfile.deleteAccount": "Eliminar el teu compte",
+  "editProfile.deleteAccountSure": "Estàs segur de voler eliminar el teu compte?",
+  "editProfile.deleteAccountDescription": "Aquesta acció es irreversible i perdràs accés futur a aquest compte.",
+  "editProfile.cancel": "Cancel·lar",
+  "editProfile.delete": "Eliminar"
 }
