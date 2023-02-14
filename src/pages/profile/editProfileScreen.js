@@ -1,25 +1,31 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, Image, StyleSheet, TouchableOpacity, ToastAndroid, TextInput, Button } from "react-native";
 import Ionic from "react-native-vector-icons/Ionicons";
 import { useTranslation } from "react-i18next";
 import ModalDeleteAccount from './profileComponents/modalDeleteAccount';
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import useAuth from '../../hooks/useAuth';
 import useUser from '../../hooks/useUser';
 
 function EditProfileScreen({navigation, route}) {
   const { t, i18n } = useTranslation();
-  const {fullName, username, bio, email, profileImage, language} = route.params;
+  const {fullName: _fullName, username: _username, bio: _bio, email: _email, profileImage: _profileImage, language: _language} = route.params;
   
-  const { getAuth } = useAuth();
-  console.log(getAuth());
 
-  const { getUser, editUser } = useUser();
+  useEffect(() => {
+    clearAllFields
+  }, []);
+
+  const { editUser } = useUser();
   
+  const [fullName, setFullName] = useState(_fullName);
+  const [username, setUsername] = useState(_username);
+  const [bio, setBio] = useState(_bio);
+  const [email, setEmail] = useState(_email);
+  const [profileImage, setProfileImage] = useState(_profileImage);
 
   const STORE_LANGUAGE_KEY = "settings.lang";
   const DEFAULT_LANGUAGE = "settings.defaultlang";
-  const [languageSelected, setLanguageSelected] = useState(language);
+  const [languageSelected, setLanguageSelected] = useState(_language);
 
   const changeLanguage = async (language) => {
     if (language == "default") {
@@ -36,12 +42,17 @@ function EditProfileScreen({navigation, route}) {
 
   const defaultImage = require('../../../assets/images/defaultProfile.png');
   const changeUserDetails = () => {
-    editUser(language, fullName, username, bio, email, profileImage);
+    editUser(languageSelected, fullName, username, bio, email, profileImage);
   }
   const ToastMessage = () => {
     ToastAndroid.show(t('editProfile.editSuccessful'), ToastAndroid.SHORT);
   };
   const clearAllFields = () => {
+    setFullName("");
+    setUsername("");
+    setBio("");
+    setEmail("");
+    setProfileImage("");
   }
 
   const [deleteAccountModalVisible, setDeleteAccountModalVisible] = useState(false);
@@ -60,10 +71,10 @@ function EditProfileScreen({navigation, route}) {
         <Text style={editProfileStyles.toBarTitle}>{t('editProfile.title')}</Text>
         <TouchableOpacity
           onPress = {() => {
-            changeUserDetails();
-            clearAllFields();
             ToastMessage();
-            navigation.navigate('Profile')}}
+            navigation.navigate('Profile')
+            changeUserDetails();
+            clearAllFields();}}
         >
           <Ionic name="checkmark-outline" size={35} color="#5bb05a" />
         </TouchableOpacity>
@@ -72,19 +83,22 @@ function EditProfileScreen({navigation, route}) {
         <TouchableOpacity 
           style={editProfileStyles.profileImageContainer}
         >
-          <Image source={{uri: profileImage} ?? defaultImage} style={editProfileStyles.profileImage}/>
-          <Image source={require('../../../assets/images/edit.png')} style={editProfileStyles.editProfileImage} />
+          
+          <Image source={{uri: _profileImage} ?? defaultImage} style={editProfileStyles.profileImage}/>
+          <Image source={/*setProfileImage()*/require('../../../assets/images/edit.png')} style={editProfileStyles.editProfileImage} />
         </TouchableOpacity>
         <View style={editProfileStyles.topRightContainer}>
           <Text style={editProfileStyles.fullNameHeader}>{t("editProfile.fullNameHeader")}</Text>
           <TextInput
             style={editProfileStyles.editTextInput}
-            placeholder={fullName}
+            placeholder={_fullName}
+            onChangeText={(text) => setFullName(text)}
           />
           <Text style={editProfileStyles.usernameHeader}>{t("editProfile.usernameHeader")}</Text>
           <TextInput
             style={editProfileStyles.editTextInput}
-            placeholder={username}
+            placeholder={_username}
+            onChangeText={(text) => setUsername(text)}
           />
         </View>
       </View>
@@ -92,7 +106,8 @@ function EditProfileScreen({navigation, route}) {
         <Text style={editProfileStyles.emailHeader}>{t("editProfile.emailHeader")}</Text>
         <TextInput
           style={editProfileStyles.editEmailInput}
-          placeholder={email}
+          placeholder={_email}
+          onChangeText={(text) => setEmail(text)}
         />
       </View>
       <View style={editProfileStyles.bioEditContainer}>
@@ -102,7 +117,8 @@ function EditProfileScreen({navigation, route}) {
         </View>
         <TextInput
           style={editProfileStyles.editBioInput}
-          placeholder={bio}
+          placeholder={_bio}
+          onChangeText={(text) => setBio(text)}
           multiline={true}
           maxLength={210}
         />
@@ -145,6 +161,7 @@ function EditProfileScreen({navigation, route}) {
             ToastMessage();
             navigation.navigate('Profile');
             changeUserDetails();
+            clearAllFields();
           }}
         >
           <Text style={editProfileStyles.saveChangesText}>{t("editProfile.saveChanges")}</Text>

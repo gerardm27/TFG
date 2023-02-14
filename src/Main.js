@@ -38,7 +38,6 @@ function Main() {
     }, []);
 
     return isFontLoaded ? (
-
         !auth?.isSignedIn ?(
             <NavigationContainer>
                 <Stack.Navigator

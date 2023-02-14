@@ -1,8 +1,9 @@
+import React, { useContext } from 'react';
+import { AuthContext } from '../context/authContext';
+import axios from "axios";
+
 const useUser = () => {
-  
-    const noFaRes = () => {
-        console.log('Polken TOntito');
-    }
+    const { auth } = useContext(AuthContext);
 
     const getUser = async (user_id) => {
         try{
@@ -19,7 +20,7 @@ const useUser = () => {
 
     const editUser = async (language, fullName, username, bio, email, profileImage) => {
         try{
-            const user_id = user.id;
+            const user_id = auth.id;
             const response = await axios.put(`https://api.taiga.io/api/v1/users/${user_id}`, {
                 username: username,
                 full_name: fullName,
@@ -28,16 +29,18 @@ const useUser = () => {
                 lang: language,
                 email: email,
                 photo: profileImage,
+                read_new_terms: auth.read_new_terms
             });
-            const data = response.data;
-            return(data);
+            const status = response.status;
+            console.log(status);
+            return(status);
         }
         catch(error){
             console.log(error);
         }
     }
 
-    return { noFaRes, getUser, editUser };
+    return { getUser, editUser };
 }
 
 export default useUser;
