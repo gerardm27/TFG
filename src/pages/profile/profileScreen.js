@@ -59,7 +59,6 @@ function ProfileScreen({navigation}) {
     return (
         <View style = {modalVisible ? profileStyles.pageContainerBlurred : profileStyles.pageContainer}>
             <View style={profileStyles.profileTopContainer}>
-
                 <View style={profileStyles.imageContainer}>                    
                     <Image source={{uri: profileImage} ?? defaultImage} style={profileStyles.profileImage} />
 =======
@@ -116,7 +115,7 @@ function ProfileScreen({navigation}) {
             <View style={profileStyles.editProfileContainer}>
                 <TouchableOpacity 
                     styles={profileStyles.editProfileButtonContainer} 
-                    onPress={()=>{navigation.navigate('Edit Profile', {fullName: fullName, username: username, bio: bio, email: email, profileImage: profileImage})}}
+                    onPress={()=>{navigation.navigate('Edit Profile', {fullName: fullName, username: username, bio: bio, email: email, profileImage: profileImage, language: language})}}
                 >
                     <View style={profileStyles.editProfileButton}>
                         <Image source={require('../../../assets/images/edit.png')} style={profileStyles.editProfileImage}/>
