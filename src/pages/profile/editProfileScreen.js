@@ -4,14 +4,18 @@ import Ionic from "react-native-vector-icons/Ionicons";
 import { useTranslation } from "react-i18next";
 import ModalDeleteAccount from './profileComponents/modalDeleteAccount';
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import useUser from '../../hooks/useUser'
-
+import useAuth from '../../hooks/useAuth';
+import useUser from '../../hooks/useUser';
 
 function EditProfileScreen({navigation, route}) {
   const { t, i18n } = useTranslation();
   const {fullName, username, bio, email, profileImage, language} = route.params;
+  
+  const { getAuth } = useAuth();
+  console.log(getAuth());
 
-  const {editUser} = useUser();
+  const { getUser, editUser } = useUser();
+  
 
   const STORE_LANGUAGE_KEY = "settings.lang";
   const DEFAULT_LANGUAGE = "settings.defaultlang";
@@ -56,6 +60,7 @@ function EditProfileScreen({navigation, route}) {
         <Text style={editProfileStyles.toBarTitle}>{t('editProfile.title')}</Text>
         <TouchableOpacity
           onPress = {() => {
+            changeUserDetails();
             clearAllFields();
             ToastMessage();
             navigation.navigate('Profile')}}
@@ -139,6 +144,7 @@ function EditProfileScreen({navigation, route}) {
             //saveChanges();
             ToastMessage();
             navigation.navigate('Profile');
+            changeUserDetails();
           }}
         >
           <Text style={editProfileStyles.saveChangesText}>{t("editProfile.saveChanges")}</Text>

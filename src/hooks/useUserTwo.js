@@ -1,4 +1,6 @@
-const useUser = () => {
+
+
+const useUser2 = () => {
   
     const noFaRes = () => {
         console.log('Polken TOntito');
@@ -40,4 +42,4 @@ const useUser = () => {
     return { noFaRes, getUser, editUser };
 }
 
-export default useUser;
+export default useUser2;

@@ -16,12 +16,15 @@ const ModalLanguage = ({ modalVisible, setModalVisible, language, setLanguage })
             await AsyncStorage.getItem(DEFAULT_LANGUAGE).then((language) => {
                 setLanguageSelected(language);
                 i18n.changeLanguage(language);
+                setLanguage(language);
             });
         } else {
             setLanguageSelected(language);
             await AsyncStorage.setItem(STORE_LANGUAGE_KEY, language);
             i18n.changeLanguage(language);
+            setLanguage(language);
         }
+        console.log("Language changed to: " + language);
     }
 
     return (

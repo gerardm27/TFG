@@ -4,7 +4,6 @@ import {useEffect, useState} from 'react';
 import useProjects from '../../hooks/useProjects';
 import useAuth from '../../hooks/useAuth';
 import { useTranslation } from "react-i18next";
-<<<<<<< HEAD
 import ModalLanguage from './profileComponents/modalLanguage';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -18,19 +17,18 @@ function ProfileScreen({navigation}) {
     const [projectNumber, setProjectNumber] = useState(0);
     const [profileImage, setProfileImage] = useState(null);
     const [username, setUsername] = useState(null);
-<<<<<<< HEAD
     const [bio, setBio] = useState(null);
     const [language, setLanguage] = useState(null);
     const [modalVisible, setModalVisible] = useState(false);
     const [fullName, setFullName] = useState(null);
     const [email, setEmail] = useState(null);
 
+    console.log(language);
     
     useEffect(() => {
         getAuth().then(user => {
             getNumberOfProjects(user.id).then(async number => {
                 setProjectNumber(number);
-<<<<<<< HEAD
                 //Profile image is a path, needs to be passed through a require
                 setProfileImage(user.photo);
                 setUsername(user.username);
@@ -61,22 +59,6 @@ function ProfileScreen({navigation}) {
             <View style={profileStyles.profileTopContainer}>
                 <View style={profileStyles.imageContainer}>                    
                     <Image source={{uri: profileImage} ?? defaultImage} style={profileStyles.profileImage} />
-=======
-                setProfileImage(user.photo);
-                setUsername(user.username);
-                setLanguage(user.lang);
-            })
-        })
-    }, [])
-
-    const defaultImage = require('../../../assets/images/defaultProfile.png');
-
-    return (
-        <View>
-            <View style={profileStyles.profileContainer}>
-                <View style={profileStyles.imageContainer}>
-                    <Image source={profileImage ?? defaultImage} style={profileStyles.profileImage} />
->>>>>>> main
                     <Text style={profileStyles.username}>{username}</Text>
                 </View>
                 <View style={profileStyles.infoTopContainer}>
@@ -151,16 +133,6 @@ function ProfileScreen({navigation}) {
                 modalVisible={modalVisible}
                 setModalVisible={setModalVisible}
             />
-=======
-                    <Text style={profileStyles.numberOfProjects}>{language=="" ? "EN" : language}</Text>
-                    <TouchableOpacity onPress={()=>{i18n.changeLanguage("en");}}>
-                        <Text>
-                            {t('profile.language')}
-                        </Text>
-                    </TouchableOpacity>
-                </View>
-            </View>
->>>>>>> main
         </View>
     )
 }
@@ -187,7 +159,6 @@ const profileStyles = StyleSheet.create({
         paddingVertical: 5,
         fontWeight: 'bold',
     },
-<<<<<<< HEAD
     bio: {
         paddingVertical: 15,
         borderRadius: 10,
@@ -238,7 +209,6 @@ const profileStyles = StyleSheet.create({
     },
     numberContainer: {
         alignItems: 'center',
-<<<<<<< HEAD
         alignContent: 'center',
     },
     bioContainer: {
