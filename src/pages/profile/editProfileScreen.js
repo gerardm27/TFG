@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 import ModalDeleteAccount from './profileComponents/modalDeleteAccount';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import useUser from '../../hooks/useUser';
+import * as ImagePicker from 'expo-image-picker';
 
 function EditProfileScreen({navigation, route}) {
   const { t, i18n } = useTranslation();
@@ -15,7 +16,7 @@ function EditProfileScreen({navigation, route}) {
     clearAllFields
   }, []);
 
-  const { editUser } = useUser();
+  const { editUser, uploadProfilePicture } = useUser();
   
   const [fullName, setFullName] = useState(_fullName);
   const [username, setUsername] = useState(_username);
@@ -49,11 +50,26 @@ function EditProfileScreen({navigation, route}) {
   };
   const clearAllFields = () => {
     setFullName("");
-    setUsername("");
-    setBio("");
-    setEmail("");
-    setProfileImage("");
+    setUsername(null);
+    setBio(null);
+    setEmail(null);
+    setProfileImage(_profileImage);
   }
+
+  const addImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: true,
+        aspect: [1, 1],
+        quality: 1,
+        base64: true,
+    });
+    if (!result.canceled) {
+        let temp = await uploadProfilePicture(result.assets[0].base64);
+        setProfileImage(temp);
+        console.log(temp);
+    }
+  };
 
   const [deleteAccountModalVisible, setDeleteAccountModalVisible] = useState(false);
 
@@ -82,10 +98,11 @@ function EditProfileScreen({navigation, route}) {
       <View style={editProfileStyles.topContainer}>
         <TouchableOpacity 
           style={editProfileStyles.profileImageContainer}
+          onPress={() => addImage()}
         >
           
-          <Image source={{uri: _profileImage} ?? defaultImage} style={editProfileStyles.profileImage}/>
-          <Image source={/*setProfileImage()*/require('../../../assets/images/edit.png')} style={editProfileStyles.editProfileImage} />
+          <Image source={profileImage == null ? defaultImage : {uri: profileImage}} style={editProfileStyles.profileImage}/>
+          <Image source={require('../../../assets/images/edit.png')} style={editProfileStyles.editProfileImage} />
         </TouchableOpacity>
         <View style={editProfileStyles.topRightContainer}>
           <Text style={editProfileStyles.fullNameHeader}>{t("editProfile.fullNameHeader")}</Text>

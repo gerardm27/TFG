@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import { AuthContext } from '../context/authContext';
 import axios from "axios";
+import { IMGBB_API_KEY } from "@env";
 
 const useUser = () => {
     const { auth } = useContext(AuthContext);
@@ -17,6 +18,26 @@ const useUser = () => {
             }
         }
     }
+
+
+    const uploadProfilePicture = async (image64) => {
+        try {
+          var bodyData = new FormData();
+          bodyData.append("image", image64);
+          const response = await fetch(
+            `https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`,
+            {
+              method: "POST",
+              body: bodyData,
+            }
+          );
+          const data = await response.json();
+          const imageUrl = data.data.display_url;
+          return imageUrl;
+        } catch (error) {
+          console.log(error);
+        }
+      };
 
     const editUser = async (language, fullName, username, bio, email, profileImage) => {
         try{
@@ -40,7 +61,7 @@ const useUser = () => {
         }
     }
 
-    return { getUser, editUser };
+    return { getUser, editUser, uploadProfilePicture };
 }
 
 export default useUser;

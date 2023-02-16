@@ -29,6 +29,16 @@ const UserSettingsProvider = ({ children }) => {
         }
     }
 
+    const getUserLanguage = async () => {
+        try {
+            const userSettingsString = await AsyncStorage.getItem('userSettings');
+            const userSettings = JSON.parse(userSettingsString);
+            return userSettings?.language;
+        } catch (error) {
+            return Localization.locale;
+        }
+    }
+
     const saveUserSettings = async (userSettings) => {
         try {
             setUserSettings(userSettings); 
