@@ -41,19 +41,41 @@ const useUser = () => {
 
     const editUser = async (language, fullName, username, bio, email, profileImage) => {
         try{
+            console.log('llego')
             const user_id = auth.id;
             const response = await axios.put(`https://api.taiga.io/api/v1/users/${user_id}`, {
-                username: username,
-                full_name: fullName,
-                full_name_display: fullName,
-                bio: bio,
-                lang: language,
-                email: email,
-                photo: profileImage,
-                read_new_terms: auth.read_new_terms
+              username: username,
+              full_name: fullName,
+              full_name_display: fullName,
+              bio: bio,
+              lang: language,
+              read_new_terms: auth.read_new_terms,
+              email: email,
             });
+            console.log('llego')
             const status = response.status;
-            console.log(status);
+            axios.head = {
+              'Content-Type': 'application/json',
+              'Authorization':'Bearer ' + auth.auth_token,
+            }
+            console.log('llego')
+            const avatarResponse = await axios.post(`https://api.taiga.io/api/v1/users/change_avatar`, {
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization':'Bearer ' + auth.auth_token,
+              },
+              avatar: profileImage
+            })
+            console.log('llego')
+            const status2 = avatarResponse.status;
+            /* const emailResponse = await axios.post(`https://api.taiga.io/api/v1/users/change_email`, {
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization':'Bearer ' + auth.auth_token,
+              },
+              email_token: email
+            })
+            const status3 = emailResponse.status; */
             return(status);
         }
         catch(error){

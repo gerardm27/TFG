@@ -10,11 +10,7 @@ import * as ImagePicker from 'expo-image-picker';
 function EditProfileScreen({navigation, route}) {
   const { t, i18n } = useTranslation();
   const {fullName: _fullName, username: _username, bio: _bio, email: _email, profileImage: _profileImage, language: _language} = route.params;
-  
 
-  useEffect(() => {
-    clearAllFields
-  }, []);
 
   const { editUser, uploadProfilePicture } = useUser();
   
@@ -42,12 +38,22 @@ function EditProfileScreen({navigation, route}) {
   }
 
   const defaultImage = require('../../../assets/images/defaultProfile.png');
+
   const changeUserDetails = () => {
-    editUser(languageSelected, fullName, username, bio, email, profileImage);
+    console.log(languageSelected, fullName, username, bio, email, profileImage)
+    editUser(
+      languageSelected,
+      fullName,
+      username,
+      bio,
+      email,
+      profileImage);
   }
+
   const ToastMessage = () => {
     ToastAndroid.show(t('editProfile.editSuccessful'), ToastAndroid.SHORT);
   };
+
   const clearAllFields = () => {
     setFullName("");
     setUsername(null);

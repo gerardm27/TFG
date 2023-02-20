@@ -11,6 +11,7 @@
   "profile.editProfile": "Edit your profile",
   "editProfile.title": "Edit Profile",
   "editProfile.editSuccessful": "Profile successfully updated",
+  "editProfile.editFailed": "Profile update failed",
   "editProfile.fullNameHeader": "Full name",
   "editProfile.usernameHeader": "Username",
   "editProfile.emailHeader": "Email",

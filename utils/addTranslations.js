@@ -5,7 +5,6 @@ const fs = require("fs");
 // Initialize the sheet
 const doc = new GoogleSpreadsheet("1XkYqHP_a2xy3Oziu02LnHmGT1fkR8qnCGSPAD9N-TxA");
 
-// Initialize Auth
 const init = async () => {
   await doc.useServiceAccountAuth({
     client_email: secret.client_email,

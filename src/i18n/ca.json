@@ -11,6 +11,7 @@
   "profile.editProfile": "Edita el teu perfil",
   "editProfile.title": "Editar Perfil",
   "editProfile.editSuccessful": "Perfil editat correctament",
+  "editProfile.editFailed": "Error a l'editar el perfil",
   "editProfile.fullNameHeader": "Nom complet",
   "editProfile.usernameHeader": "Nom d'usuari",
   "editProfile.emailHeader": "Direcció de correu",

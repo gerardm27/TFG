@@ -19,7 +19,6 @@ const useProjects = () => {
                 signOut();
             }
         }
-    
     }
 
     const getProjectBySlug = async (user_id, project_slug) => {
@@ -36,7 +35,16 @@ const useProjects = () => {
         return projects.length;
     }
 
-    return { getAllProjects, getProjectBySlug, getNumberOfProjects };
+    const getAllUserStories = async (project_id) => {
+        const response = await axios.get(`https://api.taiga.io/api/v1/userstories?project=${project_id}`);
+        if (response.status == 401) {
+            signOut();
+        }
+        const data = response.data;
+        return(data);
+    }
+
+    return { getAllProjects, getProjectBySlug, getNumberOfProjects, getAllUserStories };
 }
 
 export default useProjects;

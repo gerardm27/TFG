@@ -10,6 +10,9 @@ function ProjectScreen({navigation, route}) {
     const [usuario, setUser] = useState(null);
     const [project, setProject] = useState(null);
     const [projectsInfo, setProjectsInfo] = useState(null);
+    const [userStories, setUserStories] = useState(null);
+
+    const { getAllUserStories } = useProjects();
 
     const generateProjectView = (project) => {
         return (    
@@ -17,14 +20,20 @@ function ProjectScreen({navigation, route}) {
         ) 
     }
 
+    const generateUserStoryList = (userStories) => {
+        console.log(userStories);
+    }
+
     const { getAuth } = useAuth();
     
     useEffect(() => {    
-        getAuth().then(user=>{
+        getAuth().then(async user=>{
             setUser(user)
             setProject(route.params.project)
+            const _userStories = await getAllUserStories(route.params.project.id)
+            console.log(_userStories);
+            setUserStories(_userStories)
         })
-        
     }, []);   
     
     return(
@@ -33,7 +42,6 @@ function ProjectScreen({navigation, route}) {
                 <ScrollView>
                     {generateProjectView(route.params.project)}
                 </ScrollView>
-                
                 :
                 <Text>Loading your projects...</Text>
             }
