@@ -12,13 +12,22 @@ function ProjectScreen({navigation, route}) {
     const [project, setProject] = useState(null);
     const [projectsInfo, setProjectsInfo] = useState(null);
     const [userStories, setUserStories] = useState(null);
-    const [status, setStatus] = useState(["To Do", "In Progress", "Done"]);
+    const [statuses, setStatuses] = useState(["New", "In progress", "Done"]);
     
-    const { getAllUserStories } = useProjects();
+    const { getAllUserStories, updateUserStoryStatus } = useProjects();
     const defaultLogo = require("../../../assets/images/logo.png");
     const screenWidth = Dimensions.get('window').width;
 
-    const generateUserStoryList = (userStories) => {
+    const changeUserStoryStatus = async (userStoryId, newStatus) => {
+        updateUserStoryStatus(userStoryId, newStatus).then(() => {
+            const _userStories = getAllUserStories(project.id);
+            setUserStories(_userStories);
+        });
+    }
+
+    const generateUserStoryList = (userStories, status) => {
+        console.log(userStories);
+        userStories = userStories.filter(userStory => userStory.status_extra_info.name === status);
         return(
             <View style={{flex: 1, flexDirection: "column", justifyContent: "center", alignItems: "center"}}>
                 {userStories.map((userStory, index) => {
@@ -29,13 +38,23 @@ function ProjectScreen({navigation, route}) {
                                 <TouchableOpacity style={projectScreenStyles.listItemButton}
                                     //Open modal to show detail of user story
                                 >
-                                    <Text style={projectScreenStyles.listItemButtonText}>Details</Text>
+                                    <Text style={projectScreenStyles.listItemButtonText}>(Translate) See details</Text>
                                 </TouchableOpacity>
 
                             </View>
-                            <View style={projectScreenStyles.listItemRight}>
-                                <Ionic name="chevron-forward-outline" size={30} color="black" />
-                            </View>
+                            {status === statuses[statuses.length-1] ? null :
+                                <TouchableOpacity style={projectScreenStyles.listItemRight}
+                                    onPress={() => {
+                                        const newStatus = statuses[statuses.indexOf(status)+1];
+                                        changeUserStoryStatus(userStory.id, newStatus);
+                                    }}
+                                    >
+                                    <Text style = {projectScreenStyles.nextStatusText}>{
+                                        statuses[statuses.indexOf(status)+1] 
+                                    }</Text>
+                                    <Ionic name="play-forward-outline" size={25} color="black" />
+                                </TouchableOpacity>
+                            }
                         </View>
                     )
                 })}
@@ -46,14 +65,14 @@ function ProjectScreen({navigation, route}) {
     const buildStatusPages = () => {
         const statusPages = [];
         const allocatedWidth = screenWidth*0.9;
-        status.forEach((status, index) => {
+        statuses.forEach((status, index) => {
             statusPages.push(
                 <ScrollView horizontal key={index} contentContainerStyle={[projectScreenStyles.statusPage, {maxWidth: allocatedWidth}]}> 
                     <View style={projectScreenStyles.statusPageTop}>
                         <Text style={projectScreenStyles.statusPageTitle}>{status}</Text>
                     </View>
                     <View style={projectScreenStyles.statusPageContent}>
-                        {userStories ? generateUserStoryList(userStories) : <Text>Loading user stories...</Text>}
+                        {userStories ? generateUserStoryList(userStories, status) : <Text>Loading user stories...</Text>}
                     </View>
                 </ScrollView>
             )
@@ -85,7 +104,7 @@ function ProjectScreen({navigation, route}) {
                             <Text style={projectScreenStyles.projectDescription}>{project.description}</Text>
                         </View>
                     </View>
-                    <ScrollView horizontal contentContainerStyle={[projectScreenStyles.changeStatusContainer, {minWidth: (screenWidth*0.95) * status.length}]}>
+                    <ScrollView horizontal contentContainerStyle={[projectScreenStyles.changeStatusContainer, {minWidth: (screenWidth*0.95) * statuses.length}]}>
                         {buildStatusPages()}
                     </ScrollView>
                 </ScrollView>
@@ -149,26 +168,25 @@ const projectScreenStyles = StyleSheet.create({
     },
     changeStatusContainer: {
         flex: 1,
-        flexDirection: "row",
-        alignItems: "center",
-        justifyContent: "center",        
+        flexDirection: "row",   
     },
     statusPage: {
         flex: 1,
         flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
+        justifyContent: "flex-start",
         borderRadius: 10,
         margin: 10,
         padding: 10,
+        
         
     },
     statusPageTop: {
         width: "100%",
         flex: 1,
         flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
+        justifyContent: "flex-start",
+        maxHeight: 50,
+        minHeight: 50,
     },
     statusPageTitle: {
         width: "100%",
@@ -177,16 +195,12 @@ const projectScreenStyles = StyleSheet.create({
     },
     statusPageContent: {
         width: "100%",
-        flex: 1,
         flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
     },
     listItem: {
         flex: 1,
         flexDirection: "row",
         justifyContent: "space-between",
-        alignItems: "center",
         width: "100%",
         height: 100,
         backgroundColor: "white",
@@ -201,11 +215,10 @@ const projectScreenStyles = StyleSheet.create({
         shadowOpacity: 0.25,
         shadowRadius: 3.84,
         elevation: 5,
+        maxHeight: 125,
+        minHeight: 125,
     },
     listItemLeft: {
-        flex: 1,
-        flexDirection: "column",
-        justifyContent: "center",
         alignItems: "flex-start",
     },
     listItemTitle: {
@@ -213,20 +226,34 @@ const projectScreenStyles = StyleSheet.create({
         fontWeight: "bold",
     },
     listItemButton: {
-        backgroundColor: "red",
+        backgroundColor: "#eae4f6",
         borderRadius: 10,
         padding: 10,
-        margin: 10,
+        marginTop: 10,
+        
     },
     listItemButtonText: {
-        color: "white",
+        color: "black",
+        fontWeight: "bold",
     },
     listItemRight: {
-        flex: 1,
         flexDirection: "column",
         justifyContent: "center",
-        alignItems: "flex-end",
+        alignItems: "center",
+        padding: 10,
+        borderColor: "black",
+        borderRadius: 10,
+        borderWidth: 1,
+        minHeight: "50%",
+        height: "60%",
+        flexWrap: "wrap",
+        maxWidth: "47%",
     },
+    nextStatusText: {
+        fontSize: 15,
+        fontWeight: "bold",
+        marginRight: 10,
+    }
 
 })
 

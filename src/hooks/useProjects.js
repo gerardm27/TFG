@@ -6,7 +6,7 @@ import RNRestart from 'react-native-restart';
 
 const useProjects = () => {
 
-    const {signOut} = useAuth();
+    const {signOut, getAuth} = useAuth();
 
     const getAllProjects = async (user_id) => {
         try{
@@ -44,7 +44,26 @@ const useProjects = () => {
         return(data);
     }
 
-    return { getAllProjects, getProjectBySlug, getNumberOfProjects, getAllUserStories };
+    const updateUserStoryStatus = async (userStoryId, newStatus) => {
+        console.log(userStoryId);
+        console.log(newStatus);
+        const token = getAuth().auth_token;
+        axios.headers = {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }
+        const response = await axios.put(`https://api.taiga.io/api/v1/userstories/${userStoryId}`, {
+            status_extra_info: {
+                name: newStatus
+            }
+        });
+        if (response.status == 401) {
+            signOut();
+        }
+        return response;
+    }
+
+    return { getAllProjects, getProjectBySlug, getNumberOfProjects, getAllUserStories, updateUserStoryStatus };
 }
 
 export default useProjects;
