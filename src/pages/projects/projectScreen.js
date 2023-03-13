@@ -5,6 +5,7 @@ import useProjects from '../../hooks/useProjects';
 import customStyles from '../../utils/customStyleSheet.js';
 import { ScrollView } from 'react-native-gesture-handler';
 import Ionic from "react-native-vector-icons/Ionicons";
+import UserStoryModal from './projectComponents/userStoryModal.js';
 
 function ProjectScreen({navigation, route}) {
 
@@ -15,47 +16,78 @@ function ProjectScreen({navigation, route}) {
     const [statuses, setStatuses] = useState([]);
     const [statusColors, setStatusColors] = useState([]);
     const [statusIds, setStatusIds] = useState([]);
-    
+    const [userStoryModalVisible, setUserStoryModalVisible] = useState(false);
+
     const { getAllUserStories, updateUserStoryStatus, getAllUserStoriesStatus } = useProjects();
     const defaultLogo = require("../../../assets/images/logo.png");
     const screenWidth = Dimensions.get('window').width;
 
-    const changeUserStoryStatus = async (userStoryId,userStoryVersion, newStatus) => {
-        updateUserStoryStatus(userStoryId, userStoryVersion, newStatus).then(() => {
-            /* const _userStories = getAllUserStories(project.id);
-            setUserStories(_userStories); */
-        });
-    }
+    useEffect(() => {buildStatusPages();}, [userStories]);
+
+    const changeUserStoryStatus = async (userStoryId,userStoryVersion, newStatus, forward) => {
+        await updateUserStoryStatus(userStoryId, userStoryVersion, newStatus)
+        // change the current user story list to reflect the change
+        setUserStories(userStories.map(userStory => {
+            if(userStory.id === userStoryId){
+                userStory.status_extra_info.id = newStatus;
+                userStory.status_extra_info.name = statuses[statuses.indexOf(userStory.status_extra_info.name)+forward];
+            }
+            return userStory;
+        }));
+    } 
 
     const generateUserStoryList = (userStories, status) => {
         userStories = userStories.filter(userStory => userStory.status_extra_info.name === status);
         return(
             <View style={{flex: 1, flexDirection: "column", justifyContent: "center", alignItems: "center"}}>
                 {userStories.map((userStory, index) => {
-                    return(
+                    return( 
                         <View key={index} style={projectScreenStyles.listItem}>
                             <View style={projectScreenStyles.listItemLeft}>
                                 <Text style={projectScreenStyles.listItemTitle}>{userStory.subject}</Text>
                                 <TouchableOpacity style={projectScreenStyles.listItemButton}
-                                    //Open modal to show detail of user story
+                                    //TODO: Open modal to show detail of user story
+                                    onPress={() => {
+                                        setUserStoryModalVisible(!userStoryModalVisible);
+                                    }}
                                 >
                                     <Text style={projectScreenStyles.listItemButtonText}>See details</Text>
                                 </TouchableOpacity>
 
                             </View>
-                            {status === statuses[statuses.length-1] ? null :
-                                <TouchableOpacity style={[projectScreenStyles.listItemRight, {borderColor: statusColors[statuses.indexOf(status)+1]}]}
-                                    onPress={() => {
-                                        const newStatus = statusIds[statuses.indexOf(status)+1];
-                                        changeUserStoryStatus(userStory.id, userStory.version, newStatus);
-                                    }}
-                                    >
-                                    <Text style = {[projectScreenStyles.nextStatusText, {color: statusColors[statuses.indexOf(status)+1]}]}>{
-                                        statuses[statuses.indexOf(status)+1] 
-                                    }</Text>
-                                    <Ionic name="play-forward-outline" size={25} color={statusColors[statuses.indexOf(status)+1]} />
-                                </TouchableOpacity>
-                            }
+                            <View style={projectScreenStyles.movingButtonsContainer}>
+                                {status === statuses[statuses.length-1] ? null :
+                                    <TouchableOpacity style={[projectScreenStyles.listItemRight, {borderColor: statusColors[statuses.indexOf(status)+1], height: 40, marginBot: 5}]}
+                                        onPress={() => {
+                                            const newStatus = statusIds[statuses.indexOf(status)+1];
+                                            changeUserStoryStatus(userStory.id, userStory.version, newStatus, 1);
+                                        }}
+                                        >
+                                        <Text style = {[projectScreenStyles.nextStatusText, {color: statusColors[statuses.indexOf(status)+1]}]}>{
+                                            statuses[statuses.indexOf(status)+1] 
+                                        }</Text>
+                                        <Ionic name="play-forward-outline" size={25} color={statusColors[statuses.indexOf(status)+1]} />
+                                    </TouchableOpacity>
+                                }
+                                {status === statuses[0] ? null :
+                                    <TouchableOpacity style={[projectScreenStyles.listItemRight, {borderColor: statusColors[statuses.indexOf(status)-1], height: 40, marginTop: 5}]}
+                                        onPress={() => {
+                                            const newStatusBack = statusIds[statuses.indexOf(status)-1];
+                                            changeUserStoryStatus(userStory.id, userStory.version, newStatusBack, -1);
+                                        }
+                                        }>
+                                        <Ionic name="play-back-outline" size={25} color={statusColors[statuses.indexOf(status)-1]} />
+                                        <Text style = {[projectScreenStyles.nextStatusText, {color: statusColors[statuses.indexOf(status)-1]}]}>{
+                                            statuses[statuses.indexOf(status)-1]
+                                        }</Text>
+                                    </TouchableOpacity>
+                                }
+                                <UserStoryModal
+                                    userStory={userStory}
+                                    visible={userStoryModalVisible}
+                                    setVisible={setUserStoryModalVisible}
+                                />
+                            </View>
                         </View>
                     )
                 })}
@@ -88,7 +120,6 @@ function ProjectScreen({navigation, route}) {
             setUser(user)
             setProject(route.params.project)
             const storyStatuses = await getAllUserStoriesStatus(route.params.project.id)
-            console.log(storyStatuses);
             const tempStatuses = []
             const tempStatusColors = []
             const tempStatusIds = []
@@ -266,6 +297,13 @@ const projectScreenStyles = StyleSheet.create({
         maxWidth: "47%",
         backgroundColor: "white",
     },
+    movingButtonsContainer: {
+        flex: 1,
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "flex-end",
+    },
+
     nextStatusText: {
         fontSize: 15,
         fontWeight: "bold",

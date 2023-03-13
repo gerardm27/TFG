@@ -54,9 +54,6 @@ const useProjects = () => {
     }
 
     const updateUserStoryStatus = async (userStoryId, version, newStatus) => {
-        console.log(userStoryId);
-        console.log(newStatus);
-        console.log("version: " + version);
         const token = await getAuth().auth_tokenL;
         axios.headers = {
             'Content-Type': 'application/json',
@@ -68,11 +65,10 @@ const useProjects = () => {
             },
             "version": version
         });
-        console.log(response);
         if (response.status == 401) {
             signOut();
         }
-        return response;
+        return response.data;
     }
 
     return { getAllProjects, getProjectBySlug, getNumberOfProjects, getAllUserStories, updateUserStoryStatus, getAllUserStoriesStatus };
