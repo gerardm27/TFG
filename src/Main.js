@@ -4,7 +4,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import { AuthContext } from './context/authContext';
-import { SignInScreen, SignUpScreen, HomeScreen, EditProfileScreen, ProjectListScreen, ProjectScreen, ProfileScreen } from './pages';
+import { SignInScreen, SignUpScreen, HomeScreen, EditProfileScreen, ProjectListScreen, ProjectScreen, KanbanScreen, ProfileScreen } from './pages';
 import * as Font from 'expo-font';
 
 
@@ -132,6 +132,17 @@ function Main() {
                         options={
                             {
                                 title: 'Projects',
+                                tabBarItemStyle: {display: "none"},
+                                //headerShown: false,
+                            }
+                        }
+                    />
+                    <Tab.Screen 
+                        name="Kanban" 
+                        component={KanbanScreen} 
+                        options={
+                            {
+                                title: 'Kanban',
                                 tabBarItemStyle: {display: "none"},
                                 //headerShown: false,
                             }

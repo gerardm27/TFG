@@ -6,9 +6,10 @@ import customStyles from '../../utils/customStyleSheet.js';
 import { ScrollView } from 'react-native-gesture-handler';
 import Ionic from "react-native-vector-icons/Ionicons";
 import UserStoryModal from './projectComponents/userStoryModal.js';
+import { useTranslation } from "react-i18next";
 
 function ProjectScreen({navigation, route}) {
-
+    const { t } = useTranslation();
     const [usuario, setUser] = useState(null);
     const [project, setProject] = useState(null);
     const [projectsInfo, setProjectsInfo] = useState(null);
@@ -156,6 +157,13 @@ function ProjectScreen({navigation, route}) {
                         <View style={projectScreenStyles.projectInfoContainer}>
                             <Text style={projectScreenStyles.projectTitle}>{project.name}</Text>
                             <Text style={projectScreenStyles.projectDescription}>{project.description}</Text>
+                        </View>
+                        <View style={projectScreenStyles.goToKanbanContainer}>
+                            <TouchableOpacity style={projectScreenStyles.goToKanbanButton}
+                                onPress={() => navigation.navigate("Kanban", {project: project})}
+                            >
+                                <Text style={projectScreenStyles.goToKanbanButtonText}>{t('project.kanbanView')}</Text>
+                            </TouchableOpacity>
                         </View>
                     </View>
                     <ScrollView horizontal contentContainerStyle={[projectScreenStyles.changeStatusContainer, {minWidth: (screenWidth*0.95) * statuses.length}]}>

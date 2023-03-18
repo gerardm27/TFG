@@ -41,7 +41,8 @@
     "react-native-screens": "~3.18.0",
     "react-native-vector-icons": "^9.2.0",
     "react-native-web": "~0.18.7",
-    "rnpm": "^1.9.0"
+    "rnpm": "^1.9.0",
+    "volkeno-react-native-drag-drop": "^1.1.2"
   },
   "devDependencies": {
     "@babel/core": "^7.19.3",
