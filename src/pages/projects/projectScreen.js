@@ -42,7 +42,7 @@ function ProjectScreen({navigation, route}) {
             <View style={{flex: 1, flexDirection: "column", justifyContent: "center", alignItems: "center"}}>
                 {userStories.map((userStory, index) => {
                     return( 
-                        <View key={index} style={projectScreenStyles.listItem}>
+                        <View key={index} style={[projectScreenStyles.listItem, {shadowColor: statusColors[statuses.indexOf(status)]}]}>
                             <View style={projectScreenStyles.listItemLeft}>
                                 <Text style={projectScreenStyles.listItemTitle}>{userStory.subject}</Text>
                                 <TouchableOpacity style={projectScreenStyles.listItemButton}
@@ -63,10 +63,12 @@ function ProjectScreen({navigation, route}) {
                                             changeUserStoryStatus(userStory.id, userStory.version, newStatus, 1);
                                         }}
                                         >
-                                        <Text style = {[projectScreenStyles.nextStatusText, {color: statusColors[statuses.indexOf(status)+1]}]}>{
-                                            statuses[statuses.indexOf(status)+1] 
-                                        }</Text>
-                                        <Ionic name="play-forward-outline" size={25} color={statusColors[statuses.indexOf(status)+1]} />
+                                        <View style = {[projectScreenStyles.textAndIconContainer]}>
+                                            <Text style = {[projectScreenStyles.nextStatusText, {color: statusColors[statuses.indexOf(status)+1]}]}>{
+                                                statuses[statuses.indexOf(status)+1] 
+                                            }</Text>
+                                            <Ionic name="play-forward-outline" size={25} color={statusColors[statuses.indexOf(status)+1]} />
+                                        </View>
                                     </TouchableOpacity>
                                 }
                                 {status === statuses[0] ? null :
@@ -76,10 +78,12 @@ function ProjectScreen({navigation, route}) {
                                             changeUserStoryStatus(userStory.id, userStory.version, newStatusBack, -1);
                                         }
                                         }>
-                                        <Ionic name="play-back-outline" size={25} color={statusColors[statuses.indexOf(status)-1]} />
-                                        <Text style = {[projectScreenStyles.nextStatusText, {color: statusColors[statuses.indexOf(status)-1]}]}>{
-                                            statuses[statuses.indexOf(status)-1]
-                                        }</Text>
+                                        <View style = {[projectScreenStyles.textAndIconContainer]}>
+                                            <Ionic name="play-back-outline" size={25} color={statusColors[statuses.indexOf(status)-1]} />
+                                            <Text style = {[projectScreenStyles.nextStatusText, {color: statusColors[statuses.indexOf(status)-1]}]}>{
+                                                statuses[statuses.indexOf(status)-1]
+                                            }</Text>
+                                        </View>
                                     </TouchableOpacity>
                                 }
                                 <UserStoryModal
@@ -243,28 +247,26 @@ const projectScreenStyles = StyleSheet.create({
         flexDirection: "column",
     },
     listItem: {
-        flex: 1,
         flexDirection: "row",
         justifyContent: "space-between",
         backgroundColor: "lightgrey",
         width: "100%",
-        height: 100,
         borderRadius: 10,
         margin: 10,
         padding: 10,
-        shadowColor: "#000",
         shadowOffset: {
             width: 0,
             height: 2,
         },
         shadowOpacity: 0.25,
-        shadowRadius: 3.84,
+        shadowRadius: 4,
         elevation: 5,
         maxHeight: 125,
         minHeight: 125,
     },
     listItemLeft: {
         alignItems: "flex-start",
+        width: "60%",
     },
     listItemTitle: {
         fontSize: 20,
@@ -294,21 +296,28 @@ const projectScreenStyles = StyleSheet.create({
         minHeight: "50%",
         height: "60%",
         flexWrap: "wrap",
-        maxWidth: "47%",
+        maxWidth: "100%",
+        minWidth: "100%",
         backgroundColor: "white",
     },
     movingButtonsContainer: {
         flex: 1,
         flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "flex-end",
+        justifyContent: "space-between",        
     },
 
     nextStatusText: {
         fontSize: 15,
         fontWeight: "bold",
-        marginRight: 10,
-    }
+        alignSelf: "center",
+    },
+    textAndIconContainer: {
+        flexDirection: "row",
+        justifyContent: "space-around",
+        alignItems: "center",
+        width: "100%",
+    },
+
 
 })
 
