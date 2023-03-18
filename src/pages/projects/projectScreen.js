@@ -21,6 +21,7 @@ function ProjectScreen({navigation, route}) {
     const { getAllUserStories, updateUserStoryStatus, getAllUserStoriesStatus } = useProjects();
     const defaultLogo = require("../../../assets/images/logo.png");
     const screenWidth = Dimensions.get('window').width;
+    const [selectedUserStory, setSelectedUserStory] = useState(null);
 
     useEffect(() => {buildStatusPages();}, [userStories]);
 
@@ -48,7 +49,8 @@ function ProjectScreen({navigation, route}) {
                                 <TouchableOpacity style={projectScreenStyles.listItemButton}
                                     //TODO: Open modal to show detail of user story
                                     onPress={() => {
-                                        setUserStoryModalVisible(!userStoryModalVisible);
+                                        setSelectedUserStory(userStory);
+                                        setUserStoryModalVisible(true);
                                     }}
                                 >
                                     <Text style={projectScreenStyles.listItemButtonText}>See details</Text>
@@ -86,12 +88,9 @@ function ProjectScreen({navigation, route}) {
                                         </View>
                                     </TouchableOpacity>
                                 }
-                                <UserStoryModal
-                                    userStory={userStory}
-                                    visible={userStoryModalVisible}
-                                    setVisible={setUserStoryModalVisible}
-                                />
+                                
                             </View>
+                            
                         </View>
                     )
                 })}
@@ -111,6 +110,12 @@ function ProjectScreen({navigation, route}) {
                     <View style={projectScreenStyles.statusPageContent}>
                         {userStories ? generateUserStoryList(userStories, status) : <Text>Loading user stories...</Text>}
                     </View>
+                    {selectedUserStory && <UserStoryModal
+                        userStory={selectedUserStory}
+                        visible={userStoryModalVisible}
+                        setVisible={setUserStoryModalVisible}
+                        onClosed={() => setSelectedUserStory(null)}
+                    />}
                 </ScrollView>
             )
         })

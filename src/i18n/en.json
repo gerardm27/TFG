@@ -22,5 +22,6 @@
   "editProfile.deleteAccountSure": "Are you sure you want to delete your account?",
   "editProfile.deleteAccountDescription": "This action is not reversible and you will lose future access to this account.",
   "editProfile.cancel": "Cancel",
-  "editProfile.delete": "Delete"
+  "editProfile.delete": "Delete",
+  "project.status": "Status"
 }
