@@ -4,22 +4,21 @@ import { useTranslation } from "react-i18next";
 
 const UserStoryModal = ({ userStory, visible, setVisible }) => {
     const { t } = useTranslation();
-
     return (
         <Modal transparent={true} visible={visible}>
-        <View style={userStoryModalStyles.mainModalView}>
-            <View style={userStoryModalStyles.modal}>
-                <Text style={userStoryModalStyles.storySubjectText}>{userStory.subject}</Text>
-                <Text style={userStoryModalStyles.storyDescriptionText}>{userStory.description}</Text>
-                <View style={userStoryModalStyles.storyStatus}>
-                    <Text style={userStoryModalStyles.storyStatusTitle}>{t("project.status")}:</Text>
-                    <Text style={userStoryModalStyles.storyStatusText}>{userStory.status_extra_info.name}</Text>
+            <View style={userStoryModalStyles.mainModalView}>
+                <View style={userStoryModalStyles.modal}>
+                    <Text style={userStoryModalStyles.storySubjectText}>{userStory.subject}</Text>
+                    <Text style={userStoryModalStyles.storyDescriptionText}>{userStory.description}</Text>
+                    <View style={userStoryModalStyles.storyStatus}>
+                        <Text style={userStoryModalStyles.storyStatusTitle}>{t("project.status")}:</Text>
+                        <Text style={userStoryModalStyles.storyStatusText}>{userStory.status_extra_info.name}</Text>
+                    </View>
+                    <TouchableOpacity style={userStoryModalStyles.closeButton} onPress={() => setVisible(false)}>
+                        <Text style={userStoryModalStyles.closeButtonText}>{t("profile.close")}</Text>
+                    </TouchableOpacity>
                 </View>
-                <TouchableOpacity style={userStoryModalStyles.closeButton} onPress={() => setVisible(false)}>
-                    <Text style={userStoryModalStyles.closeButtonText}>{t("profile.close")}</Text>
-                </TouchableOpacity>
             </View>
-        </View>
         </Modal>
   );
 };

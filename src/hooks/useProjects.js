@@ -71,7 +71,56 @@ const useProjects = () => {
         return response.data;
     }
 
-    return { getAllProjects, getProjectBySlug, getNumberOfProjects, getAllUserStories, updateUserStoryStatus, getAllUserStoriesStatus };
+    const getAllTasks = async (userStoryId) => {
+        const response = await axios.get(`https://api.taiga.io/api/v1/tasks?user_story=${userStoryId}`);
+        if (response.status == 401) {
+            signOut();
+        }
+        const data = response.data;
+        return(data);
+    }
+
+    const getAllTasksStatus = async (project_id) => {
+        const response = await axios.get(`https://api.taiga.io/api/v1/task-statuses?project=${project_id}`);
+        if (response.status == 401) {
+            signOut();
+        }
+        const data = response.data;
+        return(data);
+    }
+
+    const updateTaskStatus = async (taskId, version, newStatus) => {
+        const token = await getAuth().auth_tokenL;
+        axios.headers = {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }
+        const response = await axios.patch(`https://api.taiga.io/api/v1/tasks/${taskId}`, {
+            status_extra_info: {
+                name: newStatus
+            },
+            "version": version
+        });
+        if (response.status == 401) {
+            signOut();
+        }
+        return response.data;
+    }
+
+
+
+
+    return { 
+        getAllProjects, 
+        getProjectBySlug, 
+        getNumberOfProjects, 
+        getAllUserStories, 
+        updateUserStoryStatus, 
+        getAllUserStoriesStatus,
+        getAllTasks,
+        getAllTasksStatus,
+        updateTaskStatus,
+    };
 }
 
 export default useProjects;

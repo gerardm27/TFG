@@ -23,5 +23,8 @@
   "editProfile.deleteAccountDescription": "Esta acción es irreversible y perderás futuro acceso a esta cuenta.",
   "editProfile.cancel": "Cancelar",
   "editProfile.delete": "Eliminar",
-  "project.status": "Estado"
+  "project.status": "Estado",
+  "project.kanbanView": "Vista Kanban",
+  "project.backlogView": "Vista Backlog",
+  "project.details": "Ver detalles"
 }
