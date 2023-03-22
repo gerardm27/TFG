@@ -54,20 +54,21 @@ const useProjects = () => {
     }
 
     const updateUserStoryStatus = async (userStoryId, version, newStatus) => {
-        const token = await getAuth().auth_tokenL;
+        const token = await getAuth().auth_token;
+        console.log("llego aqui");
+        console.log(userStoryId, version, newStatus);
         axios.headers = {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`
         }
         const response = await axios.patch(`${API_HOST}/userstories/${userStoryId}`, {
-            status_extra_info: {
-                name: newStatus
-            },
+            status: newStatus,
             "version": version
         });
         if (response.status == 401) {
             signOut();
         }
+        console.log(response.status);
         return response.data;
     }
 

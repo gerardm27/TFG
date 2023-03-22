@@ -58,45 +58,66 @@ function KanbanScreen({navigation, route}) {
     console.log("Zones changed", zones);
   }, [zones]); */
 
+  const generateUserStoryBoards = async () => {
+    const userStories = await getAllUserStories(project.id);
+    console.log(userStories);
+    return userStories.map((userStory) => {
+      return (
+        <View style={kanbanScreenStyles.userStoryContainer}>
+          <Text style={kanbanScreenStyles.userStoryID}>#{userStory.id}</Text>
+          {userStory.total_attachments > 0 ?
+            <Image source="https://icons.veryicon.com/png/o/miscellaneous/effevo/attachment-25.png" style={kanbanScreenStyles.userStoryImage}/>
+            : null
+          }
+          <Text style={kanbanScreenStyles.userStoryDescription}>{userStory.description}</Text>
+        </View>
+      );
+    });
+  };
+
   return (
     <View style={{height: '100%'}}>
       { project ? 
-          <ScrollView style={styles.projectContainer}>
-              <View style={styles.topInfoContainer}>
-                  <View style={styles.imageContainer}>
-                      <Image source={{uri: project.logo_big_url} ?? defaultLogo} style={styles.projectImage}/>
+          <ScrollView style={kanbanScreenStyles.projectContainer}>
+              <View style={kanbanScreenStyles.topInfoContainer}>
+                  <View style={kanbanScreenStyles.imageContainer}>
+                      <Image source={{uri: project.logo_big_url} ?? defaultLogo} style={kanbanScreenStyles.projectImage}/>
                   </View>
-                  <View style={styles.projectInfoContainer}>
-                      <Text style={styles.projectTitle}>{project.name}</Text>
-                      <Text style={styles.projectDescription}>{project.description}</Text>
+                  <View style={kanbanScreenStyles.projectInfoContainer}>
+                      <Text style={kanbanScreenStyles.projectTitle}>{project.name}</Text>
+                      <Text style={kanbanScreenStyles.projectDescription}>{project.description}</Text>
                   </View>
-                  <View style={styles.goToKanbanContainer}>
-                      <TouchableOpacity style={styles.goToKanbanButton}
+                  <View style={kanbanScreenStyles.goToKanbanContainer}>
+                      <TouchableOpacity style={kanbanScreenStyles.goToKanbanButton}
                           onPress={() => navigation.navigate("Projects", {project: project})}
                       >
-                          <Text style={styles.goToKanbanButtonText}>{t('project.backlogView')}</Text>
+                          <Text style={kanbanScreenStyles.goToKanbanButtonText}>{t('project.backlogView')}</Text>
                       </TouchableOpacity>
                   </View>
               </View>
-              <ScrollView horizontal>
+
+              <ScrollView horizontal contentContainerStyle={kanbanScreenStyles.kanbanContainer}>
+                <View style={[kanbanScreenStyles.contentContainerStyle, {backgroundColor: "green"}]}>
+                  {/* {generateUserStoryBoards()} */}
+                </View>
                 <DragAndDrop
-                style={styles.container}
-                contentContainerStyle={styles.contentContainerStyle}
+                style={kanbanScreenStyles.container}
+                contentContainerStyle={kanbanScreenStyles.contentContainerStyle}
                 itemKeyExtractor={(item) => item.id}
                 zoneKeyExtractor={(zone) => zone.id}
                 zones={zones}
                 items={items}
-                itemsContainerStyle={styles.itemsContainerStyle}
-                zonesContainerStyle={styles.zonesContainerStyle}
+                itemsContainerStyle={kanbanScreenStyles.itemsContainerStyle}
+                zonesContainerStyle={kanbanScreenStyles.zonesContainerStyle}
                 onMaj={(zones, items) => {
                   setItems(items);
                   setZones(zones);
                 }}
-                itemsInZoneStyle={styles.itemsInZoneStyle}
+                itemsInZoneStyle={kanbanScreenStyles.itemsInZoneStyle}
                 renderItem={(item) => {
                   return (
-                    <View style={styles.dragItemStyle}>
-                      <Text style={styles.dragItemTextStyle}>{item.text}</Text>
+                    <View style={kanbanScreenStyles.dragItemStyle}>
+                      <Text style={kanbanScreenStyles.dragItemTextStyle}>{item.text}</Text>
                     </View>
                   );
                 }}
@@ -104,11 +125,11 @@ function KanbanScreen({navigation, route}) {
                   return (
                     <View
                     style={{
-                      ...styles.dragZoneStyle,
+                      ...kanbanScreenStyles.dragZoneStyle,
                       backgroundColor: hover ? "lightgreen" : "#FFF",
                     }}
                     >
-                      <Text stylae={styles.dragZoneTextStyle}>{zone.text}</Text>
+                      <Text styles={kanbanScreenStyles.dragZoneTextStyle}>{zone.text}</Text>
                       {children}
                     </View>
                   );
@@ -125,16 +146,22 @@ function KanbanScreen({navigation, route}) {
   );
 }
 
-const styles = StyleSheet.create({
+const kanbanScreenStyles = StyleSheet.create({
+  kanbanContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+  },
   container: {
     flex: 1,
   },
   itemsInZoneStyle: {
-    width: "100%",
+    width: "45%",
   },
   contentContainerStyle: {
     padding: 20,
     paddingTop: 40,
+    backgroundColor: 'red'
   },
   itemsContainerStyle: {
     flexDirection: "row",
@@ -150,22 +177,23 @@ const styles = StyleSheet.create({
   dragItemStyle: {
     borderColor: "#F39200",
     borderWidth: 1,
-    width: "47%",
+    width: "100%",
+    backgroundColor: "cyan",
     alignItems: "center",
     justifyContent: "center",
     marginVertical: 5,
-    backgroundColor: "#F5F5F5",
     padding: 10,
   },
   dragItemTextStyle: {
+    width: "100%",
     color: "#011F3B",
     fontWeight: "700",
     textAlign: "center",
   },
   dragZoneStyle: {
     borderColor: "#F39200", //statusColor
-    borderWidth: 1,
-    width: "47%",
+    borderWidth: 2,
+    width: "20%",
     padding: 15,
     minHeight: 150,
     marginVertical: 15,
@@ -176,7 +204,8 @@ const styles = StyleSheet.create({
     zIndex: 0,
     alignSelf: "center",
     top: "50%",
-  },projectContainer: {
+  },
+  projectContainer: {
     flex: 1,
     flexDirection: "column",
     backgroundColor: "white",

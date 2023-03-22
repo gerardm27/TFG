@@ -46,7 +46,7 @@ function ProjectScreen({navigation, route}) {
                     return( 
                         <View key={index} style={[projectScreenStyles.listItem, {shadowColor: statusColors[statuses.indexOf(status)]}]}>
                             <View style={projectScreenStyles.listItemLeft}>
-                                <Text style={projectScreenStyles.listItemTitle}>{userStory.subject}</Text>
+                                <Text style={projectScreenStyles.listItemTitle}>#{userStory.id} {userStory.subject}</Text>
                                 <TouchableOpacity style={projectScreenStyles.listItemButton}
                                     //TODO: Open modal to show detail of user story
                                     onPress={() => {

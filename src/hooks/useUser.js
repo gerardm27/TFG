@@ -39,11 +39,16 @@ const useUser = () => {
         }
       };
 
-    const editUser = async (language, fullName, username, bio, email, profileImage) => {
-        try{
-            console.log('llego')
-            const user_id = auth.id;
-            const response = await axios.put(`${API_HOST}/users/${user_id}`, {
+      const editUser = async (language, fullName, username, bio, email, profileImage) => {
+        try {
+          const user_id = auth.id;
+          const response = await fetch(`${API_HOST}/users/${user_id}`, {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer ' + auth.auth_token,
+            },
+            body: JSON.stringify({
               username: username,
               full_name: fullName,
               full_name_display: fullName,
@@ -51,38 +56,27 @@ const useUser = () => {
               lang: language,
               read_new_terms: auth.read_new_terms,
               email: email,
-            });
-            console.log('llego')
-            const status = response.status;
-            axios.head = {
+            }),
+          });
+          const status = response.status;
+      
+          const avatarResponse = await fetch(`${API_HOST}/users/change_avatar`, {
+            method: 'POST',
+            headers: {
               'Content-Type': 'application/json',
-              'Authorization':'Bearer ' + auth.auth_token,
-            }
-            console.log('llego')
-            const avatarResponse = await axios.post(`${API_HOST}/users/change_avatar`, {
-              headers: {
-                'Content-Type': 'application/json',
-                'Authorization':'Bearer ' + auth.auth_token,
-              },
+              'Authorization': 'Bearer ' + auth.auth_token,
+            },
+            body: JSON.stringify({
               avatar: profileImage
-            })
-            console.log('llego')
-            const status2 = avatarResponse.status;
-            /* const emailResponse = await axios.post(`${API_HOST}/users/change_email`, {
-              headers: {
-                'Content-Type': 'application/json',
-                'Authorization':'Bearer ' + auth.auth_token,
-              },
-              email_token: email
-            })
-            const status3 = emailResponse.status; */
-            return(status);
+            }),
+          });
+          const status2 = avatarResponse.status;
+          return status;
+        } catch (error) {
+          console.log(error);
         }
-        catch(error){
-            console.log(error);
-        }
-    }
-
+      };
+      
     return { getUser, editUser, uploadProfilePicture };
 }
 

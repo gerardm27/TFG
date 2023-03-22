@@ -38,7 +38,10 @@ function SignInScreen({ navigation }) {
             setLoading(true);
             signIn(user)
                 .then()
-                .catch(err => {setError({error:true, message: 'There is an error with your password or email'});})
+                .catch(err => {
+                    setError({error:true, message: 'There is an error with your password or email'});
+                    console.log(err);
+                })
                 .finally(()=> setLoading(false));
         }
     }

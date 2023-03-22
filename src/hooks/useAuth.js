@@ -5,21 +5,44 @@ import { AuthContext } from '../context/authContext';
 const useAuth = () => {
 
     const { auth, setAuth, logout, getAuthState } = useContext(AuthContext);
+    
+    //const signIn = async (user) => {
+    //    const { email, password } = user;
+    //    
+    //    const response = await axios.post(`http://192.168.228.231:9000/api/v1/auth`, {
+    //        headers: {
+    //            'Content-Type': 'application/json',
+    //            'Accept':'*/*'
+    //        },
+    //        password: password,
+    //        type:'normal',
+    //        username: email,
+    //    })
+    //    console.log(response);
+    //    const data = response.data;
+    //    setAuth(data);   
+    //}
 
     const signIn = async (user) => {
         const { email, password } = user;
-        const response = await axios.post(`${API_HOST}/auth`, {
+    
+        const response = await fetch('http://192.168.228.231:9000/api/v1/auth', {
+            method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Accept':'*/*'
             },
-            username: email,
-            password: password,
-            type:"normal",
-        })
-        const data = response.data;
+            body: JSON.stringify({
+                type: 'normal',
+                username: email,
+                password: password,
+            })
+        });
+    
+        
+        const data = await response.json()
         setAuth(data);   
     }
+    
 
     const signUp = async (user) => {
         const { name, email, password, username } = user;
