@@ -10,7 +10,7 @@ const useProjects = () => {
 
     const getAllProjects = async (user_id) => {
         try{
-            const response = await axios.get(`https://api.taiga.io/api/v1/projects?member=${user_id}`);
+            const response = await axios.get(`${API_HOST}/projects?member=${user_id}`);
             const data = response.data;
             return(data);
         }
@@ -22,7 +22,7 @@ const useProjects = () => {
     }
 
     const getProjectBySlug = async (user_id, project_slug) => {
-        const response = await axios.get(`https://api.taiga.io/api/v1/projects?member=${user_id}`);
+        const response = await axios.get(`${API_HOST}/projects?member=${user_id}`);
         if (response.status == 401) {
             signOut();
         }
@@ -36,7 +36,7 @@ const useProjects = () => {
     }
 
     const getAllUserStories = async (project_id) => {
-        const response = await axios.get(`https://api.taiga.io/api/v1/userstories?project=${project_id}`);
+        const response = await axios.get(`${API_HOST}/userstories?project=${project_id}`);
         if (response.status == 401) {
             signOut();
         }
@@ -45,7 +45,7 @@ const useProjects = () => {
     }        
 
     const getAllUserStoriesStatus = async (project_id) => {
-        const response = await axios.get(`https://api.taiga.io/api/v1/userstory-statuses?project=${project_id}`);
+        const response = await axios.get(`${API_HOST}/userstory-statuses?project=${project_id}`);
         if (response.status == 401) {
             signOut();
         }
@@ -59,7 +59,7 @@ const useProjects = () => {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`
         }
-        const response = await axios.patch(`https://api.taiga.io/api/v1/userstories/${userStoryId}`, {
+        const response = await axios.patch(`${API_HOST}/userstories/${userStoryId}`, {
             status_extra_info: {
                 name: newStatus
             },
@@ -72,7 +72,7 @@ const useProjects = () => {
     }
 
     const getAllTasks = async (userStoryId) => {
-        const response = await axios.get(`https://api.taiga.io/api/v1/tasks?user_story=${userStoryId}`);
+        const response = await axios.get(`${API_HOST}/tasks?user_story=${userStoryId}`);
         if (response.status == 401) {
             signOut();
         }
@@ -81,7 +81,7 @@ const useProjects = () => {
     }
 
     const getAllTasksStatus = async (project_id) => {
-        const response = await axios.get(`https://api.taiga.io/api/v1/task-statuses?project=${project_id}`);
+        const response = await axios.get(`${API_HOST}/task-statuses?project=${project_id}`);
         if (response.status == 401) {
             signOut();
         }
@@ -95,7 +95,7 @@ const useProjects = () => {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`
         }
-        const response = await axios.patch(`https://api.taiga.io/api/v1/tasks/${taskId}`, {
+        const response = await axios.patch(`${API_HOST}/tasks/${taskId}`, {
             status_extra_info: {
                 name: newStatus
             },

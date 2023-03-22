@@ -8,7 +8,7 @@ const useAuth = () => {
 
     const signIn = async (user) => {
         const { email, password } = user;
-        const response = await axios.post('https://api.taiga.io/api/v1/auth', {
+        const response = await axios.post(`${API_HOST}/auth`, {
             headers: {
                 'Content-Type': 'application/json',
                 'Accept':'*/*'

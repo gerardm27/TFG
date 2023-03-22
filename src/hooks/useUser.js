@@ -1,14 +1,14 @@
 import React, { useContext } from 'react';
 import { AuthContext } from '../context/authContext';
 import axios from "axios";
-import { IMGBB_API_KEY } from "@env";
+import { API_HOST, IMGBB_API_KEY } from "@env";
 
 const useUser = () => {
     const { auth } = useContext(AuthContext);
 
     const getUser = async (user_id) => {
         try{
-            const response = await axios.get(`https://api.taiga.io/api/v1/users/${user_id}`);
+            const response = await axios.get(`${API_HOST}/users/${user_id}`);
             const data = response.data;
             return(data);
         }
@@ -43,7 +43,7 @@ const useUser = () => {
         try{
             console.log('llego')
             const user_id = auth.id;
-            const response = await axios.put(`https://api.taiga.io/api/v1/users/${user_id}`, {
+            const response = await axios.put(`${API_HOST}/users/${user_id}`, {
               username: username,
               full_name: fullName,
               full_name_display: fullName,
@@ -59,7 +59,7 @@ const useUser = () => {
               'Authorization':'Bearer ' + auth.auth_token,
             }
             console.log('llego')
-            const avatarResponse = await axios.post(`https://api.taiga.io/api/v1/users/change_avatar`, {
+            const avatarResponse = await axios.post(`${API_HOST}/users/change_avatar`, {
               headers: {
                 'Content-Type': 'application/json',
                 'Authorization':'Bearer ' + auth.auth_token,
@@ -68,7 +68,7 @@ const useUser = () => {
             })
             console.log('llego')
             const status2 = avatarResponse.status;
-            /* const emailResponse = await axios.post(`https://api.taiga.io/api/v1/users/change_email`, {
+            /* const emailResponse = await axios.post(`${API_HOST}/users/change_email`, {
               headers: {
                 'Content-Type': 'application/json',
                 'Authorization':'Bearer ' + auth.auth_token,
