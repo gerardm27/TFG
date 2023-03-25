@@ -1,0 +1,7 @@
+ToDo:
+
+- Width del container gris ha de ser en funcio del numero de quadrats blancs (zones)
+
+- Width dels quadrats fixe per percentatge o per tasques inside
+
+- Fer a l'esquerra, dins del 'kanban container' un llistat de histories de usuari amb el mateix height.

@@ -1,11 +1,13 @@
 import React, { useEffect } from "react";
-import { StyleSheet, Text, View, ScrollView, Image, TouchableOpacity } from "react-native";
+import { StyleSheet, Text, View, ScrollView, Image, TouchableOpacity, Dimensions } from "react-native";
 import DragAndDrop from "volkeno-react-native-drag-drop";
 import { useTranslation } from "react-i18next";
 import useProjects from '../../hooks/useProjects';
 
 
 function KanbanScreen({navigation, route}) {
+  const screenWidth = Dimensions.get('window').width;
+  
   const { project } = route.params;
   const { 
     getAllUserStories, 
@@ -18,16 +20,25 @@ function KanbanScreen({navigation, route}) {
   const { t } = useTranslation();
   const [items, setItems] = React.useState([]);
   const [zones, setZones] = React.useState([]);
+  const [statusPerStory, setStatusPerStory] = React.useState(0);
+  const [statusColors, setStatusColors] = React.useState([]);
+  const [lengthPerStatus, setLengthPerStatus] = React.useState(0);
 
   useEffect(() => {
     const fetchData = async () => {
       const userStories = await getAllUserStories(project.id);
       const taskStatuses = await getAllTasksStatus(project.id);
+      const tmp = await getAllUserStoriesStatus(project.id);
+      setStatusPerStory(tmp.length);
+      setLengthPerStatus(screenWidth / tmp.length);
+      console.log(screenWidth / tmp.length);
+      tmp.map((status) => {
+        setStatusColors((statusColors) => [...statusColors, status.color]);
+      });
       const newZones = [];
-  
       for (const userStory of userStories) {
         const userStoryTasks = await getAllTasks(userStory.id);
-  
+        
         const filteredTaskStatuses = taskStatuses.filter((taskStatus, index, self) =>
           index === self.findIndex((t) => t.name === taskStatus.name)
         );
@@ -97,43 +108,43 @@ function KanbanScreen({navigation, route}) {
               </View>
 
               <ScrollView horizontal contentContainerStyle={kanbanScreenStyles.kanbanContainer}>
-                <View style={[kanbanScreenStyles.contentContainerStyle, {backgroundColor: "green"}]}>
+                <View style={[kanbanScreenStyles.contentContainerStyle]}>
                   {/* {generateUserStoryBoards()} */}
                 </View>
                 <DragAndDrop
-                style={kanbanScreenStyles.container}
-                contentContainerStyle={kanbanScreenStyles.contentContainerStyle}
-                itemKeyExtractor={(item) => item.id}
-                zoneKeyExtractor={(zone) => zone.id}
-                zones={zones}
-                items={items}
-                itemsContainerStyle={kanbanScreenStyles.itemsContainerStyle}
-                zonesContainerStyle={kanbanScreenStyles.zonesContainerStyle}
-                onMaj={(zones, items) => {
-                  setItems(items);
-                  setZones(zones);
-                }}
-                itemsInZoneStyle={kanbanScreenStyles.itemsInZoneStyle}
-                renderItem={(item) => {
-                  return (
-                    <View style={kanbanScreenStyles.dragItemStyle}>
-                      <Text style={kanbanScreenStyles.dragItemTextStyle}>{item.text}</Text>
-                    </View>
-                  );
-                }}
-                renderZone={(zone, children, hover) => {
-                  return (
-                    <View
-                    style={{
-                      ...kanbanScreenStyles.dragZoneStyle,
-                      backgroundColor: hover ? "lightgreen" : "#FFF",
-                    }}
-                    >
-                      <Text styles={kanbanScreenStyles.dragZoneTextStyle}>{zone.text}</Text>
-                      {children}
-                    </View>
-                  );
-                }}
+                  style={[kanbanScreenStyles.container, {width: statusPerStory * 350}]}
+                  contentContainerStyle={kanbanScreenStyles.contentContainerStyle}
+                  itemKeyExtractor={(item) => item.id}
+                  zoneKeyExtractor={(zone) => zone.id}
+                  zones={zones}
+                  items={items}
+                  itemsContainerStyle={kanbanScreenStyles.itemsContainerStyle}
+                  zonesContainerStyle={[kanbanScreenStyles.zonesContainerStyle,{width: lengthPerStatus * 10}]}
+                  onMaj={(zones, items) => {
+                    setItems(items);
+                    setZones(zones);
+                  }}
+                  itemsInZoneStyle={kanbanScreenStyles.itemsInZoneStyle}
+                  renderItem={(item) => {
+                    return (
+                      <View style={kanbanScreenStyles.dragItemStyle}>
+                        <Text style={kanbanScreenStyles.dragItemTextStyle}>{item.text}</Text>
+                      </View>
+                    );
+                  }}
+                  renderZone={(zone, children, hover) => {
+                    return (
+                      <View
+                      style={{
+                        ...kanbanScreenStyles.dragZoneStyle,
+                        backgroundColor: hover ? "lightgreen" : "#FFF",
+                      }}
+                      >
+                        <Text styles={kanbanScreenStyles.dragZoneTextStyle}>{zone.text}</Text>
+                        {children}
+                      </View>
+                    );
+                  }}
                 />
                 </ScrollView>
           </ScrollView>
@@ -153,7 +164,7 @@ const kanbanScreenStyles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   container: {
-    flex: 1,
+    width: 3500,
   },
   itemsInZoneStyle: {
     width: "45%",
@@ -161,7 +172,6 @@ const kanbanScreenStyles = StyleSheet.create({
   contentContainerStyle: {
     padding: 20,
     paddingTop: 40,
-    backgroundColor: 'red'
   },
   itemsContainerStyle: {
     flexDirection: "row",
@@ -193,7 +203,7 @@ const kanbanScreenStyles = StyleSheet.create({
   dragZoneStyle: {
     borderColor: "#F39200", //statusColor
     borderWidth: 2,
-    width: "20%",
+    width: "7%",
     padding: 15,
     minHeight: 150,
     marginVertical: 15,
