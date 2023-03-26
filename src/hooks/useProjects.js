@@ -15,6 +15,7 @@ const useProjects = () => {
             return(data);
         }
         catch(error){
+            console.log(error);
             if (error.response.status == 401) {
                 signOut();
             }

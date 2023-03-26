@@ -76,6 +76,7 @@ function SignInScreen({ navigation }) {
                     style={styles.input}
                     name="email"
                     placeholder="Email:"
+                    autoCapitalize='none'
                 />
                 <View style={styles.passwordContainer}>
                     <TextInput
@@ -85,6 +86,7 @@ function SignInScreen({ navigation }) {
                         name="password"
                         placeholder="Password:"
                         textContentType="password"
+                        autoCapitalize='none'
                         secureTextEntry={showPassword}
                     />
                     <View style={[]}>
