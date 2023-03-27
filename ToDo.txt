@@ -1,7 +1,8 @@
 ToDo:
 
-- Width del container gris ha de ser en funcio del numero de quadrats blancs (zones)
+- Fer a l'esquerra, dins del 'kanban container' un llistat de histories de usuari
+  amb el mateix height. O d'alguna forma fer que es relacionin be amb el horitzontal
 
-- Width dels quadrats fixe per percentatge o per tasques inside
-
-- Fer a l'esquerra, dins del 'kanban container' un llistat de histories de usuari amb el mateix height.
+- Arreglar el clic del drag and drop
+- Trobar forma de clicar una task i que obri un panel
+- On Drop a un nou lloc, actualitzar la info de la task per a que coincideixi. GL

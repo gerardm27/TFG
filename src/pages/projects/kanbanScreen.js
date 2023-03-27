@@ -30,13 +30,15 @@ function KanbanScreen({navigation, route}) {
       const taskStatuses = await getAllTasksStatus(project.id);
       const tmp = await getAllUserStoriesStatus(project.id);
       setStatusPerStory(tmp.length);
+      console.log("Status per story:" + tmp.length);
       setLengthPerStatus(screenWidth / tmp.length);
+      console.log("Length per status:" + screenWidth / tmp.length);
       console.log(screenWidth / tmp.length);
       tmp.map((status) => {
         setStatusColors((statusColors) => [...statusColors, status.color]);
       });
       const newZones = [];
-      for (const userStory of userStories) {
+      for await (const userStory of userStories) {
         const userStoryTasks = await getAllTasks(userStory.id);
         
         const filteredTaskStatuses = taskStatuses.filter((taskStatus, index, self) =>
@@ -56,6 +58,7 @@ function KanbanScreen({navigation, route}) {
       }
   
       setZones(newZones);
+      setItems([]);
     };
   
     fetchData();
@@ -119,9 +122,9 @@ function KanbanScreen({navigation, route}) {
                   zones={zones}
                   items={items}
                   itemsContainerStyle={kanbanScreenStyles.itemsContainerStyle}
-                  zonesContainerStyle={[kanbanScreenStyles.zonesContainerStyle,{width: lengthPerStatus * 10}]}
+                  zonesContainerStyle={[kanbanScreenStyles.zonesContainerStyle]}
                   onMaj={(zones, items) => {
-                    setItems(items);
+                    setItems([]);
                     setZones(zones);
                   }}
                   itemsInZoneStyle={kanbanScreenStyles.itemsInZoneStyle}
@@ -138,6 +141,7 @@ function KanbanScreen({navigation, route}) {
                       style={{
                         ...kanbanScreenStyles.dragZoneStyle,
                         backgroundColor: hover ? "lightgreen" : "#FFF",
+                        width: 2000 / (statusPerStory - 1),
                       }}
                       >
                         <Text styles={kanbanScreenStyles.dragZoneTextStyle}>{zone.text}</Text>
@@ -164,25 +168,24 @@ const kanbanScreenStyles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   container: {
-    width: 3500,
+    width: "100%",
   },
   itemsInZoneStyle: {
     width: "45%",
   },
   contentContainerStyle: {
-    padding: 20,
-    paddingTop: 40,
+    paddingBottom: 20,
+    paddingHorizontal: 10,
   },
   itemsContainerStyle: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    justifyContent: "space-between",
-    alignItems: "center",
+    width: 0,
+    height: 0,
   },
   zonesContainerStyle: {
     flexDirection: "row",
     flexWrap: "wrap",
     justifyContent: "space-between",
+    width: "100%",
   },
   dragItemStyle: {
     borderColor: "#F39200",
@@ -203,7 +206,6 @@ const kanbanScreenStyles = StyleSheet.create({
   dragZoneStyle: {
     borderColor: "#F39200", //statusColor
     borderWidth: 2,
-    width: "7%",
     padding: 15,
     minHeight: 150,
     marginVertical: 15,
@@ -276,8 +278,6 @@ statusPage: {
     borderRadius: 10,
     margin: 10,
     padding: 10,
-    
-    
 },
 statusPageTop: {
     width: "100%",
