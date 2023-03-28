@@ -5,7 +5,6 @@ import useAuth from './useAuth';
 import RNRestart from 'react-native-restart';
 
 const useProjects = () => {
-
     const {signOut, getAuth} = useAuth();
 
     const getAllProjects = async (user_id) => {

@@ -23,17 +23,18 @@ function KanbanScreen({navigation, route}) {
   const [statusPerStory, setStatusPerStory] = React.useState(0);
   const [statusColors, setStatusColors] = React.useState([]);
   const [lengthPerStatus, setLengthPerStatus] = React.useState(0);
+  const [userStories, setUserStories] = React.useState([]);
+  const [isLooping, setIsLooping] = React.useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
+      setIsLooping(true);
       const userStories = await getAllUserStories(project.id);
       const taskStatuses = await getAllTasksStatus(project.id);
       const tmp = await getAllUserStoriesStatus(project.id);
+      setUserStories(userStories);
       setStatusPerStory(tmp.length);
-      console.log("Status per story:" + tmp.length);
       setLengthPerStatus(screenWidth / tmp.length);
-      console.log("Length per status:" + screenWidth / tmp.length);
-      console.log(screenWidth / tmp.length);
       tmp.map((status) => {
         setStatusColors((statusColors) => [...statusColors, status.color]);
       });
@@ -59,38 +60,20 @@ function KanbanScreen({navigation, route}) {
   
       setZones(newZones);
       setItems([]);
+      setIsLooping(false);
     };
-  
-    fetchData();
-  }, [project.id]);
-
-  /* useEffect(() => {
-    console.log("Items changed", items);
+    if(!isLooping){
+      fetchData();
+    }
   }, [items]);
 
-  useEffect(() => {
-    console.log("Zones changed", zones);
-  }, [zones]); */
-
-  const generateUserStoryBoards = async () => {
-    const userStories = await getAllUserStories(project.id);
-    console.log(userStories);
-    return userStories.map((userStory) => {
-      return (
-        <View style={kanbanScreenStyles.userStoryContainer}>
-          <Text style={kanbanScreenStyles.userStoryID}>#{userStory.id}</Text>
-          {userStory.total_attachments > 0 ?
-            <Image source="https://icons.veryicon.com/png/o/miscellaneous/effevo/attachment-25.png" style={kanbanScreenStyles.userStoryImage}/>
-            : null
-          }
-          <Text style={kanbanScreenStyles.userStoryDescription}>{userStory.description}</Text>
-        </View>
-      );
-    });
-  };
-
   return (
-    <View style={{height: '100%'}}>
+    <View 
+    onLayout={(event) => {
+      let {height} = event.nativeEvent.layout;
+      console.log(height);
+    }}
+    style={{height: '100%'}}>
       { project ? 
           <ScrollView style={kanbanScreenStyles.projectContainer}>
               <View style={kanbanScreenStyles.topInfoContainer}>
@@ -109,10 +92,17 @@ function KanbanScreen({navigation, route}) {
                       </TouchableOpacity>
                   </View>
               </View>
-
               <ScrollView horizontal contentContainerStyle={kanbanScreenStyles.kanbanContainer}>
-                <View style={[kanbanScreenStyles.contentContainerStyle]}>
-                  {/* {generateUserStoryBoards()} */}
+                <View style={[kanbanScreenStyles.userStoriesContainer]}>
+                  {userStories.map((story) => {
+                    return (
+                      <View style={[kanbanScreenStyles.userStoryContainer]}>
+                        <Text style={kanbanScreenStyles.userStoryID}>#{story.id}</Text>
+                        <Text style={kanbanScreenStyles.userStoryText}>#{story.subject}</Text>
+                      </View>
+                    );
+                  })
+                  }
                 </View>
                 <DragAndDrop
                   style={[kanbanScreenStyles.container, {width: statusPerStory * 350}]}
@@ -131,7 +121,7 @@ function KanbanScreen({navigation, route}) {
                   renderItem={(item) => {
                     return (
                       <View style={kanbanScreenStyles.dragItemStyle}>
-                        <Text style={kanbanScreenStyles.dragItemTextStyle}>{item.text}</Text>
+                        <Text style={kanbanScreenStyles.dragItemTextStyle}>--------------</Text>
                       </View>
                     );
                   }}
@@ -202,6 +192,7 @@ const kanbanScreenStyles = StyleSheet.create({
     color: "#011F3B",
     fontWeight: "700",
     textAlign: "center",
+    fontSize: 30,
   },
   dragZoneStyle: {
     borderColor: "#F39200", //statusColor
@@ -367,6 +358,27 @@ textAndIconContainer: {
     alignItems: "center",
     width: "100%",
 },
+userStoriesContainer: {
+    flex: 1,
+    flexDirection: "column",
+    justifyContent: "flex-start",
+    borderRadius: 10,
+    margin: 10,
+    padding: 10,
+
+},
+userStoryContainer: {
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    backgroundColor: "lightgrey",
+    width: "100%",
+    borderRadius: 10,
+    margin: 10,
+    padding: 10,
+},
+
+
 });
     
 export {KanbanScreen};

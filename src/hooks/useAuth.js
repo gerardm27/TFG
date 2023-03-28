@@ -8,7 +8,6 @@ const useAuth = () => {
 
     const signIn = async (user) => {
         const { email, password } = user;
-    
         const response = await fetch(`${API_HOST}/auth`, {
             method: 'POST',
             headers: {
