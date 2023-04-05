@@ -26,5 +26,21 @@
   "project.status": "Status",
   "project.kanbanView": "Kanban View",
   "project.backlogView": "Backlog View",
-  "project.details": "See details"
+  "project.details": "See details",
+  "project.createProject": "Create a new project",
+  "project.requiredFields": "(*) marked fields are required.",
+  "project.name": "Name",
+  "project.description": "Description",
+  "project.workflow": "Workflow",
+  "project.visibility": "Visibility",
+  "project.private": "Private",
+  "project.public": "Public",
+  "project.create": "Create",
+  "project.scrum": "Scrum",
+  "project.kanban": "Kanban",
+  "project.error": "Please fill in all required fields.",
+  "project.deleteProject": "Delete project",
+  "project.deleteProjectSubtitle": "Are you sure you want to delete your project? This action is not reversible.",
+  "project.delete": "Delete",
+  "project.cancel": "Cancel"
 }

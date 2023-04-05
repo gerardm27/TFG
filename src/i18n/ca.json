@@ -25,5 +25,22 @@
   "editProfile.delete": "Eliminar",
   "project.status": "Estat",
   "project.kanbanView": "Vista Kanban",
-  "project.details": "Veure detalls"
+  "project.backlogView": "Vista Backlog",
+  "project.details": "Veure detalls",
+  "project.createProject": "Crear un nou projecte",
+  "project.requiredFields": "Els camps marcats amb (*) son obligatoris.",
+  "project.name": "Nom",
+  "project.description": "Descripció",
+  "project.workflow": "Flux de treball",
+  "project.visibility": "Visibilitat",
+  "project.private": "Privat",
+  "project.public": "Públic",
+  "project.create": "Crear",
+  "project.scrum": "Scrum",
+  "project.kanban": "Kanban",
+  "project.error": "Si us plau, omple tots els camps obligatoris.",
+  "project.deleteProject": "Eliminar projecte",
+  "project.deleteProjectSubtitle": "Estàs segur que vols eliminar el teu projecte? Aquesta acció és irreversible.",
+  "project.delete": "Eliminar",
+  "project.cancel": "Cancel·lar"
 }

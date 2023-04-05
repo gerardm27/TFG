@@ -26,5 +26,21 @@
   "project.status": "Estado",
   "project.kanbanView": "Vista Kanban",
   "project.backlogView": "Vista Backlog",
-  "project.details": "Ver detalles"
+  "project.details": "Ver detalles",
+  "project.createProject": "Crear un nuevo proyecto",
+  "project.requiredFields": "Los campos marcados con (*) son obligatorios.",
+  "project.name": "Nombre",
+  "project.description": "Descripción",
+  "project.workflow": "Flujo de trabajo",
+  "project.visibility": "Visibilidad",
+  "project.private": "Privado",
+  "project.public": "Público",
+  "project.create": "Crear",
+  "project.scrum": "Scrum",
+  "project.kanban": "Kanban",
+  "project.error": "Por favor, rellena todos los campos obligatorios.",
+  "project.deleteProject": "Eliminar proyecto",
+  "project.deleteProjectSubtitle": "¿Estás seguro de que quieres eliminar tu proyecto? Esta acción es irreversible.",
+  "project.delete": "Eliminar",
+  "project.cancel": "Cancelar"
 }

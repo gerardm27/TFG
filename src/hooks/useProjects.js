@@ -72,8 +72,8 @@ const useProjects = () => {
         return response.data;
     }
 
-    const getAllTasks = async (userStoryId) => {
-        const response = await axios.get(`${API_HOST}/tasks?user_story=${userStoryId}`);
+    const getAllTasks = async (project_id) => {
+        const response = await axios.get(`${API_HOST}/tasks?project=${project_id}`);
         if (response.status == 401) {
             signOut();
         }
@@ -108,6 +108,33 @@ const useProjects = () => {
         return response.data;
     }
 
+    const createProject = async (project) => {
+        const token = await getAuth().auth_token;
+        axios.headers = {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }
+        const response = await axios.post(`${API_HOST}/projects`, project);
+        if (response.status == 401) {
+            signOut();
+        }
+        return response.data;
+    }
+
+    const deleteProject = async (project_id) => {
+        const token = await getAuth().auth_token;
+        axios.headers = {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }
+        const response = await axios.delete(`${API_HOST}/projects/${project_id}`);
+        if (response.status == 401) {
+            signOut();
+        }
+        console.log(response.data);
+        return response.data;
+    }
+
 
 
 
@@ -121,6 +148,8 @@ const useProjects = () => {
         getAllTasks,
         getAllTasksStatus,
         updateTaskStatus,
+        createProject,
+        deleteProject
     };
 }
 

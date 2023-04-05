@@ -20,58 +20,61 @@ function KanbanScreen({navigation, route}) {
   const { t } = useTranslation();
   const [items, setItems] = React.useState([]);
   const [zones, setZones] = React.useState([]);
-  const [statusPerStory, setStatusPerStory] = React.useState(0);
+  const [statusPerStory, setStatusPerStory] = React.useState(0); 
   const [statusColors, setStatusColors] = React.useState([]);
   const [lengthPerStatus, setLengthPerStatus] = React.useState(0);
   const [userStories, setUserStories] = React.useState([]);
-  const [isLooping, setIsLooping] = React.useState(false);
 
   useEffect(() => {
-    const fetchData = async () => {
-      setIsLooping(true);
-      const userStories = await getAllUserStories(project.id);
-      const taskStatuses = await getAllTasksStatus(project.id);
-      const tmp = await getAllUserStoriesStatus(project.id);
-      setUserStories(userStories);
-      setStatusPerStory(tmp.length);
-      setLengthPerStatus(screenWidth / tmp.length);
-      tmp.map((status) => {
-        setStatusColors((statusColors) => [...statusColors, status.color]);
-      });
-      const newZones = [];
-      for await (const userStory of userStories) {
-        const userStoryTasks = await getAllTasks(userStory.id);
-        
-        const filteredTaskStatuses = taskStatuses.filter((taskStatus, index, self) =>
-          index === self.findIndex((t) => t.name === taskStatus.name)
-        );
+	const fetchData = async () => {
+	  try {
+		const [userStories, taskStatuses, tmp, allTasks] = await Promise.all([
+		  getAllUserStories(project.id),
+		  getAllTasksStatus(project.id),
+		  getAllUserStoriesStatus(project.id),
+		  getAllTasks(project.id),
+		]);
   
-        const zones = filteredTaskStatuses.map((taskStatus) => {
-          const tasks = userStoryTasks.filter((task) => task.status === taskStatus.id);
-          return {
-            id: `${taskStatus.id}-${userStory.id}`,
-            text: taskStatus.name,
-            items: tasks.map((task) => ({ id: task.id, text: task.subject })),
-          };
-        });
+		setUserStories(userStories);
+		setStatusPerStory(tmp.length);
+		setLengthPerStatus(screenWidth / tmp.length);
   
-        newZones.push(...zones);
-      }
+		tmp.forEach((status) => {
+			setStatusColors((statusColors) => [...statusColors, status.color]);
+		});
+		const newZones = [];
   
-      setZones(newZones);
-      setItems([]);
-      setIsLooping(false);
-    };
-    if(!isLooping){
-      fetchData();
-    }
-  }, [items]);
+		for (const userStory of userStories) {
+		  const userStoryTasks = allTasks.filter((task) => task.user_story_extra_info.id === userStory.id);
+		  const filteredTaskStatuses = taskStatuses.filter((taskStatus, index, self) =>
+			index === self.findIndex((t) => t.name === taskStatus.name)
+		  );
+  
+		  const zones = await Promise.all(filteredTaskStatuses.map(async (taskStatus) => {
+			const tasks = userStoryTasks.filter((task) => task.status === taskStatus.id);
+			return {
+			  id: `${taskStatus.id}-${userStory.id}`,
+			  text: taskStatus.name,
+			  items: tasks.map((task) => ({ id: task.id, text: task.subject })),
+			};
+		  }));
+  
+		  newZones.push(...zones);
+		}
+		setZones(newZones);
+	  } catch (error) {
+		console.error(error);
+	  }
+	};
+	fetchData();
+  }, []);
+  
 
   return (
     <View 
     onLayout={(event) => {
       let {height} = event.nativeEvent.layout;
-      console.log(height);
+      //console.log(height);
     }}
     style={{height: '100%'}}>
       { project ? 
