@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
     coolBlockImageContainer: {
         marginRight: "10%",
         marginTop: -40,
-        width: "30%",
+        width: "15%",
         aspectRatio: 1,
         backgroundColor: "#ffffff",
         borderColor: "#eae4f6",

@@ -42,5 +42,8 @@
   "project.deleteProject": "Eliminar proyecto",
   "project.deleteProjectSubtitle": "¿Estás seguro de que quieres eliminar tu proyecto? Esta acción es irreversible.",
   "project.delete": "Eliminar",
-  "project.cancel": "Cancelar"
+  "project.cancel": "Cancelar",
+  "project.edit": "Editar",
+  "project.editProject": "Edita tu proyecto",
+  "project.editProjectSubtitle": "Cambia sólo los campos que quieras actualizar."
 }

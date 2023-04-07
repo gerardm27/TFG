@@ -42,5 +42,8 @@
   "project.deleteProject": "Eliminar projecte",
   "project.deleteProjectSubtitle": "Estàs segur que vols eliminar el teu projecte? Aquesta acció és irreversible.",
   "project.delete": "Eliminar",
-  "project.cancel": "Cancel·lar"
+  "project.cancel": "Cancel·lar",
+  "project.edit": "Editar",
+  "project.editProject": "Edita el teu projecte",
+  "project.editProjectSubtitle": "Canvia només els camps que vulguis actualitzar."
 }

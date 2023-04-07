@@ -135,6 +135,21 @@ const useProjects = () => {
         return response.data;
     }
 
+    const editProject = async (project_id, project) => {
+        const token = await getAuth().auth_token;
+        axios.headers = {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }
+        const response = await axios.patch(`${API_HOST}/projects/${project_id}`, project);
+        if (response.status == 401) {
+            signOut();
+        }
+        console.log(response.data);
+        return response.data;
+    }
+    
+
 
 
 
@@ -149,7 +164,8 @@ const useProjects = () => {
         getAllTasksStatus,
         updateTaskStatus,
         createProject,
-        deleteProject
+        deleteProject,
+        editProject
     };
 }
 

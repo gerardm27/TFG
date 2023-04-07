@@ -42,5 +42,8 @@
   "project.deleteProject": "Delete project",
   "project.deleteProjectSubtitle": "Are you sure you want to delete your project? This action is not reversible.",
   "project.delete": "Delete",
-  "project.cancel": "Cancel"
+  "project.cancel": "Cancel",
+  "project.edit": "Edit",
+  "project.editProject": "Edit your project",
+  "project.editProjectSubtitle": "Only change the fields you want to update."
 }

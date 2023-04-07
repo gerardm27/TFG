@@ -9,7 +9,7 @@ const CreateProjectModal = ({ visible, setVisible, createProject }) => {
     const [name, setName] = useState("");
     const [description, setDescription] = useState("");
     const [isKanban, setIsKanban] = useState(false);
-    const [isPublic, setIsPublic] = useState(false);
+    const [isPublic, setIsPublic] = useState(true);
     const [hasError, setHasError] = useState(false);
 
     const sendProject = (name, description, isKanban, isPublic) => {
@@ -35,7 +35,7 @@ const CreateProjectModal = ({ visible, setVisible, createProject }) => {
                 <View style={createProjectModalStyles.modal}>
                     <Text style={createProjectModalStyles.modalTitle}>{t("project.createProject")}</Text>
                     <Text style={createProjectModalStyles.modalSubtitle}>{t("project.requiredFields")}</Text>
-                    <Text style={hasError ? {color: "red"} : {color: "white"}}>{t("project.error")}</Text>
+                    <Text style={[createProjectModalStyles.warningText, hasError ? {color: "red"} : {color: "white"}]}>{t("project.error")}</Text>
                     <View style={createProjectModalStyles.nameInputContainer}>
                         <Text style={createProjectModalStyles.modalText}>{t("project.name")} *</Text>
                         <TextInput style={createProjectModalStyles.nameInput} onChangeText={(text) => setName(text)} />
@@ -115,9 +115,15 @@ const createProjectModalStyles = StyleSheet.create({
         marginBottom: 10,
         color: "#3f51b5"
     },
+    warningText: {
+        fontSize: 16,
+        marginBottom: 10,
+        fontStyle: 'italic',
+    },
     modalText: {
         fontSize: 16,
-        marginBottom: 10
+        marginBottom: 10,
+        fontWeight: 'bold'
     },
     closeButton: {
         backgroundColor: '#b53f3f',
@@ -145,7 +151,7 @@ const createProjectModalStyles = StyleSheet.create({
     nameInputContainer: {
         display: 'flex',
         flexDirection: 'column',
-        marginBottom: 10
+        marginBottom: 10,
     },
     nameInput: {
         borderWidth: 1,
