@@ -5,7 +5,7 @@
   "profile.close": "Tancar",
   "profile.aboutMe": "Sobre mi:",
   "profile.backToDefault": "Establir l'idioma del dispositiu",
-  "profile.email": "Direcció de correu:",
+  "profile.email": "Adreça electrònica:",
   "profile.faq": "FAQs",
   "profile.webProfile": "Perfil al web",
   "profile.editProfile": "Edita el teu perfil",
@@ -45,5 +45,16 @@
   "project.cancel": "Cancel·lar",
   "project.edit": "Editar",
   "project.editProject": "Edita el teu projecte",
-  "project.editProjectSubtitle": "Canvia només els camps que vulguis actualitzar."
+  "project.editProjectSubtitle": "Canvia només els camps que vulguis actualitzar.",
+  "project.save": "Guardar",
+  "project.accept": "Acceptar",
+  "project.members": "Membres del projecte",
+  "project.membersSubtitle": "Edita els membres o convida'n de nous.",
+  "project.memberDetails": "Detalls del membre",
+  "project.memberDetailsName": "Nom",
+  "project.memberDetailsEmail": "Adreça electrònica",
+  "project.memberDetailsRole": "Rol",
+  "project.invite": "Convidar",
+  "project.inviteSubtitle": "Afegeix l'adreça electrònica i rol de l'usuari que vulguis convidar.",
+  "project.inviteName": "nom@mail.com"
 }

@@ -26,6 +26,7 @@ function ProjectScreen({navigation, route}) {
 
     useEffect(() => {buildStatusPages();}, [userStories]);
 
+
     const changeUserStoryStatus = async (userStoryId,userStoryVersion, newStatus, forward) => {
         await updateUserStoryStatus(userStoryId, userStoryVersion, newStatus)
         // change the current user story list to reflect the change
@@ -144,7 +145,7 @@ function ProjectScreen({navigation, route}) {
             const _userStories = await getAllUserStories(route.params.project.id)
             setUserStories(_userStories)
         })
-    }, []);   
+    }, [route.params]);   
     
     return(
         <View style={{height: '100%'}}>

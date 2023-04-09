@@ -30,13 +30,13 @@ function ProjectListScreen({navigation}) {
                             <Text style={customStyles.title}>
                                 {project.name.length > 15 ? project.name.substring(0, 15) + '...' : project.name}
                             </Text>
-                            <TouchableOpacity style={[projectListStyles.coolBlockEditButton, !optionsEnabled ? {display:'none'} : {display: 'flex'}]} onPress={()=> {setEditModalVisible(true); setProjectToEdit(project.id)}}>
+                            <TouchableOpacity style={[projectListStyles.coolBlockEditButton, !optionsEnabled ? {display:'none'} : {display: 'flex'}]} onPress={()=> {setEditModalVisible(true); setProjectToEdit(project.id); setOptionsEnabled(false);}}>
                                 <Image style={projectListStyles.coolBlockEditButtonImage} source={require('../../../assets/images/edit.png')}/>
                             </TouchableOpacity>
-                            <TouchableOpacity style={[projectListStyles.coolBlockMembersButton, !optionsEnabled ? {display:'none'} : null]} onPress={()=> {setMembersModalVisible(true); setProjectToEdit(project.id)}}>
+                            <TouchableOpacity style={[projectListStyles.coolBlockMembersButton, !optionsEnabled ? {display:'none'} : null]} onPress={()=> {setMembersModalVisible(true); setProjectToEdit(project.id); setOptionsEnabled(false);}}>
                                 <Image style={projectListStyles.coolBlockMembersButtonImage} source={require('../../../assets/images/members.png')}/>
                             </TouchableOpacity>
-                            <TouchableOpacity style={[projectListStyles.coolBlockDeleteButton, !optionsEnabled ? {display:'none'} : null]} onPress={()=> {setDeleteModalVisible(true); setProjectToDelete(project.id)}}>
+                            <TouchableOpacity style={[projectListStyles.coolBlockDeleteButton, !optionsEnabled ? {display:'none'} : null]} onPress={()=> {setDeleteModalVisible(true); setProjectToDelete(project.id); setOptionsEnabled(false);}}>
                                 <Image style={projectListStyles.coolBlockDeleteButtonImage} source={require('../../../assets/images/delete.png')}/>
                             </TouchableOpacity>
                             <TouchableOpacity style={[projectListStyles.coolBlockEditButton, optionsEnabled ? {display:'none'} : null]} onPress={()=> {setOptionsEnabled(true);}}>
@@ -73,11 +73,12 @@ function ProjectListScreen({navigation}) {
             new Promise(r => setTimeout(r, 100)).then(() => {
                 getAllProjects(item?.id).then(proj=>{
                     setProjects(proj);
+                    setProjectToEdit(proj[0].id);
                 })
             })
         })
         
-    }, []);   
+    }, [projects]);   
     
     return(
         <View style={[customStyles.mainContainer, {height: "100%"}]}>
@@ -94,7 +95,7 @@ function ProjectListScreen({navigation}) {
                     <CreateProjectModal 
                         visible={createModalVisible}
                         setVisible={setCreateModalVisible}
-                        createProject={createProject}
+                        createProject={createProject} 
                     />
                     <DeleteProjectModal
                         visible={deleteModalVisible}
@@ -108,6 +109,11 @@ function ProjectListScreen({navigation}) {
                         setVisible={setEditModalVisible}
                         projectToEdit={projectToEdit}
                         editProject={editProject}
+                    />
+                    <MembersModal
+                        project={projectToEdit}
+                        visible={membersModalVisible}
+                        setVisible={setMembersModalVisible}
                     />
                 </ScrollView>
                 

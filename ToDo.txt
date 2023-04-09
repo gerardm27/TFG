@@ -1,8 +1,7 @@
 ToDo:
 
-- Fer a l'esquerra, dins del 'kanban container' un llistat de histories de usuari
-  amb el mateix height. O d'alguna forma fer que es relacionin be amb el horitzontal
-
-- Arreglar el clic del drag and drop
-- Trobar forma de clicar una task i que obri un panel
-- On Drop a un nou lloc, actualitzar la info de la task per a que coincideixi. GL
+- Els botons de gestio nomes han de sortir si ets admin del projecte
+- Afegir feedback a totes les accions per al user
+- Boto vist kanban
+- Crear nova historia de usuari
+    - Crear histories de usuari bulk

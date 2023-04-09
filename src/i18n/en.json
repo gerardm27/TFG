@@ -45,5 +45,16 @@
   "project.cancel": "Cancel",
   "project.edit": "Edit",
   "project.editProject": "Edit your project",
-  "project.editProjectSubtitle": "Only change the fields you want to update."
+  "project.editProjectSubtitle": "Only change the fields you want to update.",
+  "project.save": "Save",
+  "project.accept": "Accept",
+  "project.members": "Members of the project",
+  "project.membersSubtitle": "Edit the members or invite new ones.",
+  "project.memberDetails": "Member details",
+  "project.memberDetailsName": "Name",
+  "project.memberDetailsEmail": "Email",
+  "project.memberDetailsRole": "Role",
+  "project.invite": "Invite",
+  "project.inviteSubtitle": "Add the email and role of the member you wish to invite.",
+  "project.inviteName": "name@mail.com"
 }

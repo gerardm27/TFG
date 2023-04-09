@@ -148,10 +148,69 @@ const useProjects = () => {
         console.log(response.data);
         return response.data;
     }
-    
 
+    const getProjectMembers = async (project_id) => {
+        const response = await axios.get(`${API_HOST}/memberships?project=${project_id}`);
+        if (response.status == 401) {
+            signOut();
+        }
+        const data = response.data;
+        return(data);
+    }
 
+    const getProjectRoles = async (project_id) => {
+        const response = await axios.get(`${API_HOST}/roles?project=${project_id}`);
+        if (response.status == 401) {
+            signOut();
+        }
+        const data = response.data;
+        return(data);
+    }
 
+    const setMemberRole = async (member_id, role_id) => {
+        const token = await getAuth().auth_token;
+        axios.headers = {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }
+        const response = await axios.patch(`${API_HOST}/memberships/${member_id}`, {
+            role: role_id
+        });
+        if (response.status == 401) {
+            signOut();
+        }
+        return response.data;
+    }
+
+    const inviteMember = async (project_id, role, username) => {
+        const token = await getAuth().auth_token;
+        axios.headers = {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }
+        const response = await axios.post(`${API_HOST}/memberships`, {
+            project: project_id,
+            role: role,
+            username: username
+        });
+        if (response.status == 401) {
+            signOut();
+        }
+        return response.data;
+    }
+
+    const deleteProjectMember = async (member_id) => {
+        const token = await getAuth().auth_token;
+        axios.headers = {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }
+        const response = await axios.delete(`${API_HOST}/memberships/${member_id}`);
+        if (response.status == 401) {
+            signOut();
+        }
+        return response.data;
+    }
 
     return { 
         getAllProjects, 
@@ -165,7 +224,12 @@ const useProjects = () => {
         updateTaskStatus,
         createProject,
         deleteProject,
-        editProject
+        editProject,
+        getProjectMembers,
+        getProjectRoles,
+        setMemberRole,
+        inviteMember,
+        deleteProjectMember
     };
 }
 

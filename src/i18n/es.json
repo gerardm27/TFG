@@ -45,5 +45,16 @@
   "project.cancel": "Cancelar",
   "project.edit": "Editar",
   "project.editProject": "Edita tu proyecto",
-  "project.editProjectSubtitle": "Cambia sólo los campos que quieras actualizar."
+  "project.editProjectSubtitle": "Cambia sólo los campos que quieras actualizar.",
+  "project.save": "Guardar",
+  "project.accept": "Aceptar",
+  "project.members": "Miembros del proyecto",
+  "project.membersSubtitle": "Edita los miembros o invita a nuevos.",
+  "project.memberDetails": "Detalles del miembro",
+  "project.memberDetailsName": "Nombre",
+  "project.memberDetailsEmail": "Dirreción de correo",
+  "project.memberDetailsRole": "Rol",
+  "project.invite": "Invitar",
+  "project.inviteSubtitle": "Añade la dirección de correo y rol del usuario que quieras invitar.",
+  "project.inviteName": "nombre@mail.com"
 }

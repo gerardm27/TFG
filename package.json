@@ -30,9 +30,10 @@
     "react": "18.1.0",
     "react-dom": "18.1.0",
     "react-i18next": "^12.1.4",
-    "react-native": "0.70.5",
+    "react-native": "0.70.8",
     "react-native-config": "^1.4.5",
     "react-native-dotenv": "^3.3.1",
+    "react-native-dropdown-picker": "^5.4.6",
     "react-native-gesture-handler": "~2.8.0",
     "react-native-i18n": "^2.0.15",
     "react-native-modal": "^13.0.1",
@@ -43,7 +44,8 @@
     "react-native-vector-icons": "^9.2.0",
     "react-native-web": "~0.18.7",
     "rnpm": "^1.9.0",
-    "volkeno-react-native-drag-drop": "^1.1.2"
+    "volkeno-react-native-drag-drop": "^1.1.2",
+    "@expo/webpack-config": "^0.17.2"
   },
   "devDependencies": {
     "@babel/core": "^7.19.3",
