@@ -1,6 +1,7 @@
 ToDo:
 
-- Crear nova historia de usuari
-    - Crear histories de usuari bulk
+- Crear tasca
+    - Crear tasca bulk
+    - Clicar a una tasca per veure-la i assignar-la o editar-la
 - Afegir feedback a totes les accions per al user
 - Els botons de gestio nomes han de sortir si ets admin del projecte

@@ -7,6 +7,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 import Ionic from "react-native-vector-icons/Ionicons";
 import UserStoryModal from './projectComponents/userStoryModal.js';
 import CreateUserStoryModal from './projectComponents/createUserStoryModal.js';
+import CreateBulkUserStoryModal from './projectComponents/createBulkUserStoryModal.js';
 import { useTranslation } from "react-i18next";
 
 function ProjectScreen({navigation, route}) {
@@ -191,6 +192,11 @@ function ProjectScreen({navigation, route}) {
                     <CreateUserStoryModal
                         visible={createModalVisible}
                         setVisible={setCreateModalVisible}
+                        project_id={project.id}
+                    />
+                    <CreateBulkUserStoryModal
+                        visible={createBulkModalVisible}
+                        setVisible={setCreateBulkModalVisible}
                         project_id={project.id}
                     />
                 </ScrollView>
