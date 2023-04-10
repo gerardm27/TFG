@@ -1,5 +1,13 @@
 ToDo:
 
+
+- Backlog:
+    - Obtenir totes les stories que no estan a un sprint (userStory.milestone = null)
+    - Per cada sprint (get all milestones):
+        - Mostrar oberts (closed=false):
+            - Obtenir totes les histories d'usuari obertes d'un sprint
+    - Pensar com mostrar sprints, volem scroll horitzontal o vertical?
+    
 - Crear tasca
     - Crear tasca bulk
     - Clicar a una tasca per veure-la i assignar-la o editar-la
