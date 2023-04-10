@@ -24,8 +24,8 @@
   "editProfile.cancel": "Cancel",
   "editProfile.delete": "Delete",
   "project.status": "Status",
-  "project.kanbanView": "Kanban View",
-  "project.backlogView": "Backlog View",
+  "project.kanbanView": "Change to Kanban View",
+  "project.backlogView": "Change to Backlog View",
   "project.details": "See details",
   "project.createProject": "Create a new project",
   "project.requiredFields": "(*) marked fields are required.",
@@ -56,5 +56,9 @@
   "project.memberDetailsRole": "Role",
   "project.invite": "Invite",
   "project.inviteSubtitle": "Add the email and role of the member you wish to invite.",
-  "project.inviteName": "name@mail.com"
+  "project.inviteName": "name@mail.com",
+  "project.createUserStory": "Add a new user story",
+  "project.createBulkUserStory": "Add multiple user stories",
+  "project.subject": "Subject",
+  "project.assignedToSelf": "Assign to yourself"
 }

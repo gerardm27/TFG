@@ -212,6 +212,19 @@ const useProjects = () => {
         return response.data;
     }
 
+    const createUserStory = async (userStory) => {
+        const token = await getAuth().auth_token;
+        axios.headers = {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }
+        const response = await axios.post(`${API_HOST}/userstories`, userStory);
+        if (response.status == 401) {
+            signOut();
+        }
+        return response.data;
+    }
+
     return { 
         getAllProjects, 
         getProjectBySlug, 
@@ -229,7 +242,8 @@ const useProjects = () => {
         getProjectRoles,
         setMemberRole,
         inviteMember,
-        deleteProjectMember
+        deleteProjectMember,
+        createUserStory,
     };
 }
 

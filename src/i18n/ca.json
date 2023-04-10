@@ -24,8 +24,8 @@
   "editProfile.cancel": "Cancel·lar",
   "editProfile.delete": "Eliminar",
   "project.status": "Estat",
-  "project.kanbanView": "Vista Kanban",
-  "project.backlogView": "Vista Backlog",
+  "project.kanbanView": "Canviar a Vista Kanban",
+  "project.backlogView": "Canviar a Vista Backlog",
   "project.details": "Veure detalls",
   "project.createProject": "Crear un nou projecte",
   "project.requiredFields": "Els camps marcats amb (*) son obligatoris.",
@@ -56,5 +56,9 @@
   "project.memberDetailsRole": "Rol",
   "project.invite": "Convidar",
   "project.inviteSubtitle": "Afegeix l'adreça electrònica i rol de l'usuari que vulguis convidar.",
-  "project.inviteName": "nom@mail.com"
+  "project.inviteName": "nom@mail.com",
+  "project.createUserStory": "Afegeix una nova historia d'usuari",
+  "project.createBulkUserStory": "Afegeix múltiples històries d'usuari",
+  "project.subject": "Títol",
+  "project.assignedToSelf": "Assignar-te-la a tu mateix"
 }

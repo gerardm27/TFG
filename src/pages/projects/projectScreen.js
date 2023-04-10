@@ -6,6 +6,7 @@ import customStyles from '../../utils/customStyleSheet.js';
 import { ScrollView } from 'react-native-gesture-handler';
 import Ionic from "react-native-vector-icons/Ionicons";
 import UserStoryModal from './projectComponents/userStoryModal.js';
+import CreateUserStoryModal from './projectComponents/createUserStoryModal.js';
 import { useTranslation } from "react-i18next";
 
 function ProjectScreen({navigation, route}) {
@@ -23,6 +24,9 @@ function ProjectScreen({navigation, route}) {
     const defaultLogo = require("../../../assets/images/logo.png");
     const screenWidth = Dimensions.get('window').width;
     const [selectedUserStory, setSelectedUserStory] = useState(null);
+
+    const [createModalVisible,setCreateModalVisible] = useState(false);
+    const [createBulkModalVisible, setCreateBulkModalVisible] = useState(false);
 
     useEffect(() => {buildStatusPages();}, [userStories]);
 
@@ -145,7 +149,7 @@ function ProjectScreen({navigation, route}) {
             const _userStories = await getAllUserStories(route.params.project.id)
             setUserStories(_userStories)
         })
-    }, [route.params]);   
+    }, [route.params, userStories]);   
     
     return(
         <View style={{height: '100%'}}>
@@ -167,9 +171,28 @@ function ProjectScreen({navigation, route}) {
                             </TouchableOpacity>
                         </View>
                     </View>
+                    <View style={projectScreenStyles.createUserStoryContainer}>
+                        <TouchableOpacity style={projectScreenStyles.createUserStoryButton}
+                            onPress={() => setCreateModalVisible(true)}
+                        >
+                            <Image source={require('../../../assets/images/add.png')} style={projectScreenStyles.createUserStoryButtonImage}/>
+                            <Text style={projectScreenStyles.createUserStoryButtonText}>{t('project.createUserStory')}</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={projectScreenStyles.createUserStoryButton}
+                            onPress={() => setCreateBulkModalVisible(true)}
+                        >
+                            <Image source={require('../../../assets/images/add_multiple.png')} style={projectScreenStyles.createUserStoryButtonImage}/>
+                            <Text style={projectScreenStyles.createUserStoryButtonText}>{t('project.createBulkUserStory')}</Text>
+                        </TouchableOpacity>
+                    </View>
                     <ScrollView horizontal contentContainerStyle={[projectScreenStyles.changeStatusContainer, {minWidth: (screenWidth*0.95) * statuses.length}]}>
                         {buildStatusPages()}
                     </ScrollView>
+                    <CreateUserStoryModal
+                        visible={createModalVisible}
+                        setVisible={setCreateModalVisible}
+                        project_id={project.id}
+                    />
                 </ScrollView>
                 :
                 <Text>Loading your projects...</Text>
@@ -204,11 +227,11 @@ const projectScreenStyles = StyleSheet.create({
         marginBottom: 10,
         borderBottomColor: "black",
         borderBottomWidth: 1,
-        height: "20%"
+        height: "20%",
     },
     imageContainer: {
-        marginLeft: 20,
-        marginBottom: 10,
+        marginLeft: 10,
+        marginVertical: 10,
     },
     projectImage: {
         width: 100,
@@ -216,11 +239,12 @@ const projectScreenStyles = StyleSheet.create({
         borderRadius: 50,
     },
     projectInfoContainer: {
-        flex: 1,
         flexDirection: "column",
         justifyContent: "center",
-        marginLeft: 20,
+        marginLeft: 5,
         marginBottom: 10,
+        padding: 7,
+        width: "40%",
     },
     projectTitle: {
         fontSize: 20,
@@ -240,8 +264,6 @@ const projectScreenStyles = StyleSheet.create({
         borderRadius: 10,
         margin: 10,
         padding: 10,
-        
-        
     },
     statusPageTop: {
         width: "100%",
@@ -331,7 +353,62 @@ const projectScreenStyles = StyleSheet.create({
         alignItems: "center",
         width: "100%",
     },
-
+    goToKanbanContainer: {
+        flex: 1,
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "flex-end",
+        marginHorizontal: 5,
+        width: "100%",
+        height: "100%",
+    },
+    goToKanbanButton: {
+        backgroundColor: "white",
+        borderColor: "black",
+        borderWidth: 1,
+        borderRadius: 10,
+        padding: 5,
+        width: "100%",
+        height: "50%",
+        justifyContent: "center",
+        alignItems: "center",
+    },
+    goToKanbanButtonText: {
+        color: "black",
+        fontWeight: "bold",
+        fontSize: 15,
+    },
+    createUserStoryContainer: {
+        flex: 1,
+        flexDirection: "row",
+        justifyContent: "center",
+        alignItems: "center",
+        marginHorizontal: 5,
+        width: "100%",
+        height: "100%",
+    },
+    createUserStoryButton: {
+        flex: 1,
+        flexDirection: "row",
+        backgroundColor: "#3f51b5",
+        padding: 10,
+        borderRadius: 5,
+        margin: 10,
+        width: "45%",
+        height: "80%",
+        justifyContent: "center",
+        alignItems: "center",
+    },
+    createUserStoryButtonImage: {
+        width: 30,
+        height: 30,
+        marginHorizontal: 10,
+    },
+    createUserStoryButtonText: {
+        color: "white",
+        fontWeight: "bold",
+        fontSize: 15,
+    },
 
 })
 
