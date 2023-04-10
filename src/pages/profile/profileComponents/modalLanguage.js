@@ -24,7 +24,6 @@ const ModalLanguage = ({ modalVisible, setModalVisible, language, setLanguage })
             i18n.changeLanguage(language);
             setLanguage(language);
         }
-        console.log("Language changed to: " + language);
     }
 
     return (

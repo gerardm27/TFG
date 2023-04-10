@@ -30,6 +30,21 @@ const useProjects = () => {
         return(data);
     }
 
+    const getProjectById = async (project_id) => {
+        const token = await getAuth().auth_token;
+        axios.headers = {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }
+        const response = await axios.get(`${API_HOST}/projects/${project_id}`);
+        if (response.status == 401) {
+            signOut();
+        }
+        const data = response.data;
+        return(data);
+    }
+
+
     const getNumberOfProjects = async( user_id ) => {
         const projects = await getAllProjects(user_id);
         return projects.length;
@@ -55,8 +70,6 @@ const useProjects = () => {
 
     const updateUserStoryStatus = async (userStoryId, version, newStatus) => {
         const token = await getAuth().auth_token;
-        console.log("llego aqui");
-        console.log(userStoryId, version, newStatus);
         axios.headers = {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`
@@ -68,7 +81,6 @@ const useProjects = () => {
         if (response.status == 401) {
             signOut();
         }
-        console.log(response.status);
         return response.data;
     }
 
@@ -131,7 +143,6 @@ const useProjects = () => {
         if (response.status == 401) {
             signOut();
         }
-        console.log(response.data);
         return response.data;
     }
 
@@ -145,7 +156,6 @@ const useProjects = () => {
         if (response.status == 401) {
             signOut();
         }
-        console.log(response.data);
         return response.data;
     }
 
@@ -228,6 +238,7 @@ const useProjects = () => {
     return { 
         getAllProjects, 
         getProjectBySlug, 
+        getProjectById,
         getNumberOfProjects, 
         getAllUserStories, 
         updateUserStoryStatus, 

@@ -25,7 +25,6 @@ const MembersModal = ({ project, visible, setVisible}) => {
         const fetchData = async () => {
             try {
                 if (project) {
-                    console.log("project: ", project);
                     const data = await getProjectMembers(project);
                     const roles = await getProjectRoles(project);
                     setCurrentMember(data[0]);

@@ -20,6 +20,7 @@ function ProjectListScreen({navigation}) {
     const [membersModalVisible, setMembersModalVisible] = useState(false);
     const [projectToDelete, setProjectToDelete] = useState(null);
     const [projectToEdit, setProjectToEdit] = useState(null);
+    const [projectToSeeMembers, setProjectToSeeMembers] = useState(null);
     const [optionsEnabled, setOptionsEnabled] = useState(false);
 
     const generateProjectList = (projects) => {
@@ -30,13 +31,13 @@ function ProjectListScreen({navigation}) {
                             <Text style={customStyles.title}>
                                 {project.name.length > 15 ? project.name.substring(0, 15) + '...' : project.name}
                             </Text>
-                            <TouchableOpacity style={[projectListStyles.coolBlockEditButton, !optionsEnabled ? {display:'none'} : {display: 'flex'}]} onPress={()=> {setEditModalVisible(true); setProjectToEdit(project.id); setOptionsEnabled(false);}}>
+                            <TouchableOpacity style={[projectListStyles.coolBlockEditButton, !optionsEnabled ? {display:'none'} : {display: 'flex'}]} onPress={()=> {setEditModalVisible(true); setProjectToEdit(project.id); console.log("projectList: " + project.id); setOptionsEnabled(false);}}>
                                 <Image style={projectListStyles.coolBlockEditButtonImage} source={require('../../../assets/images/edit.png')}/>
                             </TouchableOpacity>
-                            <TouchableOpacity style={[projectListStyles.coolBlockMembersButton, !optionsEnabled ? {display:'none'} : null]} onPress={()=> {setMembersModalVisible(true); setProjectToEdit(project.id); setOptionsEnabled(false);}}>
+                            <TouchableOpacity style={[projectListStyles.coolBlockMembersButton, !optionsEnabled ? {display:'none'} : {display: 'flex'}]} onPress={()=> {setMembersModalVisible(true); setProjectToSeeMembers(project.id); setOptionsEnabled(false);}}>
                                 <Image style={projectListStyles.coolBlockMembersButtonImage} source={require('../../../assets/images/members.png')}/>
                             </TouchableOpacity>
-                            <TouchableOpacity style={[projectListStyles.coolBlockDeleteButton, !optionsEnabled ? {display:'none'} : null]} onPress={()=> {setDeleteModalVisible(true); setProjectToDelete(project.id); setOptionsEnabled(false);}}>
+                            <TouchableOpacity style={[projectListStyles.coolBlockDeleteButton, !optionsEnabled ? {display:'none'} : {display: 'flex'}]} onPress={()=> {setDeleteModalVisible(true); setProjectToDelete(project.id); setOptionsEnabled(false);}}>
                                 <Image style={projectListStyles.coolBlockDeleteButtonImage} source={require('../../../assets/images/delete.png')}/>
                             </TouchableOpacity>
                             <TouchableOpacity style={[projectListStyles.coolBlockEditButton, optionsEnabled ? {display:'none'} : null]} onPress={()=> {setOptionsEnabled(true);}}>
@@ -73,7 +74,9 @@ function ProjectListScreen({navigation}) {
             new Promise(r => setTimeout(r, 100)).then(() => {
                 getAllProjects(item?.id).then(proj=>{
                     setProjects(proj);
-                    setProjectToEdit(proj[0].id);
+                    if(!projectToEdit) setProjectToEdit(proj[0].id);
+                    if(!projectToSeeMembers) setProjectToSeeMembers(proj[0].id);
+                    if(!projectToDelete) setProjectToDelete(proj[0].id);
                 })
             })
         })
@@ -108,10 +111,9 @@ function ProjectListScreen({navigation}) {
                         visible={editModalVisible}
                         setVisible={setEditModalVisible}
                         projectToEdit={projectToEdit}
-                        editProject={editProject}
                     />
                     <MembersModal
-                        project={projectToEdit}
+                        project={projectToSeeMembers}
                         visible={membersModalVisible}
                         setVisible={setMembersModalVisible}
                     />

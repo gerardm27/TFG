@@ -1,22 +1,47 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, Modal, Image, ScrollView, StyleSheet } from 'react-native';
 import { useTranslation } from "react-i18next";
 import { TextInput } from 'react-native-gesture-handler';
+import useProjects from '../../../hooks/useProjects';
 
-const EditProjectModal = ({ project, visible, setVisible, editProject}) => {
+const EditProjectModal = ({ projectToEdit, visible, setVisible}) => {
     const { t } = useTranslation();
     const [name, setName] = useState("");
     const [description, setDescription] = useState("");
 
+    const {getProjectById, editProject} = useProjects();
 
-    const edit = () => {
-        if(name === ""){
-            setName(project.name);
+    useEffect(() => {
+        const setDefault = async () => {
+            if(!projectToEdit) {
+                return;
+            }
+            const fullProject = await getProjectById(projectToEdit);
+            setName(fullProject.name);
+            setDescription(fullProject.description);
         }
-        if(description === ""){
-            setDescription(project.description);
+        setDefault();
+    }, [visible]);
+
+    const edit = async () => {
+        if(projectToEdit) {
+            const fullProject = await getProjectById(projectToEdit);
+            if(name === ""){
+                setName(fullProject.name);
+            }
+            if(description === ""){
+                setDescription(fullProject.description);
+            }
+            sendEdit();
         }
-        editProject(project.id, name, description);
+    }
+
+    const sendEdit = async () => {
+        const edited_project = {
+            name: name,
+            description: description,
+        }
+        await editProject(projectToEdit, edited_project);
         setVisible(false);
     }
 
@@ -26,6 +51,7 @@ const EditProjectModal = ({ project, visible, setVisible, editProject}) => {
                 <View style={editProjectModalStyles.modal}>
                     <Text style={editProjectModalStyles.modalTitle}>{t("project.editProject")}</Text>
                     <Text style={editProjectModalStyles.modalSubtitle}>{t("project.editProjectSubtitle")}</Text>
+                    <Text style={editProjectModalStyles.modalText}>{t("project.name")}</Text>
                     <TextInput
                         style={editProjectModalStyles.input}
                         onChangeText={setName}
@@ -33,6 +59,7 @@ const EditProjectModal = ({ project, visible, setVisible, editProject}) => {
                         placeholder={t("project.name")}
                         placeholderTextColor="#3f51b5"
                     />
+                    <Text style={editProjectModalStyles.modalText}>{t("project.description")}</Text>
                     <TextInput
                         style={editProjectModalStyles.input}
                         onChangeText={setDescription}
@@ -46,7 +73,6 @@ const EditProjectModal = ({ project, visible, setVisible, editProject}) => {
                         </TouchableOpacity>
                         <TouchableOpacity style={[editProjectModalStyles.button, {backgroundColor: "#3f51b5"}]} onPress={() => {
                             edit();
-                            setVisible(false);
                         }}>
                             <Text style={editProjectModalStyles.deleteButtonText}>{t("project.save")}</Text>
                         </TouchableOpacity>
@@ -79,6 +105,10 @@ const editProjectModalStyles = StyleSheet.create({
         fontSize: 16,
         marginBottom: 10,
         color: "#3f51b5"
+    },
+    modalText: {
+        fontSize: 16,
+        marginBottom: 5
     },
     input: {
         height: 40,

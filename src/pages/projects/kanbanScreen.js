@@ -74,7 +74,6 @@ function KanbanScreen({navigation, route}) {
     <View 
     onLayout={(event) => {
       let {height} = event.nativeEvent.layout;
-      //console.log(height);
     }}
     style={{height: '100%'}}>
       { project ? 

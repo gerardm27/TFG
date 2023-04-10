@@ -40,7 +40,6 @@ function EditProfileScreen({navigation, route}) {
   const defaultImage = require('../../../assets/images/defaultProfile.png');
 
   const changeUserDetails = () => {
-    console.log(languageSelected, fullName, username, bio, email, profileImage)
     editUser(
       languageSelected,
       fullName,
@@ -73,7 +72,6 @@ function EditProfileScreen({navigation, route}) {
     if (!result.canceled) {
         let temp = await uploadProfilePicture(result.assets[0].base64);
         setProfileImage(temp);
-        console.log(temp);
     }
   };
 

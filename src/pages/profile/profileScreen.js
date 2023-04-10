@@ -22,8 +22,6 @@ function ProfileScreen({navigation}) {
     const [modalVisible, setModalVisible] = useState(false);
     const [fullName, setFullName] = useState(null);
     const [email, setEmail] = useState(null);
-
-    console.log(language);
     
     useEffect(() => {
         getAuth().then(user => {
