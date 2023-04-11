@@ -60,5 +60,9 @@
   "project.createUserStory": "Afegeix una nova historia d'usuari",
   "project.createBulkUserStory": "Afegeix múltiples històries d'usuari",
   "project.subject": "Títol",
-  "project.assignedToSelf": "Assignar-te-la a tu mateix"
+  "project.assignedToSelf": "Assignar-te-la a tu mateix",
+  "project.subjects": "Afegeix les històries d'usuari separades per comes.",
+  "project.exampleBulk": "Història d'usuari 1, Història d'usuari 2, etc.",
+  "project.backlog": "Backlog",
+  "project.setToCurrentSprint": "Afegir al sprint actual"
 }

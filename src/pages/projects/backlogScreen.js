@@ -2,20 +2,19 @@ import { View, Text, Image, StyleSheet, TouchableOpacity, Dimensions } from 'rea
 import React, { useState, createContext, useEffect } from 'react';
 import useAuth from '../../hooks/useAuth';
 import useProjects from '../../hooks/useProjects';
-import customStyles from '../../utils/customStyleSheet.js';
 import { ScrollView } from 'react-native-gesture-handler';
-import Ionic from "react-native-vector-icons/Ionicons";
-import UserStoryModal from './projectComponents/userStoryModal.js';
 import CreateUserStoryModal from './projectComponents/createUserStoryModal.js';
 import CreateBulkUserStoryModal from './projectComponents/createBulkUserStoryModal.js';
+import UserStoryModal from './projectComponents/userStoryModal';
 import { useTranslation } from "react-i18next";
 
-function ProjectScreen({navigation, route}) {
+function BacklogScreen({navigation, route}) {
     const { t } = useTranslation();
     const [usuario, setUser] = useState(null);
     const [project, setProject] = useState(null);
     const [projectsInfo, setProjectsInfo] = useState(null);
     const [userStories, setUserStories] = useState(null);
+    const [backlogUserStories, setBacklogUserStories] = useState(null);
     const [statuses, setStatuses] = useState([]);
     const [statusColors, setStatusColors] = useState([]);
     const [statusIds, setStatusIds] = useState([]);
@@ -24,37 +23,54 @@ function ProjectScreen({navigation, route}) {
     const { getAllUserStories, updateUserStoryStatus, getAllUserStoriesStatus } = useProjects();
     const defaultLogo = require("../../../assets/images/logo.png");
     const screenWidth = Dimensions.get('window').width;
-    const [selectedUserStory, setSelectedUserStory] = useState(null);
+    const [selectedUserStory, setSelectedUserStory] = useState(backlogUserStories && backlogUserStories[0]);
 
     const [createModalVisible,setCreateModalVisible] = useState(false);
     const [createBulkModalVisible, setCreateBulkModalVisible] = useState(false);
 
-    useEffect(() => {buildStatusPages();}, [userStories]);
+    
 
-
-    const changeUserStoryStatus = async (userStoryId,userStoryVersion, newStatus, forward) => {
-        await updateUserStoryStatus(userStoryId, userStoryVersion, newStatus)
-        // change the current user story list to reflect the change
-        setUserStories(userStories.map(userStory => {
-            if(userStory.id === userStoryId){
-                userStory.status_extra_info.id = newStatus;
-                userStory.status_extra_info.name = statuses[statuses.indexOf(userStory.status_extra_info.name)+forward];
-            }
-            return userStory;
-        }));
-    } 
-
-    const generateUserStoryList = (userStories, status) => {
-        
+    const generateUserStoryList = (backlogUserStories) => {
+        if (!backlogUserStories) {
+            return <Text style={backlogScreenStyles.noStoriesText}>{t('project.noUserStories')}</Text>
+        }
+        return backlogUserStories.map(userStory => {
+            return(
+                <View key={userStory.id} style={[{borderColor: userStory.status_extra_info.color}, backlogScreenStyles.userStoryContainer]}>
+                    <View style={backlogScreenStyles.userStoryInfoContainer}>
+                        <View style={backlogScreenStyles.idAndSubjectContainer}>
+                            <Text style={backlogScreenStyles.userStoryTitle}>#{userStory.id}</Text>
+                            <Text style={backlogScreenStyles.userStoryTitle}>{userStory.subject}</Text>
+                        </View>
+                    </View>
+                    <View style={backlogScreenStyles.userStoryButtonsContainer}>
+                        <TouchableOpacity style={backlogScreenStyles.detailsButton}
+                            onPress={() => {
+                                setSelectedUserStory(userStory)
+                                setUserStoryModalVisible(true)
+                            }}
+                        >
+                            <Text style={backlogScreenStyles.detailsButtonText}>{t('project.details')}</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={backlogScreenStyles.sendToSprintButton}
+                            onPress={() => {
+                                console.log("Set to current sprint")
+                            }}
+                        >
+                            <Text style={backlogScreenStyles.sendToSprintButtonText}>{t('project.setToCurrentSprint')}</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            )
+        })
     }
-
 
     const { getAuth } = useAuth();
     
     useEffect(() => {    
         getAuth().then(async user=>{
-            setUser(user)
-            setProject(route.params.project)
+            setUser(user);
+            setProject(route.params.project);
             const storyStatuses = await getAllUserStoriesStatus(route.params.project.id)
             const tempStatuses = []
             const tempStatusColors = []
@@ -68,47 +84,56 @@ function ProjectScreen({navigation, route}) {
             setStatusColors(tempStatusColors)
             setStatusIds(tempStatusIds)
             const _userStories = await getAllUserStories(route.params.project.id)
-            setUserStories(_userStories)
+            setUserStories(_userStories);
+            filterStories(_userStories);
         })
-    }, [route.params, userStories]);   
+    }, [route.params]);
+
+    const filterStories = (userStories) => {
+        const _backlogUserStories = userStories.filter(userStory => userStory.milestone === null)
+        setBacklogUserStories(_backlogUserStories)
+    }
     
     return(
         <View style={{height: '100%'}}>
             { project ? 
-                <ScrollView style={projectScreenStyles.projectContainer}>
-                    <View style={projectScreenStyles.topInfoContainer}>
-                        <View style={projectScreenStyles.imageContainer}>
-                            <Image source={{uri: project.logo_big_url} ?? defaultLogo} style={projectScreenStyles.projectImage}/>
+                <ScrollView style={backlogScreenStyles.projectContainer}>
+                    <View style={backlogScreenStyles.topInfoContainer}>
+                        <View style={backlogScreenStyles.imageContainer}>
+                            <Image source={{uri: project.logo_big_url} ?? defaultLogo} style={backlogScreenStyles.projectImage}/>
                         </View>
-                        <View style={projectScreenStyles.projectInfoContainer}>
-                            <Text style={projectScreenStyles.projectTitle}>{project.name}</Text>
-                            <Text style={projectScreenStyles.projectDescription}>{project.description}</Text>
+                        <View style={backlogScreenStyles.projectInfoContainer}>
+                            <Text style={backlogScreenStyles.projectTitle}>{project.name}</Text>
+                            <Text style={backlogScreenStyles.projectDescription}>{project.description}</Text>
                         </View>
-                        <View style={projectScreenStyles.goToKanbanContainer}>
-                            <TouchableOpacity style={projectScreenStyles.goToKanbanButton}
+                        <View style={backlogScreenStyles.goToKanbanContainer}>
+                            <TouchableOpacity style={backlogScreenStyles.goToKanbanButton}
                                 onPress={() => navigation.navigate("Kanban", {project: project})}
                             >
-                                <Text style={projectScreenStyles.goToKanbanButtonText}>{t('project.kanbanView')}</Text>
+                                <Text style={backlogScreenStyles.goToKanbanButtonText}>{t('project.kanbanView')}</Text>
                             </TouchableOpacity>
                         </View>
                     </View>
-                    <View style={projectScreenStyles.createUserStoryContainer}>
-                        <TouchableOpacity style={projectScreenStyles.createUserStoryButton}
+                    <View style={backlogScreenStyles.createUserStoryContainer}>
+                        <TouchableOpacity style={backlogScreenStyles.createUserStoryButton}
                             onPress={() => setCreateModalVisible(true)}
                         >
-                            <Image source={require('../../../assets/images/add.png')} style={projectScreenStyles.createUserStoryButtonImage}/>
-                            <Text style={projectScreenStyles.createUserStoryButtonText}>{t('project.createUserStory')}</Text>
+                            <Image source={require('../../../assets/images/add.png')} style={backlogScreenStyles.createUserStoryButtonImage}/>
+                            <Text style={backlogScreenStyles.createUserStoryButtonText}>{t('project.createUserStory')}</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity style={projectScreenStyles.createUserStoryButton}
+                        <TouchableOpacity style={backlogScreenStyles.createUserStoryButton}
                             onPress={() => setCreateBulkModalVisible(true)}
                         >
-                            <Image source={require('../../../assets/images/add_multiple.png')} style={projectScreenStyles.createUserStoryButtonImage}/>
-                            <Text style={projectScreenStyles.createUserStoryButtonText}>{t('project.createBulkUserStory')}</Text>
+                            <Image source={require('../../../assets/images/add_multiple.png')} style={backlogScreenStyles.createUserStoryButtonImage}/>
+                            <Text style={backlogScreenStyles.createUserStoryButtonText}>{t('project.createBulkUserStory')}</Text>
                         </TouchableOpacity>
                     </View>
-                    <ScrollView horizontal contentContainerStyle={[projectScreenStyles.changeStatusContainer, {minWidth: (screenWidth*0.95) * statuses.length}]}>
-                        {buildStatusPages()}
-                    </ScrollView>
+                    <View style={backlogScreenStyles.userStoriesContainer}>
+                        <Text style={backlogScreenStyles.userStoriesTitle}>{t('project.backlog')}</Text>
+                        <View style={backlogScreenStyles.userStoriesListContainer}>
+                            {generateUserStoryList(backlogUserStories)}
+                        </View>
+                    </View>
                     <CreateUserStoryModal
                         visible={createModalVisible}
                         setVisible={setCreateModalVisible}
@@ -119,6 +144,15 @@ function ProjectScreen({navigation, route}) {
                         setVisible={setCreateBulkModalVisible}
                         project_id={project.id}
                     />
+                    {selectedUserStory ?
+                        <UserStoryModal
+                            visible={userStoryModalVisible}
+                            setVisible={setUserStoryModalVisible}
+                            userStory={selectedUserStory}
+                        />
+                        :
+                        null
+                    }
                 </ScrollView>
                 :
                 <Text>Loading your projects...</Text>
@@ -127,7 +161,7 @@ function ProjectScreen({navigation, route}) {
     )
 }
 
-const projectScreenStyles = StyleSheet.create({
+const backlogScreenStyles = StyleSheet.create({
     projectContainer: {
         flex: 1,
         flexDirection: "column",
@@ -179,106 +213,7 @@ const projectScreenStyles = StyleSheet.create({
     projectDescription: {
         fontSize: 15,
     },
-    changeStatusContainer: {
-        flex: 1,
-        flexDirection: "row",   
-    },
-    statusPage: {
-        flex: 1,
-        flexDirection: "column",
-        justifyContent: "flex-start",
-        borderRadius: 10,
-        margin: 10,
-        padding: 10,
-    },
-    statusPageTop: {
-        width: "100%",
-        flex: 1,
-        flexDirection: "column",
-        justifyContent: "flex-start",
-        maxHeight: 50,
-        minHeight: 50,
-    },
-    statusPageTitle: {
-        width: "100%",
-        fontSize: 20,
-        fontWeight: "bold",
-    },
-    statusPageContent: {
-        width: "100%",
-        flexDirection: "column",
-    },
-    listItem: {
-        flexDirection: "row",
-        justifyContent: "space-between",
-        backgroundColor: "lightgrey",
-        width: "100%",
-        borderRadius: 10,
-        margin: 10,
-        padding: 10,
-        shadowOffset: {
-            width: 0,
-            height: 2,
-        },
-        shadowOpacity: 0.25,
-        shadowRadius: 4,
-        elevation: 5,
-        maxHeight: 125,
-        minHeight: 125,
-    },
-    listItemLeft: {
-        alignItems: "flex-start",
-        width: "60%",
-    },
-    listItemTitle: {
-        fontSize: 20,
-        fontWeight: "bold",
-    },
-    listItemButton: {
-        backgroundColor: "white",
-        borderColor: "black",
-        borderWidth: 1,
-        borderRadius: 10,
-        padding: 10,
-        marginTop: 10,
-        
-    },
-    listItemButtonText: {
-        color: "black",
-        fontWeight: "bold",
-    },
-    listItemRight: {
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
-        padding: 10,
-        borderColor: "black",
-        borderRadius: 10,
-        borderWidth: 1,
-        minHeight: "50%",
-        height: "60%",
-        flexWrap: "wrap",
-        maxWidth: "100%",
-        minWidth: "100%",
-        backgroundColor: "white",
-    },
-    movingButtonsContainer: {
-        flex: 1,
-        flexDirection: "column",
-        justifyContent: "space-between",        
-    },
-
-    nextStatusText: {
-        fontSize: 15,
-        fontWeight: "bold",
-        alignSelf: "center",
-    },
-    textAndIconContainer: {
-        flexDirection: "row",
-        justifyContent: "space-around",
-        alignItems: "center",
-        width: "100%",
-    },
+    
     goToKanbanContainer: {
         flex: 1,
         flexDirection: "column",
@@ -335,6 +270,155 @@ const projectScreenStyles = StyleSheet.create({
         fontWeight: "bold",
         fontSize: 15,
     },
+    userStoriesContainer: {
+        flex: 1,
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+        marginHorizontal: 5,
+        width: "100%",
+        height: "100%",
+    },
+    userStoriesTitle: {
+        fontSize: 20,
+        fontWeight: "bold",
+        marginVertical: 10,
+    },
+    userStoriesListContainer: {
+        flex: 1,
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+        marginHorizontal: 5,
+        width: "97%",
+        height: "97%",
+        marginBottom: 10,
+    },
+    userStoryContainer: {
+        flex: 1,
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center",
+        marginHorizontal: 5,
+        marginVertical: 5,
+        width: "100%",
+        height: "100%",
+        borderRadius: 10,
+        borderWidth: 2,
+        padding: 10,
+    },
+    userStoryInfoContainer: {
+        flex: 1,
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "flex-start",
+        marginHorizontal: 5,
+        width: "60%",
+        height: "100%",
+    },
+    idAndSubjectContainer: {
+        flex: 1,
+        flexDirection: "row",
+        justifyContent: "flex-start",
+        textAlignVertical: "top",
+        marginTop: 5,
+        flexWrap: "wrap",
+        width: "100%",
+        height: "100%",
+    },
+    userStoryTitle: {
+        marginLeft: 10,
+        fontSize: 18,
+        fontWeight: "bold",
+    },
+    userStoryDescription: {
+        fontSize: 15,
+    },
+    userStoryButtonsContainer: {
+        flex: 1,
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+        marginHorizontal: 5,
+        width: "40%",
+        height: "100%",
+    },
+    userStoryButton: {
+        flex: 1,
+        flexDirection: "row",
+        backgroundColor: "#3f51b5",
+        padding: 10,
+        borderRadius: 5,
+        margin: 10,
+        width: "100%",
+        height: "40%",
+        justifyContent: "center",
+        alignItems: "center",
+    },
+    userStoryButtonText: {
+        color: "white",
+        fontWeight: "bold",
+        fontSize: 15,
+    },
+    detailsButton: {
+        flex: 1,
+        flexDirection: "row",
+        backgroundColor: "white",
+        borderColor: "black",
+        borderWidth: 2,
+        borderRadius: 5,
+        padding: 10,
+        margin: 10,
+        width: "90%",
+        height: "40%",
+        justifyContent: "center",
+        alignItems: "center",
+    },
+    detailsButtonText: {
+        color: "black",
+        fontWeight: "bold",
+        fontSize: 15,
+    },
+    sendToSprintButton: {
+        flex: 1,
+        flexDirection: "row",
+        backgroundColor: "white",
+        borderColor: "black",
+        borderWidth: 2,
+        borderRadius: 5,
+        padding: 10,
+        margin: 10,
+        width: "90%",
+        height: "40%",
+        justifyContent: "center",
+        alignItems: "center",
+    },
+    sendToSprintButtonText: {
+        color: "black",
+        fontWeight: "bold",
+        fontSize: 15,
+    },
+    userStoryStatusContainer: {
+        flex: 1,
+        flexDirection: "row",
+        justifyContent: "center",
+        alignItems: "center",
+        marginHorizontal: 5,
+        width: "50%",
+        height: "50%",
+        borderWidth: 2,
+        borderRadius: 10,
+    },
+    userStoryStatusText: {
+        fontSize: 15,
+        fontWeight: "bold",
+        marginHorizontal: 10,
+    },
+
+
+
+
+
 
 })
 

@@ -60,5 +60,9 @@
   "project.createUserStory": "Add a new user story",
   "project.createBulkUserStory": "Add multiple user stories",
   "project.subject": "Subject",
-  "project.assignedToSelf": "Assign to yourself"
+  "project.assignedToSelf": "Assign to yourself",
+  "project.subjects": "Add the user stories separated by a comma.",
+  "project.exampleBulk": "UserStory1, UserStory2, etc.",
+  "project.backlog": "Backlog",
+  "project.setToCurrentSprint": "Add to current sprint"
 }

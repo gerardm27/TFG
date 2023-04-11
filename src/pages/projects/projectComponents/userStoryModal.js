@@ -1,9 +1,16 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import { Modal, View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { useTranslation } from "react-i18next";
+import useProjects from '../../../hooks/useProjects';
+
 
 const UserStoryModal = ({ userStory, visible, setVisible }) => {
+
     const { t } = useTranslation();
+    const [project, setProject] = useState(null);
+    
+    const { getProject } = useProjects();
+    
     return (
         <Modal transparent={true} visible={visible}>
             <View style={userStoryModalStyles.mainModalView}>

@@ -4,7 +4,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import { AuthContext } from './context/authContext';
-import { SignInScreen, SignUpScreen, HomeScreen, EditProfileScreen, ProjectListScreen, ProjectScreen, KanbanScreen, ProfileScreen } from './pages';
+import { SignInScreen, SignUpScreen, HomeScreen, EditProfileScreen, ProjectListScreen, ProjectScreen, KanbanScreen, ProfileScreen, BacklogScreen } from './pages';
 import * as Font from 'expo-font';
 
 
@@ -128,7 +128,7 @@ function Main() {
                     />
                     <Tab.Screen 
                         name="Projects" 
-                        component={ProjectScreen} 
+                        component={BacklogScreen} 
                         options={
                             {
                                 title: 'Projects',
