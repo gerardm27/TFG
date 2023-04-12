@@ -4,13 +4,16 @@ ToDo:
 - Backlog:
     - Obtenir totes les stories que no estan a un sprint (userStory.milestone = null) --DONE
         - Mostrar dades de cada story i poder editar-la (subject, status, points, etc.) --WIP
-        
+
     - Per cada sprint (get all milestones):
         - Mostrar oberts (closed=false):
             - Obtenir totes les histories d'usuari obertes d'un sprint
     - Pensar com mostrar sprints, volem scroll horitzontal o vertical?
 
-- Crear tasca
+
+- Reload user stories on add
+- Assign to any team member on add
+- Crear tasca (assignar a algun team member)
     - Crear tasca bulk
     - Clicar a una tasca per veure-la i assignar-la o editar-la
 - Afegir feedback a totes les accions per al user

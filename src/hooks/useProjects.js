@@ -235,6 +235,15 @@ const useProjects = () => {
         return response.data;
     }
 
+    const getProjectPoints = async (project_id) => {
+        const response = await axios.get(`${API_HOST}/points?project=${project_id}`);
+        if (response.status == 401) {
+            signOut();
+        }
+        const data = response.data;
+        return(data);
+    }
+
     return { 
         getAllProjects, 
         getProjectBySlug, 
@@ -255,6 +264,7 @@ const useProjects = () => {
         inviteMember,
         deleteProjectMember,
         createUserStory,
+        getProjectPoints
     };
 }
 

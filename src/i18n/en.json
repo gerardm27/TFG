@@ -64,5 +64,8 @@
   "project.subjects": "Add the user stories separated by a comma.",
   "project.exampleBulk": "UserStory1, UserStory2, etc.",
   "project.backlog": "Backlog",
-  "project.setToCurrentSprint": "Add to current sprint"
+  "project.setToCurrentSprint": "Add to current sprint",
+  "project.noUserStories": "There are no user stories available.",
+  "project.notAssigned": "Not assigned",
+  "project.points": "Points"
 }

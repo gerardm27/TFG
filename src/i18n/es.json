@@ -64,5 +64,8 @@
   "project.subjects": "Añade las historias de usuario separadas por comas.",
   "project.exampleBulk": "Historia de usuario 1, Historia de usuario 2, etc.",
   "project.backlog": "Backlog",
-  "project.setToCurrentSprint": "Añadir a sprint actual"
+  "project.setToCurrentSprint": "Añadir a sprint actual",
+  "project.noUserStories": "No hay historias de usuario disponibles.",
+  "project.notAssigned": "No asignada",
+  "project.points": "Puntos"
 }

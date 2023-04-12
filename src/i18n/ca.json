@@ -64,5 +64,8 @@
   "project.subjects": "Afegeix les històries d'usuari separades per comes.",
   "project.exampleBulk": "Història d'usuari 1, Història d'usuari 2, etc.",
   "project.backlog": "Backlog",
-  "project.setToCurrentSprint": "Afegir al sprint actual"
+  "project.setToCurrentSprint": "Afegir al sprint actual",
+  "project.noUserStories": "No hi ha històries d'usuari disponibles",
+  "project.notAssigned": "No assignada",
+  "project.points": "Punts"
 }
