@@ -3,20 +3,26 @@ import { Modal, View, Text, TouchableOpacity, StyleSheet, Image } from 'react-na
 import { useTranslation } from "react-i18next";
 import useProjects from '../../../hooks/useProjects';
 import DropDownPicker from 'react-native-dropdown-picker';
+import EditStoryModal from './editStoryModal';
 
 const UserStoryModal = ({ userStory, visible, setVisible }) => {
     const { t } = useTranslation();
     const [project, setProject] = useState(null);
-    
+    const [description, setDescription] = useState(null);
     const [pointsIDs, setPointsIDs] = useState(null);
     const [pointsValues, setPointsValues] = useState(null);
+
+    const [editStoryModalVisible, setEditStoryModalVisible] = useState(false);
+    const [deleteStoryModalVisible, setDeleteStoryModalVisible] = useState(false);
+
     const pointTexts = [
         t("project.ux"),
         t("project.design"),
-        t("project.frontend"),
-        t("project.backend"),]
+        t("project.front"),
+        t("project.back"),
+        t("project.total"),]
 
-    const { getProject, getProjectPoints } = useProjects();
+    const { getProject, getProjectPoints, getUserStory } = useProjects();
     
     useEffect(() => {
         const fetchData = async () => {
@@ -27,9 +33,12 @@ const UserStoryModal = ({ userStory, visible, setVisible }) => {
                 setPointsIDs(points.map((point) => point.id));
                 setPointsValues(points.map((point) => point.name));
             });
+            await getUserStory(userStory.id).then((userStory) => {
+                setDescription(userStory.description);
+            });
         }
         fetchData();
-    }, []);
+    }, [userStory]);
 
 
     const buildPointsBox = (points) => {
@@ -40,14 +49,23 @@ const UserStoryModal = ({ userStory, visible, setVisible }) => {
             let j = pointsIDs.indexOf(points[point]);
             if (j != -1) {
               pointComponents.push(
-                <Text key={point} style={userStoryModalStyles.storyPointsBoxItem}>
-                  {pointTexts[i]}: {pointsValues[j]}
-                </Text>
+                <View key={point} style={userStoryModalStyles.pointItemContainer}>
+                    <Text style={userStoryModalStyles.storyPointsBoxItem}>
+                    {pointTexts[i]}: {pointsValues[j]}
+                    </Text>
+                    <View style={userStoryModalStyles.storyPointsBoxSeparator} />
+                </View>
+
               );
             }
             i++;
           }
         }
+        pointComponents.push(
+            <Text key="total" style={userStoryModalStyles.storyPointsBoxItem}>
+                {pointTexts[4]}: {userStory.total_points}
+            </Text>
+        );
         return pointComponents;
       }
 
@@ -58,11 +76,13 @@ const UserStoryModal = ({ userStory, visible, setVisible }) => {
                     <View style={userStoryModalStyles.modalContentContainer}>
                         <View style={userStoryModalStyles.modalLeftContainer}>
                             <View style={userStoryModalStyles.modalTitleContainer}>
-                                <Text style={userStoryModalStyles.storyIdText}>#{userStory.id}</Text>
+                                <Text style={userStoryModalStyles.storyIdText}>#{userStory.ref}</Text>
                                 <Text style={userStoryModalStyles.storySubjectText}>{userStory.subject}</Text>
                                 <Text style={[{backgroundColor: userStory.status_extra_info.color},userStoryModalStyles.storyStatusText]}>{userStory.status_extra_info.name}</Text>
                             </View>
-                            <Text style={userStoryModalStyles.storyDescriptionText}>{userStory.description}</Text>
+                            <View style={userStoryModalStyles.storyDescriptionContainer}>
+                                <Text style={userStoryModalStyles.storyDescriptionText}>{description}</Text>
+                            </View>
                         </View>
                         <View style={userStoryModalStyles.modalRightContainer}>
                             <View style={userStoryModalStyles.storyAssignedTo}>
@@ -78,12 +98,24 @@ const UserStoryModal = ({ userStory, visible, setVisible }) => {
                         </View>
                     </View>
                     <View style={userStoryModalStyles.buttonContainer}>
-                        <TouchableOpacity style={userStoryModalStyles.closeButton} onPress={() => setVisible(false)}>
+                        <TouchableOpacity 
+                            style={userStoryModalStyles.deleteButton} 
+                            onPress={() => setDeleteStoryModalVisible(true)}>
+                            <Text style={userStoryModalStyles.closeButtonText}>{t("project.delete")}</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity 
+                            style={userStoryModalStyles.closeButton} 
+                            onPress={() => setEditStoryModalVisible(true)}>
                             <Text style={userStoryModalStyles.closeButtonText}>{t("project.edit")}</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={userStoryModalStyles.closeButton} onPress={() => setVisible(false)}>
                             <Text style={userStoryModalStyles.closeButtonText}>{t("profile.close")}</Text>
                         </TouchableOpacity>
+                        <EditStoryModal
+                            visible={editStoryModalVisible}
+                            setVisible={setEditStoryModalVisible}
+                            userStory={userStory}
+                        />
                     </View>
                 </View>
             </View>
@@ -100,7 +132,7 @@ const userStoryModalStyles = StyleSheet.create({
     },
     modal: {
         width: '90%',
-        height: '50%',
+        height: '40%',
         backgroundColor: '#fff',
         borderRadius: 10,
         padding: 10
@@ -129,12 +161,11 @@ const userStoryModalStyles = StyleSheet.create({
         width: '30%',
     },
     modalTitleContainer: {
-        flex: 1,
         flexDirection: 'row',
         justifyContent: 'flex-start',
         alignItems: 'flex-start',
         width: '100%',
-        marginBottom: 10
+        marginBottom: 10,
     },
     storyIdText: {
         fontSize: 20,
@@ -161,6 +192,15 @@ const userStoryModalStyles = StyleSheet.create({
         fontSize: 15,
         color: '#000'
     },
+    storyDescriptionContainer: {
+        flex: 1,
+        flexDirection: 'column',
+        justifyContent: 'flex-start',
+        alignItems: 'flex-start',
+        width: '100%',
+        marginTop: 10,
+        flexWrap: 'wrap',
+    },
     storyAssignedTo: {
         flexDirection: 'column',
         justifyContent: 'flex-start',
@@ -178,45 +218,55 @@ const userStoryModalStyles = StyleSheet.create({
         color: '#000'
     },
     storyPointsContainer: {
-        flex: 1,
         flexDirection: 'column',
         justifyContent: 'flex-start',
         alignItems: 'flex-start',
-        width: '100%',
-        marginBottom: 10,
     },
     storyPointsText: {
-        fontSize: 15,
+        fontSize: 16,
         fontWeight: 'bold',
-        color: '#000'
+        marginBottom: 10
     },
     storyPointsBox: {
-        flex: 1,
-        flexDirection: 'column',
-        justifyContent: 'flex-start',
-        alignItems: 'flex-start',
-        width: "90%",
-        height: 30,
-        borderColor: '#000',
+        width: '100%',
         borderWidth: 1,
-        marginLeft: 10,
+        borderColor: '#ccc',
+        borderRadius: 5,
+        padding: 5
+    },
+    pointItemContainer: {
+        width: "100%",
+        height: 30,
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'flex-start',
+        alignSelf: 'center',
+    },
+    storyPointsBoxSeparator: {
+        width: "100%",
+        height: 1,
+        backgroundColor: '#000',
+        alignSelf: 'center',    
     },
     storyPointsBoxItem: {
-        borderColor: '#000',
-        justifyContent: 'center',
-        alignItems: 'center',
-        alignSelf: 'center',
+        fontSize: 14
     },
     buttonContainer: {
         flexDirection: 'row',
         justifyContent: 'space-between',
     },
     closeButton: {
-        width: '45%',
+        width: '28%',
         height: 50,
         backgroundColor: '#000',
+        borderRadius: 10,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 10
+    },
+    deleteButton: {
+        width: '28%',
+        height: 50,
+        backgroundColor: '#f57676',
         borderRadius: 10,
         justifyContent: 'center',
         alignItems: 'center',
@@ -241,9 +291,6 @@ const userStoryModalStyles = StyleSheet.create({
         fontWeight: 'bold',
         color: '#fff'
     },
-    
-
-
 });
 
 export default UserStoryModal;

@@ -39,7 +39,7 @@ function BacklogScreen({navigation, route}) {
                 <View key={userStory.id} style={[{borderColor: userStory.status_extra_info.color}, backlogScreenStyles.userStoryContainer]}>
                     <View style={backlogScreenStyles.userStoryInfoContainer}>
                         <View style={backlogScreenStyles.idAndSubjectContainer}>
-                            <Text style={backlogScreenStyles.userStoryTitle}>#{userStory.id}</Text>
+                            <Text style={backlogScreenStyles.userStoryTitle}>#{userStory.ref}</Text>
                             <Text style={backlogScreenStyles.userStoryTitle}>{userStory.subject}</Text>
                         </View>
                     </View>
@@ -83,7 +83,8 @@ function BacklogScreen({navigation, route}) {
             setStatuses(tempStatuses)
             setStatusColors(tempStatusColors)
             setStatusIds(tempStatusIds)
-            const _userStories = await getAllUserStories(route.params.project.id)
+            var _userStories = await getAllUserStories(route.params.project.id)
+            _userStories = _userStories.sort((a, b) => a.ref - b.ref)
             setUserStories(_userStories);
             filterStories(_userStories);
         })

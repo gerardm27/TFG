@@ -31,7 +31,7 @@ function ProjectListScreen({navigation}) {
                             <Text style={customStyles.title}>
                                 {project.name.length > 15 ? project.name.substring(0, 15) + '...' : project.name}
                             </Text>
-                            <TouchableOpacity style={[projectListStyles.coolBlockEditButton, !optionsEnabled ? {display:'none'} : {display: 'flex'}]} onPress={()=> {setEditModalVisible(true); setProjectToEdit(project.id); console.log("projectList: " + project.id); setOptionsEnabled(false);}}>
+                            <TouchableOpacity style={[projectListStyles.coolBlockEditButton, !optionsEnabled ? {display:'none'} : {display: 'flex'}]} onPress={()=> {setEditModalVisible(true); setProjectToEdit(project.id); setOptionsEnabled(false);}}>
                                 <Image style={projectListStyles.coolBlockEditButtonImage} source={require('../../../assets/images/edit.png')}/>
                             </TouchableOpacity>
                             <TouchableOpacity style={[projectListStyles.coolBlockMembersButton, !optionsEnabled ? {display:'none'} : {display: 'flex'}]} onPress={()=> {setMembersModalVisible(true); setProjectToSeeMembers(project.id); setOptionsEnabled(false);}}>

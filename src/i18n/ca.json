@@ -60,12 +60,18 @@
   "project.createUserStory": "Afegeix una nova historia d'usuari",
   "project.createBulkUserStory": "Afegeix múltiples històries d'usuari",
   "project.subject": "Títol",
-  "project.assignedToSelf": "Assignar-te-la a tu mateix",
-  "project.subjects": "Afegeix les històries d'usuari separades per comes.",
+  "project.assignTo": "Assignar a",
+  "project.subjects": "Afegeix les històries d'usuari linia per linia.",
   "project.exampleBulk": "Història d'usuari 1, Història d'usuari 2, etc.",
   "project.backlog": "Backlog",
   "project.setToCurrentSprint": "Afegir al sprint actual",
   "project.noUserStories": "No hi ha històries d'usuari disponibles",
   "project.notAssigned": "No assignada",
-  "project.points": "Punts"
+  "project.points": "Punts",
+  "project.ux": "UX",
+  "project.design": "Disseny",
+  "project.front": "Front",
+  "project.back": "Back",
+  "project.total": "Total",
+  "project.saveAndCreateNew": "Guardar i crear"
 }

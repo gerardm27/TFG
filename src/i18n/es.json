@@ -60,12 +60,18 @@
   "project.createUserStory": "Añade una nueva historia de usuario",
   "project.createBulkUserStory": "Añade múltiples historias de usuario",
   "project.subject": "Título",
-  "project.assignedToSelf": "Asignártela a ti mismo",
-  "project.subjects": "Añade las historias de usuario separadas por comas.",
+  "project.assignTo": "Asignar a",
+  "project.subjects": "Añade las historias de usuario linea por linea.",
   "project.exampleBulk": "Historia de usuario 1, Historia de usuario 2, etc.",
   "project.backlog": "Backlog",
   "project.setToCurrentSprint": "Añadir a sprint actual",
   "project.noUserStories": "No hay historias de usuario disponibles.",
   "project.notAssigned": "No asignada",
-  "project.points": "Puntos"
+  "project.points": "Puntos",
+  "project.ux": "UX",
+  "project.design": "Diseño",
+  "project.front": "Front",
+  "project.back": "Back",
+  "project.total": "Total",
+  "project.saveAndCreateNew": "Guardar y crear"
 }

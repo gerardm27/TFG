@@ -60,12 +60,18 @@
   "project.createUserStory": "Add a new user story",
   "project.createBulkUserStory": "Add multiple user stories",
   "project.subject": "Subject",
-  "project.assignedToSelf": "Assign to yourself",
-  "project.subjects": "Add the user stories separated by a comma.",
+  "project.assignTo": "Assign it to",
+  "project.subjects": "Add the user stories each in a new line.",
   "project.exampleBulk": "UserStory1, UserStory2, etc.",
   "project.backlog": "Backlog",
   "project.setToCurrentSprint": "Add to current sprint",
   "project.noUserStories": "There are no user stories available.",
   "project.notAssigned": "Not assigned",
-  "project.points": "Points"
+  "project.points": "Points",
+  "project.ux": "UX",
+  "project.design": "Desing",
+  "project.front": "Front",
+  "project.back": "Back",
+  "project.total": "Total",
+  "project.saveAndCreateNew": "Save and create"
 }

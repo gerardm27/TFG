@@ -12,15 +12,18 @@ const createUserStoryModal = ({visible, setVisible, project_id}) => {
     const [subject, setSubject] = useState('');
     const [description, setDescription] = useState('');
     const [status, setStatus] = useState(null);
-    const [assignedToSelf, setAssignedToSelf] = useState(false);
     const [hasError, setHasError] = useState(false);
+    const [assignedMember, setAssignedMember] = useState(null);
 
     const [open, setOpen] = useState(false);
     const [value, setValue] = useState(null);
+    const [openMember, setOpenMember] = useState(false);
+    const [valueMember, setValueMember] = useState(null);
 
     const [statuses, setStatuses] = useState([]);
+    const [members, setMembers] = useState([]);
 
-    const {getAllUserStoriesStatus, createUserStory} = useProjects();
+    const {getAllUserStoriesStatus, createUserStory, getProjectMembers} = useProjects();
     const {getAuth} = useAuth();
 
     useEffect(() => {
@@ -31,6 +34,14 @@ const createUserStoryModal = ({visible, setVisible, project_id}) => {
         fetchStatuses();
     }
     , []);
+
+    useEffect(() => {
+        const fetchMembers = async () => {
+            const members = await getProjectMembers(project_id);
+            setMembers(members);
+        }
+        fetchMembers();
+    }, []);
 
     const newUserStory = async () => {
         if (subject == '') {
@@ -44,7 +55,7 @@ const createUserStoryModal = ({visible, setVisible, project_id}) => {
             project: project_id,
             description: description,
             status: status,
-            assigned_to: assignedToSelf ? auth.id : null
+            assigned_to: assignedMember
         }
         createUserStory(userStory);
         setVisible(false);
@@ -86,11 +97,22 @@ const createUserStoryModal = ({visible, setVisible, project_id}) => {
                             onChangeValue={value => setStatus(value)}
                         />
                     </View>
-                    <View style={createUserStoryStyles.assignedToSelfContainer}>
-                        <Text style={createUserStoryStyles.modalText}>{t("project.assignedToSelf")}</Text>
-                        <TouchableOpacity style={createUserStoryStyles.assignedToSelfButton} onPress={() => setAssignedToSelf(!assignedToSelf)}>
-                            <Image style={createUserStoryStyles.assignedToSelfImage} source={assignedToSelf ? require('../../../../assets/images/assignedSelf.png') : require('../../../../assets/images/notAssignedSelf.png')}></Image>
-                        </TouchableOpacity>
+                    <View style={createUserStoryStyles.assignContainer}>
+                        <Text style={createUserStoryStyles.modalText}>{t("project.assignTo")}</Text>
+                        <DropDownPicker
+                            items={members.map(member => {
+                                return {label: member.full_name, value: member.id}
+                            }
+                            )}
+                            containerStyle={{height: 40}}
+                            style={createUserStoryStyles.memberInput}
+                            itemStyle={createUserStoryStyles.memberInputItem}
+                            open={openMember}
+                            setOpen={setOpenMember}
+                            value={valueMember}
+                            setValue={setValueMember}
+                            onChangeValue={value => setAssignedMember(value)}
+                        />
                     </View>
                     <View style={createUserStoryStyles.buttonsContainer}>
                         <TouchableOpacity style={createUserStoryStyles.cancelButton} onPress={() => setVisible(false)}>
@@ -164,18 +186,19 @@ const createUserStoryStyles = StyleSheet.create({
     statusInputItem: {
         justifyContent: "flex-start"
     },
-    assignedToSelfContainer: {
-        flexDirection: "column",
-        justifyContent: "flex-start",
-        paddingVertical: 10
+    assignContainer: {
+        marginTop: 10,
+        marginBottom: 40
     },
-    assignedToSelfButton: {
-        marginLeft: 10,
-        marginTop: 10
+    memberInput: {
+        borderWidth: 1,
+        borderColor: "black",
+        borderRadius: 5,
+        padding: 5,
+        height: 40
     },
-    assignedToSelfImage: {
-        width: 50,
-        height: 50
+    memberInputItem: {
+        justifyContent: "flex-start"
     },
     buttonsContainer: {
         flexDirection: "row",

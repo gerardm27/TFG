@@ -56,7 +56,6 @@ const CreateBulkUserStoryModal = ({ visible, setVisible, project_id }) => {
             <View style={createUserStoryStyles.mainModalView}>
                 <View style={createUserStoryStyles.modal}>
                     <Text style={createUserStoryStyles.modalTitle}>{t("project.createBulkUserStory")}</Text>
-                    <Text style={createUserStoryStyles.modalText}>{t("project.createBulkSubtitle")}</Text>
                     <View style={createUserStoryStyles.statusInputContainer}>
                         <Text style={createUserStoryStyles.modalText}>{t("project.status")}</Text>
                         <DropDownPicker
@@ -78,9 +77,8 @@ const CreateBulkUserStoryModal = ({ visible, setVisible, project_id }) => {
                     <View style={createUserStoryStyles.subjectInputContainer}>
                         <Text style={createUserStoryStyles.modalText}>{t("project.subjects")}</Text>
                         <TextInput 
-                            placeholder={t("project.exampleBulk")} 
                             style={createUserStoryStyles.subjectInput} 
-                            onChangeText={text => setSubjects(text.split(","))}
+                            onChangeText={text => setSubjects(text.split(/\r?\n/))}
                             multiline={true}
                             numberOfLines={4}
                         />
@@ -126,7 +124,7 @@ const createUserStoryStyles = StyleSheet.create({
         marginBottom: 10
     },
     subjectInputContainer: {
-        marginBottom: 10
+        marginVertical: 10
     },
     subjectInput: {
         textAlignVertical: "top",
