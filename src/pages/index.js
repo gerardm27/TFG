@@ -5,5 +5,6 @@ export * from './projects/projectListScreen';
 export * from './projects/projectScreen';
 export * from './projects/kanbanScreen';
 export * from './projects/backlogScreen';
+export * from './projects/sprintScreen';
 export * from './profile/profileScreen';
 export * from './profile/editProfileScreen';

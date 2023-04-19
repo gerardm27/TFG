@@ -4,7 +4,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import { AuthContext } from './context/authContext';
-import { SignInScreen, SignUpScreen, HomeScreen, EditProfileScreen, ProjectListScreen, ProjectScreen, KanbanScreen, ProfileScreen, BacklogScreen } from './pages';
+import { SignInScreen, SignUpScreen, HomeScreen, EditProfileScreen, ProjectListScreen, ProjectScreen, KanbanScreen, ProfileScreen, BacklogScreen, SprintScreen } from './pages';
 import * as Font from 'expo-font';
 
 
@@ -145,6 +145,17 @@ function Main() {
                                 title: 'Kanban',
                                 tabBarItemStyle: {display: "none"},
                                 //headerShown: false,
+                            }
+                        }
+                    />
+                    <Tab.Screen 
+                        name="Sprint"
+                        component={SprintScreen}
+                        options={
+                            {
+                                title: 'Sprint',
+                                tabBarItemStyle: {display: "none"},
+                                headerShown: false,
                             }
                         }
                     />

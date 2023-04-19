@@ -1,20 +1,23 @@
 ToDo:
 
-
 - Backlog:
-    - Obtenir totes les stories que no estan a un sprint (userStory.milestone = null) --DONE
-        - Mostrar dades de cada story i poder editar-la (subject, status, points, etc.) --WIP
-
-    - Per cada sprint (get all milestones):
-        - Mostrar oberts (closed=false):
-            - Obtenir totes les histories d'usuari obertes d'un sprint
-    - Pensar com mostrar sprints, volem scroll horitzontal o vertical?
+    - Fix edit user story (fucking version)
+    - Mostrar dades de cada story --DONE
+        - poder editar-la (subject, status, points, etc.) --WIP
 
 
-- Reload user stories on add
-- Assign to any team member on add
-- Crear tasca (assignar a algun team member)
-    - Crear tasca bulk
-    - Clicar a una tasca per veure-la i assignar-la o editar-la
+- Sprint:
+    - Fer pagina sprint on es mostri:
+        - A l'esquerra, les histories d'usuari en una columna.
+        - Per cada una de les histories de usuari, una row amb les tasques.
+        - Les tasques estaran agrupades per status
+        - Good Luck
+
+    - Crear tasca (assignar a algun team member)
+        - Crear tasca bulk
+        - Clicar a una tasca per veure-la i assignar-la o editar-la
+
+- Reload user stories on add -- DONE? Revise
+
+- Els botons de gestio nomes han de sortir si ets admin del projecte (!important)
 - Afegir feedback a totes les accions per al user
-- Els botons de gestio nomes han de sortir si ets admin del projecte

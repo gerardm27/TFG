@@ -119,7 +119,7 @@ const EditStoryModal = ({visible, setVisible, userStory}) => {
             setStatus(userStory.status);
         }
         setHasError(false);
-        const userStory = {
+        const newUserStory = {
             subject: subject,
             description: description,
             points: points,
@@ -127,7 +127,7 @@ const EditStoryModal = ({visible, setVisible, userStory}) => {
             status: status
         }
 
-        await editUserStory(userStory);
+        await editUserStory(userStory.id, newUserStory);
         setVisible(false);
     }
 

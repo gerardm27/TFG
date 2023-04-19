@@ -73,5 +73,11 @@
   "project.front": "Front",
   "project.back": "Back",
   "project.total": "Total",
-  "project.saveAndCreateNew": "Guardar i crear"
+  "project.saveAndCreateNew": "Guardar i crear",
+  "project.editStory": "Editar historia",
+  "project.editStorySubtitle": "Canvia només els camps que vulguis actualitzar.",
+  "project.sprintChoose": "Escull sprint",
+  "project.sprintChooseSubtitle": "Navega al sprint i gestiona les tasques.",
+  "project.noSprints": "No hi ha sprints disponibles.",
+  "sprint.closed": "Tancat"
 }

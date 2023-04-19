@@ -73,5 +73,11 @@
   "project.front": "Front",
   "project.back": "Back",
   "project.total": "Total",
-  "project.saveAndCreateNew": "Guardar y crear"
+  "project.saveAndCreateNew": "Guardar y crear",
+  "project.editStory": "Editar historia",
+  "project.editStorySubtitle": "Cambia sólo los campos que quieras actualizar.",
+  "project.sprintChoose": "Escoge sprint",
+  "project.sprintChooseSubtitle": "Navega a ese sprint y gestiona las tareas.",
+  "project.noSprints": "No hay sprints disponibles.",
+  "sprint.closed": "Cerrado"
 }

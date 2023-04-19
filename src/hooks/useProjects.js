@@ -253,6 +253,28 @@ const useProjects = () => {
         return(data);
     }
 
+    const editUserStory = async (userStoryId, userStory) => {
+        const token = await getAuth().auth_token;
+        axios.headers = {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }
+        const response = await axios.patch(`${API_HOST}/userstories/${userStoryId}`, userStory);
+        if (response.status == 401) {
+            signOut();
+        }
+        return response.data;
+    }
+
+    const getSprints = async (project_id) => {
+        const response = await axios.get(`${API_HOST}/milestones?project=${project_id}`);
+        if (response.status == 401) {
+            signOut();
+        }
+        const data = response.data;
+        return(data);
+    }
+    
     return { 
         getAllProjects, 
         getProjectBySlug, 
@@ -275,6 +297,8 @@ const useProjects = () => {
         createUserStory,
         getProjectPoints,
         getUserStory,
+        editUserStory,
+        getSprints
     };
 }
 

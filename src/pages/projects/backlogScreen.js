@@ -6,6 +6,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 import CreateUserStoryModal from './projectComponents/createUserStoryModal.js';
 import CreateBulkUserStoryModal from './projectComponents/createBulkUserStoryModal.js';
 import UserStoryModal from './projectComponents/userStoryModal';
+import SprintChooseModal from './projectComponents/sprintChooseModal';
 import { useTranslation } from "react-i18next";
 
 function BacklogScreen({navigation, route}) {
@@ -27,7 +28,7 @@ function BacklogScreen({navigation, route}) {
 
     const [createModalVisible,setCreateModalVisible] = useState(false);
     const [createBulkModalVisible, setCreateBulkModalVisible] = useState(false);
-
+    const [sprintChooseModalVisible, setSprintChooseModalVisible] = useState(false);
     
 
     const generateUserStoryList = (backlogUserStories) => {
@@ -109,9 +110,9 @@ function BacklogScreen({navigation, route}) {
                         </View>
                         <View style={backlogScreenStyles.goToKanbanContainer}>
                             <TouchableOpacity style={backlogScreenStyles.goToKanbanButton}
-                                onPress={() => navigation.navigate("Kanban", {project: project})}
+                                onPress={() => setSprintChooseModalVisible(true)}
                             >
-                                <Text style={backlogScreenStyles.goToKanbanButtonText}>{t('project.kanbanView')}</Text>
+                                <Text style={backlogScreenStyles.goToKanbanButtonText}>{t('project.sprintChoose')}</Text>
                             </TouchableOpacity>
                         </View>
                     </View>
@@ -154,6 +155,12 @@ function BacklogScreen({navigation, route}) {
                         :
                         null
                     }
+                    <SprintChooseModal
+                        visible={sprintChooseModalVisible}
+                        setVisible={setSprintChooseModalVisible}
+                        project_id={project.id}
+                        navigation={navigation}
+                    />
                 </ScrollView>
                 :
                 <Text>Loading your projects...</Text>
