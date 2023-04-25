@@ -275,6 +275,15 @@ const useProjects = () => {
         return(data);
     }
     
+    const getTasksByUserStory = async (userStoryId) => {
+        const response = await axios.get(`${API_HOST}/tasks?user_story=${userStoryId}`);
+        if (response.status == 401) {
+            signOut();
+        }
+        const data = response.data;
+        return(data);
+    }
+    
     return { 
         getAllProjects, 
         getProjectBySlug, 
@@ -298,7 +307,8 @@ const useProjects = () => {
         getProjectPoints,
         getUserStory,
         editUserStory,
-        getSprints
+        getSprints,
+        getTasksByUserStory,
     };
 }
 

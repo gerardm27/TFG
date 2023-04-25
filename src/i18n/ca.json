@@ -79,5 +79,7 @@
   "project.sprintChoose": "Escull sprint",
   "project.sprintChooseSubtitle": "Navega al sprint i gestiona les tasques.",
   "project.noSprints": "No hi ha sprints disponibles.",
-  "sprint.closed": "Tancat"
+  "sprint.closed": "Tancat",
+  "sprint.userStories": "Històries d'usuari",
+  "sprint.noInfo": "No hi ha informació disponible."
 }

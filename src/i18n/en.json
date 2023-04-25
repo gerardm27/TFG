@@ -79,5 +79,7 @@
   "project.sprintChoose": "Choose a sprint",
   "project.sprintChooseSubtitle": "Navigate to that sprint to manage the tasks.",
   "project.noSprints": "There are no sprints available.",
-  "sprint.closed": "Closed"
+  "sprint.closed": "Closed",
+  "sprint.userStories": "User Stories",
+  "sprint.noInfo": "No information available."
 }

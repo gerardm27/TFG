@@ -8,14 +8,14 @@ ToDo:
 
 - Sprint:
     - Fer pagina sprint on es mostri:
-        - A l'esquerra, les histories d'usuari en una columna.
-        - Per cada una de les histories de usuari, una row amb les tasques.
-        - Les tasques estaran agrupades per status
-        - Good Luck
-
+        - A l'esquerra, les histories d'usuari en una columna. --DONE
+        - Per cada una de les histories de usuari, una row amb les tasques. --DONE
+        - Les tasques estaran agrupades per status --DONE
+        - Clicar a una tasca per veure-la i assignar-la o editar-la
+        - Clicar Change Status per canviar status - WIP
+        
     - Crear tasca (assignar a algun team member)
         - Crear tasca bulk
-        - Clicar a una tasca per veure-la i assignar-la o editar-la
 
 - Reload user stories on add -- DONE? Revise
 

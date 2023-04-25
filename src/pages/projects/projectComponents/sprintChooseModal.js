@@ -15,7 +15,6 @@ const SprintChooseModal = ({ navigation, visible, setVisible, project_id}) => {
         const fetchSprints = async () => {
             const _sprints = await getSprints(project_id);
             setSprints(_sprints);
-            console.log(_sprints);
         }
         fetchSprints();
     }

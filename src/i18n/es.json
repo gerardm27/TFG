@@ -79,5 +79,7 @@
   "project.sprintChoose": "Escoge sprint",
   "project.sprintChooseSubtitle": "Navega a ese sprint y gestiona las tareas.",
   "project.noSprints": "No hay sprints disponibles.",
-  "sprint.closed": "Cerrado"
+  "sprint.closed": "Cerrado",
+  "sprint.userStories": "Historias de usuario",
+  "sprint.noInfo": "No hay información disponible."
 }
