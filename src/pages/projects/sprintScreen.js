@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, Modal, TouchableOpacity, Image } from 'react-na
 import { ScrollView } from 'react-native-gesture-handler';
 import { useTranslation } from 'react-i18next';
 import useProjects from '../../hooks/useProjects';
+import ChangeTaskStatusModal from './projectComponents/changeTaskStatusModal';
 
 function SprintScreen({navigation, route}) {
     const { t } = useTranslation();
@@ -14,6 +15,9 @@ function SprintScreen({navigation, route}) {
     const [statusColors, setStatusColors] = useState([]);
     const [statusIds, setStatusIds] = useState([]);
     
+    const [selectedTask, setSelectedTask] = useState(null);
+    const [changeStatusModalVisible, setChangeStatusModalVisible] = useState(false);
+
     const {getUserStory, getTasksByUserStory, getAllTasksStatus} = useProjects();
     
     const fetchUserStoriesAndTasks = async () => {
@@ -49,6 +53,11 @@ function SprintScreen({navigation, route}) {
         fetchStatuses();
     }, []);
     
+    const activateModal = (task) => {
+        setSelectedTask(task);
+        setChangeStatusModalVisible(true);
+    }
+
     const generateUserStoryBoard = (userStories) => {
         if(!tasks || !userStories || tasks == undefined || userStories == undefined) return null;
       
@@ -70,11 +79,12 @@ function SprintScreen({navigation, route}) {
                                     <View key={task.id} style={[sprintStyles.task, {backgroundColor: statusColors[index]}]}>
                                         <Text style={sprintStyles.taskName}>#{task.ref}  Crear metodo en notificationservice para listar las notificaciones filtradas por usuario de forma paginada{task.subject}</Text>
                                         <TouchableOpacity
-                                            onPress={() => console.log('Opening modal for task.')}
+                                            onPress={() => activateModal(task)}
                                         >
                                             <Text style={sprintStyles.taskChangeStatus}>Change Status</Text>
                                         </TouchableOpacity>
                                     </View>
+                                    
                                 :
                                 null
                             ))}                                    
@@ -102,6 +112,14 @@ function SprintScreen({navigation, route}) {
                         :
                         <Text>{t("sprint.noUserStories")}</Text>}
                     </ScrollView>
+                    <ChangeTaskStatusModal
+                        visible={changeStatusModalVisible}
+                        setVisible={setChangeStatusModalVisible}
+                        task={selectedTask}
+                        statuses={statuses}
+                        statusColors={statusColors}
+                        statusIds={statusIds}
+                    />
                 </View>
                 :
                 <Text>{t("sprint.noInfo")}</Text>

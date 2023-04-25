@@ -81,5 +81,7 @@
   "project.noSprints": "There are no sprints available.",
   "sprint.closed": "Closed",
   "sprint.userStories": "User Stories",
-  "sprint.noInfo": "No information available."
+  "sprint.noInfo": "No information available.",
+  "sprint.changeTaskStatus": "Change the task status",
+  "sprint.changeTaskStatusSubtitle": "Simply click on the new status you want assigned."
 }

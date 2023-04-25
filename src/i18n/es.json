@@ -81,5 +81,7 @@
   "project.noSprints": "No hay sprints disponibles.",
   "sprint.closed": "Cerrado",
   "sprint.userStories": "Historias de usuario",
-  "sprint.noInfo": "No hay información disponible."
+  "sprint.noInfo": "No hay información disponible.",
+  "sprint.changeTaskStatus": "Cambia el estado de la tarea",
+  "sprint.changeTaskStatusSubtitle": "Simplemente clica en el nuevo estado que quieras asignar."
 }

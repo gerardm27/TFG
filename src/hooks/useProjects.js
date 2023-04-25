@@ -103,17 +103,20 @@ const useProjects = () => {
     }
 
     const updateTaskStatus = async (taskId, version, newStatus) => {
-        const token = await getAuth().auth_tokenL;
+        console.log("updateTaskStatus");
+        console.log(taskId, version, newStatus);
+
+        const token = await getAuth().auth_token;
         axios.headers = {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`
         }
+        console.log(`${API_HOST}/tasks/${taskId}`);
         const response = await axios.patch(`${API_HOST}/tasks/${taskId}`, {
-            status_extra_info: {
-                name: newStatus
-            },
+            "status": newStatus,
             "version": version
         });
+        console.log(response);
         if (response.status == 401) {
             signOut();
         }

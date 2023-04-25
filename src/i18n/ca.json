@@ -81,5 +81,7 @@
   "project.noSprints": "No hi ha sprints disponibles.",
   "sprint.closed": "Tancat",
   "sprint.userStories": "Històries d'usuari",
-  "sprint.noInfo": "No hi ha informació disponible."
+  "sprint.noInfo": "No hi ha informació disponible.",
+  "sprint.changeTaskStatus": "Canvia l'estat de la tasca",
+  "sprint.changeTaskStatusSubtitle": "Simplement clica el nou estat que vulguis assignar."
 }
