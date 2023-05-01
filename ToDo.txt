@@ -3,21 +3,25 @@ ToDo:
 - Backlog:
     - Fix edit user story (fucking version)
     - Mostrar dades de cada story --DONE
-        - poder editar-la (subject, status, points, etc.) --WIP
-
+        - poder editar-la (subject, status, points, etc.) --WIP points
 
 - Sprint:
     - Fer pagina sprint on es mostri:
         - A l'esquerra, les histories d'usuari en una columna. --DONE
         - Per cada una de les histories de usuari, una row amb les tasques. --DONE
         - Les tasques estaran agrupades per status --DONE
-        - Clicar a una tasca per veure-la i assignar-la o editar-la
-        - Clicar Change Status per canviar status - WIP
+        - Clicar Change Status per canviar status - DONE
+        - Clicar a una tasca per veure-la i assignar-la o editar-la 
+        - For some reason change status modal pops up randomly
         
     - Crear tasca (assignar a algun team member)
         - Crear tasca bulk
 
+    - Show storyless tasks
+    - Create storyless tasks
+
 - Reload user stories on add -- DONE? Revise
 
 - Els botons de gestio nomes han de sortir si ets admin del projecte (!important)
+- Token decyphering (!important)
 - Afegir feedback a totes les accions per al user

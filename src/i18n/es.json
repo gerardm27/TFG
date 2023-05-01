@@ -83,5 +83,8 @@
   "sprint.userStories": "Historias de usuario",
   "sprint.noInfo": "No hay información disponible.",
   "sprint.changeTaskStatus": "Cambia el estado de la tarea",
-  "sprint.changeTaskStatusSubtitle": "Simplemente clica en el nuevo estado que quieras asignar."
+  "sprint.changeTaskStatusSubtitle": "Simplemente clica en el nuevo estado que quieras asignar.",
+  "sprint.createTask": "Crea una nueva tarea",
+  "sprint.createBulkTask": "Añade múltiples tareas",
+  "sprint.multipleLineTask": "Añade las tareas linea por linea."
 }

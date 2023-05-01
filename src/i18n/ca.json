@@ -83,5 +83,8 @@
   "sprint.userStories": "Històries d'usuari",
   "sprint.noInfo": "No hi ha informació disponible.",
   "sprint.changeTaskStatus": "Canvia l'estat de la tasca",
-  "sprint.changeTaskStatusSubtitle": "Simplement clica el nou estat que vulguis assignar."
+  "sprint.changeTaskStatusSubtitle": "Simplement clica el nou estat que vulguis assignar.",
+  "sprint.createTask": "Crea una nova tasca",
+  "sprint.createBulkTask": "Afegeix múltiples tasques",
+  "sprint.multipleLineTask": "Afegeix les tasques línia per línia."
 }

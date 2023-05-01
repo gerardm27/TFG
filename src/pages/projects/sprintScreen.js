@@ -4,6 +4,8 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { useTranslation } from 'react-i18next';
 import useProjects from '../../hooks/useProjects';
 import ChangeTaskStatusModal from './projectComponents/changeTaskStatusModal';
+import CreateTaskModal from './projectComponents/createTaskModal';
+import CreateBulkTaskModal from './projectComponents/createBulkTaskModal';
 
 function SprintScreen({navigation, route}) {
     const { t } = useTranslation();
@@ -16,7 +18,11 @@ function SprintScreen({navigation, route}) {
     const [statusIds, setStatusIds] = useState([]);
     
     const [selectedTask, setSelectedTask] = useState(null);
+    const [selectedUserStory, setSelectedUserStory] = useState(null);
+
     const [changeStatusModalVisible, setChangeStatusModalVisible] = useState(false);
+    const [createTaskModalVisible, setCreateTaskModalVisible] = useState(false);
+    const [createBulkTaskModalVisible, setCreateBulkTaskModalVisible] = useState(false);
 
     const {getUserStory, getTasksByUserStory, getAllTasksStatus} = useProjects();
     
@@ -49,13 +55,31 @@ function SprintScreen({navigation, route}) {
     }
     
     useEffect(() => {
-        fetchUserStoriesAndTasks();
-        fetchStatuses();
+        const fetchDataAsync = async () => {
+            await fetchUserStoriesAndTasks();
+            await fetchStatuses();
+        }
+        fetchDataAsync();
     }, []);
     
     const activateModal = (task) => {
         setSelectedTask(task);
         setChangeStatusModalVisible(true);
+    }
+
+    activateCreateTaskModal = (userStory) => {
+        setSelectedUserStory(userStory);
+        setCreateTaskModalVisible(true);
+    }
+
+    activateCreateBulkTaskModal = (userStory) => {
+        setSelectedUserStory(userStory);
+        setCreateBulkTaskModalVisible(true);
+    }
+
+     const generateStoryBoardAux = async () => {
+        await fetchUserStoriesAndTasks();
+        generateUserStoryBoard(userStories);
     }
 
     const generateUserStoryBoard = (userStories) => {
@@ -66,7 +90,19 @@ function SprintScreen({navigation, route}) {
           const userStoryTasks = tasks.filter((task) => task.user_story == userStory.id);
           components.push(
             <ScrollView horizontal key={userStory.id} contentContainerStyle={sprintStyles.userStoryContainer}>
-                <Text style={sprintStyles.userStoryName}>#{userStory.ref} {userStory.subject}</Text>
+                <View style={sprintStyles.titleAndButtonsContainer}>
+                    <Text style={sprintStyles.userStoryName}>#{userStory.ref} {userStory.subject}</Text>
+                    <TouchableOpacity
+                        onPress={() => activateCreateTaskModal(userStory)}
+                    >
+                        <Text style={sprintStyles.createTaskButton}>Create Task</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        onPress={() => activateCreateBulkTaskModal(userStory)}
+                    >
+                        <Text style={sprintStyles.createBulkTaskButton}>Create Bulk Task</Text>
+                    </TouchableOpacity>
+                </View>
                 <ScrollView contentContainerStyle={sprintStyles.userStoriesList}>
                     {statuses.map((status, index) => (
                         <View key={index} style={sprintStyles.taskContainer}>
@@ -84,7 +120,6 @@ function SprintScreen({navigation, route}) {
                                             <Text style={sprintStyles.taskChangeStatus}>Change Status</Text>
                                         </TouchableOpacity>
                                     </View>
-                                    
                                 :
                                 null
                             ))}                                    
@@ -119,6 +154,19 @@ function SprintScreen({navigation, route}) {
                         statuses={statuses}
                         statusColors={statusColors}
                         statusIds={statusIds}
+                        generateStoryBoard={generateStoryBoardAux}
+                    />
+                    <CreateTaskModal
+                        visible={createTaskModalVisible}
+                        setVisible={setCreateTaskModalVisible}
+                        userStory={selectedUserStory}
+                        generateStoryBoard={generateStoryBoardAux}
+                    />
+                    <CreateBulkTaskModal
+                        visible={createBulkTaskModalVisible}
+                        setVisible={setCreateBulkTaskModalVisible}
+                        userStory={selectedUserStory}
+                        generateStoryBoard={generateStoryBoardAux}
                     />
                 </View>
                 :
@@ -183,9 +231,16 @@ const sprintStyles = StyleSheet.create({
         alignItems: "center",
         marginBottom: 20,
     },
+    titleAndButtonsContainer: {
+        width: "100%",
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "flex-start",
+        alignItems: "center",
+        marginBottom: 10,
+    },
     userStoryName: {
         alignSelf: "flex-start",
-        marginLeft: 20,
         fontSize: 16,
         fontWeight: "bold",
         marginBottom: 10
@@ -232,8 +287,27 @@ const sprintStyles = StyleSheet.create({
         backgroundColor: "#3f51b5",
         padding: 5,
         borderRadius: 5
-    }
-
+    },
+    createTaskButton: {
+        fontSize: 16,
+        fontWeight: "bold",
+        color: "#fff",
+        backgroundColor: "#3f51b5",
+        padding: 5,
+        borderRadius: 5,
+        marginBottom: 10,
+        marginLeft: 10
+    },
+    createBulkTaskButton: {
+        fontSize: 16,
+        fontWeight: "bold",
+        color: "#fff",
+        backgroundColor: "#3f51b5",
+        padding: 5,
+        borderRadius: 5,
+        marginBottom: 10,
+        marginLeft: 10
+    },
 
 
 

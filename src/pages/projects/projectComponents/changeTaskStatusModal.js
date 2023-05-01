@@ -4,16 +4,16 @@ import { useTranslation } from "react-i18next";
 import useProjects from '../../../hooks/useProjects';
 
 
-const ChangeTaskStatusModal = ({ task, visible, setVisible, statuses, statusColors, statusIds }) => {
+const ChangeTaskStatusModal = ({ task, visible, setVisible, statuses, statusColors, statusIds, generateStoryBoard }) => {
     const { t } = useTranslation();
 
     const { updateTaskStatus } = useProjects();
 
     const changeTaskStatus = async (index) => {
         if (index != null) {
-            console.log("Changing task status to: " + statuses[index] + " of task: " + task.subject)
-            const version = task.version + 1;
+            const version = task.version;
             await updateTaskStatus(task.id, version, statusIds[index]);
+            generateStoryBoard();
             setVisible(false);
         }
     }

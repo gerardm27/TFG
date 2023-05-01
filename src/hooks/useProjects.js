@@ -238,6 +238,23 @@ const useProjects = () => {
         return response.data;
     }
 
+    const createTask = async (task) => {
+        console.log('----------------------------------------------')
+        console.log(task);
+        console.log('----------------------------------------------')
+        const token = await getAuth().auth_token;
+        axios.headers = {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }
+        const response = await axios.post(`${API_HOST}/tasks`, task);
+        if (response.status == 401) {
+            signOut();
+        }
+        console.log(response);
+        return response.data;
+    }
+
     const getProjectPoints = async (project_id) => {
         const response = await axios.get(`${API_HOST}/points?project=${project_id}`);
         if (response.status == 401) {
@@ -312,6 +329,7 @@ const useProjects = () => {
         editUserStory,
         getSprints,
         getTasksByUserStory,
+        createTask
     };
 }
 
