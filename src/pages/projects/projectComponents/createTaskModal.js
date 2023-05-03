@@ -7,7 +7,9 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import useAuth from '../../../hooks/useAuth';
 
 const createTaskModal = ({visible, setVisible, userStory, generateStoryBoard}) => {
-    
+    if (userStory == null) {
+        return null;
+    }
     const { t } = useTranslation();
     const [subject, setSubject] = useState('');
     const [description, setDescription] = useState('');
@@ -27,21 +29,23 @@ const createTaskModal = ({visible, setVisible, userStory, generateStoryBoard}) =
     const {getAuth} = useAuth();
     
     useEffect(() => {
-        const fetchStatuses = async () => {
-            const statuses = await getAllTasksStatus(userStory.project);
-            setStatuses(statuses);
+        try {
+            const fetchStatuses = async () => {
+                const _statuses = await getAllTasksStatus(userStory?.project);
+                setStatuses(_statuses);
+            }
+            const fetchMembers = async () => {
+                const members = await getProjectMembers(userStory?.project);
+                setMembers(members);
+            }
+            fetchStatuses();
+            fetchMembers();
+        } catch (error) {
+            console.log("Error fetching data: ", error);
         }
-        fetchStatuses();
     }
     , []);
 
-    useEffect(() => {
-        const fetchMembers = async () => {
-            const members = await getProjectMembers(userStory.project);
-            setMembers(members);
-        }
-        fetchMembers();
-    }, []);
 
     const newTask = async () => {
         if (subject == '') {
@@ -50,11 +54,10 @@ const createTaskModal = ({visible, setVisible, userStory, generateStoryBoard}) =
         }
         setHasError(false);
         const auth = await getAuth();
-        console.log(assignedMember);
         const task = {
             subject: subject,
-            project: userStory.project,
-            user_story: userStory.id,
+            project: userStory?.project,
+            user_story: userStory?.id,
             description: description,
             status: status,
             //assigned_to: assignedMember,
@@ -80,7 +83,7 @@ const createTaskModal = ({visible, setVisible, userStory, generateStoryBoard}) =
                     </View>
                     <View style={createTaskStyles.descriptionInputContainer}>
                         <Text style={createTaskStyles.modalText}>{t("project.description")}</Text>
-                        <TextInput style={createTaskStyles.descriptionInput} onChangeText={text => setDescription(text)}></TextInput>
+                        <TextInput multiline style={createTaskStyles.descriptionInput} onChangeText={text => setDescription(text)}></TextInput>
                     </View>
                     <View style={createTaskStyles.statusInputContainer}>
                         <Text style={createTaskStyles.modalText}>{t("project.status")}</Text>
@@ -90,7 +93,7 @@ const createTaskModal = ({visible, setVisible, userStory, generateStoryBoard}) =
                             }
                             )}
                             defaultValue={status}
-                            containerStyle={{height: 40}}
+                            containerStyle={{height: 40, zIndex: 100}}
                             style={createTaskStyles.statusInput}
                             itemStyle={createTaskStyles.statusInputItem}
                             open={open}
@@ -107,7 +110,7 @@ const createTaskModal = ({visible, setVisible, userStory, generateStoryBoard}) =
                                 return {label: member.full_name, value: member.id}
                             }
                             )}
-                            containerStyle={{height: 40}}
+                            containerStyle={{height: 40, zIndex: 100}}
                             style={createTaskStyles.memberInput}
                             itemStyle={createTaskStyles.memberInputItem}
                             open={openMember}
@@ -167,9 +170,14 @@ const createTaskStyles = StyleSheet.create({
         padding: 5
     },
     descriptionInputContainer: {
-        marginBottom: 10
+        display: 'flex',
+        flexDirection: 'column',
+        marginBottom: 10,
     },
     descriptionInput: {
+        justifyContent: "flex-start",
+        flexWrap: 'wrap',
+        textAlignVertical: 'top',
         borderWidth: 1,
         borderColor: "black",
         borderRadius: 5,
@@ -184,10 +192,12 @@ const createTaskStyles = StyleSheet.create({
         borderColor: "black",
         borderRadius: 5,
         padding: 5,
-        height: 40
+        height: 40,
+        position: 'relative'
     },  
     statusInputItem: {
-        justifyContent: "flex-start"
+        justifyContent: "flex-start",
+        zIndex: 2
     },
     assignContainer: {
         marginTop: 10,
@@ -198,10 +208,12 @@ const createTaskStyles = StyleSheet.create({
         borderColor: "black",
         borderRadius: 5,
         padding: 5,
-        height: 40
+        height: 40,
+        position: 'relative'
     },
     memberInputItem: {
-        justifyContent: "flex-start"
+        justifyContent: "flex-start",
+        zIndex: 2
     },
     buttonsContainer: {
         flexDirection: "row",

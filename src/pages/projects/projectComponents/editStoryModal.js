@@ -35,7 +35,7 @@ const EditStoryModal = ({visible, setVisible, userStory}) => {
 
     useEffect(() => {
         const fetchMembers = async () => {
-            const _members = await getProjectMembers(userStory.project);
+            const _members = await getProjectMembers(userStory?.project);
             setMembers(_members);
         }
         fetchMembers();
@@ -48,7 +48,7 @@ const EditStoryModal = ({visible, setVisible, userStory}) => {
         setAssignedMember(userStory.assigned_user);
         setStatus(userStory.status);
         const fetchStatuses = async () => {
-            const statuses = await getAllUserStoriesStatus(userStory.project);
+            const statuses = await getAllUserStoriesStatus(userStory?.project);
             setStatuses(statuses);
         }
         setPointsIds(Object.values(userStory.points))
@@ -58,7 +58,7 @@ const EditStoryModal = ({visible, setVisible, userStory}) => {
 
     useEffect(() => {
         const fetchProjectMembers = async () => {
-            const projectMembers = await getProjectMembers(userStory.project);
+            const projectMembers = await getProjectMembers(userStory?.project);
             setProjectUserIds(projectMembers.map(member => member.id));
             setProjectUserNames(projectMembers.map(member => member.username));
         }

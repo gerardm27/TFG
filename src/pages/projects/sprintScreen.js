@@ -3,9 +3,12 @@ import { View, Text, StyleSheet, Modal, TouchableOpacity, Image } from 'react-na
 import { ScrollView } from 'react-native-gesture-handler';
 import { useTranslation } from 'react-i18next';
 import useProjects from '../../hooks/useProjects';
+import useUser from '../../hooks/useUser';
 import ChangeTaskStatusModal from './projectComponents/changeTaskStatusModal';
 import CreateTaskModal from './projectComponents/createTaskModal';
 import CreateBulkTaskModal from './projectComponents/createBulkTaskModal';
+import EditTaskModal from './projectComponents/editTaskModal';
+import ChangeTaskAssignedModal from './projectComponents/changeTaskAssignedModal';
 
 function SprintScreen({navigation, route}) {
     const { t } = useTranslation();
@@ -23,41 +26,62 @@ function SprintScreen({navigation, route}) {
     const [changeStatusModalVisible, setChangeStatusModalVisible] = useState(false);
     const [createTaskModalVisible, setCreateTaskModalVisible] = useState(false);
     const [createBulkTaskModalVisible, setCreateBulkTaskModalVisible] = useState(false);
+    const [changeAssignedModalVisible, setChangeAssignedModalVisible] = useState(false);
+    const [taskModalVisible, setTaskModalVisible] = useState(false);
 
     const {getUserStory, getTasksByUserStory, getAllTasksStatus} = useProjects();
     
+    const {getUser} = useUser();
+
     const fetchUserStoriesAndTasks = async () => {
-        const _userStories = []
-        const _tasks = []
+        const _userStories = [];
+        const _tasks = [];
         for (let i = 0; i < sprint.user_stories.length; i++) {
-            const userStory = await getUserStory(sprint.user_stories[i].id);
-            const tasks = await getTasksByUserStory(sprint.user_stories[i].id);
-            _userStories.push(userStory);
-            _tasks.push(...tasks);
+            try {
+                const userStory = await getUserStory(sprint.user_stories[i].id);
+                
+                const tasks = await getTasksByUserStory(sprint.user_stories[i].id);
+                
+                if (i == 0){
+                    setSelectedUserStory(userStory);
+                    setSelectedTask(tasks[0]);
+                }
+                _userStories.push(userStory);
+                _tasks.push(...tasks);
+            } catch (error) {
+                console.error(`Error fetching data for user story ${sprint.user_stories[i].id}:`, error);
+            }
         }
         setUserStories(_userStories);
         setTasks(_tasks);
-    }
+    };
 
     const fetchStatuses = async () => {
-        const storyStatuses = await getAllTasksStatus(sprint.user_stories[0].project)
-        const tempStatuses = []
-        const tempStatusColors = []
-        const tempStatusIds = []
+    try {
+        const storyStatuses = await getAllTasksStatus(sprint.user_stories[0].project);
+        const tempStatuses = [];
+        const tempStatusColors = [];
+        const tempStatusIds = [];
         storyStatuses.forEach(status => {
-            tempStatuses.push(status.name)
-            tempStatusColors.push(status.color)
-            tempStatusIds.push(status.id)
-        })
-        setStatuses(tempStatuses)
-        setStatusColors(tempStatusColors)
-        setStatusIds(tempStatusIds)
+            tempStatuses.push(status.name);
+            tempStatusColors.push(status.color);
+            tempStatusIds.push(status.id);
+        });
+        setStatuses(tempStatuses);
+        setStatusColors(tempStatusColors);
+        setStatusIds(tempStatusIds);
+    } catch (error) {
+        console.error('Error fetching statuses:', error);
     }
+    };
+    
     
     useEffect(() => {
         const fetchDataAsync = async () => {
-            await fetchUserStoriesAndTasks();
-            await fetchStatuses();
+            await Promise.all([
+                fetchUserStoriesAndTasks(),
+                fetchStatuses()
+            ])
         }
         fetchDataAsync();
     }, []);
@@ -67,20 +91,37 @@ function SprintScreen({navigation, route}) {
         setChangeStatusModalVisible(true);
     }
 
-    activateCreateTaskModal = (userStory) => {
+    const activateCreateTaskModal = (userStory) => {
         setSelectedUserStory(userStory);
         setCreateTaskModalVisible(true);
     }
 
-    activateCreateBulkTaskModal = (userStory) => {
+    const activateCreateBulkTaskModal = (userStory) => {
         setSelectedUserStory(userStory);
         setCreateBulkTaskModalVisible(true);
     }
 
-     const generateStoryBoardAux = async () => {
-        await fetchUserStoriesAndTasks();
-        generateUserStoryBoard(userStories);
+    const activateModalChangeAssigned = (task) => {
+        setSelectedTask(task);
+        setChangeAssignedModalVisible(true);
     }
+
+     const generateStoryBoardAux = async () => {
+        try{
+            await fetchUserStoriesAndTasks();
+            generateUserStoryBoard(userStories);
+        }
+        catch(error){
+            console.error('Error fetching data:', error);
+        }
+    }
+
+
+    const getSourceImage = async (task) => {
+        const user = await getUser(task.assigned_to);
+        return {uri: user.photo};
+    }
+
 
     const generateUserStoryBoard = (userStories) => {
         if(!tasks || !userStories || tasks == undefined || userStories == undefined) return null;
@@ -109,17 +150,32 @@ function SprintScreen({navigation, route}) {
                             <Text style={sprintStyles.statusName}>{status}</Text>
                             {/* {userStoryTasks.map((task) => (
                                 console.log(task.status, statusIds[index], task.status == statusIds[index])
+
+                                Crear metodo en notificationservice para listar las notificaciones filtradas por usuario de forma paginada
+
                             ))} */}
                             {userStoryTasks.map((task) => (
                                 task.status == statusIds[index]?
-                                    <View key={task.id} style={[sprintStyles.task, {backgroundColor: statusColors[index]}]}>
-                                        <Text style={sprintStyles.taskName}>#{task.ref}  Crear metodo en notificationservice para listar las notificaciones filtradas por usuario de forma paginada{task.subject}</Text>
-                                        <TouchableOpacity
-                                            onPress={() => activateModal(task)}
-                                        >
-                                            <Text style={sprintStyles.taskChangeStatus}>Change Status</Text>
-                                        </TouchableOpacity>
-                                    </View>
+                                    <TouchableOpacity 
+                                        onPress={() => {
+                                            setSelectedTask(task);
+                                            setTaskModalVisible(true);
+                                        }}
+                                        key={task.id} style={[sprintStyles.task, {backgroundColor: statusColors[index]}]}>
+                                        <Text style={sprintStyles.taskName}>#{task.ref} {task.subject}</Text>
+                                        <View style={sprintStyles.taskButtonContainer}> 
+                                            <TouchableOpacity
+                                                onPress={() => activateModal(task)}
+                                            >
+                                                <Text style={sprintStyles.taskChangeStatus}>Change Status</Text>
+                                            </TouchableOpacity>
+                                            <TouchableOpacity
+                                                onPress={() => activateModalChangeAssigned(task)}
+                                            >
+                                                <Image style={sprintStyles.profileImageIcon} source={task.assigned_to == null ? require("../../../assets/images/defaultProfile.png") : getSourceImage(task)}></Image>
+                                            </TouchableOpacity>
+                                        </View>
+                                    </TouchableOpacity>
                                 :
                                 null
                             ))}                                    
@@ -154,6 +210,12 @@ function SprintScreen({navigation, route}) {
                         statuses={statuses}
                         statusColors={statusColors}
                         statusIds={statusIds}
+                        generateStoryBoard={generateStoryBoardAux}
+                    />
+                    <ChangeTaskAssignedModal
+                        visible={changeAssignedModalVisible}
+                        setVisible={setChangeAssignedModalVisible}
+                        task={selectedTask}
                         generateStoryBoard={generateStoryBoardAux}
                     />
                     <CreateTaskModal
@@ -280,8 +342,16 @@ const sprintStyles = StyleSheet.create({
         fontWeight: "bold",
         marginBottom: 10
     },
+    taskButtonContainer: {
+        width: "100%",
+        display: "flex",
+        flexWrap: "wrap",
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center",
+    },
     taskChangeStatus: {
-        fontSize: 16,
+        fontSize: 12,
         fontWeight: "bold",
         color: "#fff",
         backgroundColor: "#3f51b5",
@@ -308,6 +378,14 @@ const sprintStyles = StyleSheet.create({
         marginBottom: 10,
         marginLeft: 10
     },
+    profileImageIcon: {
+        width: 35,
+        height: 35,
+        borderRadius: 50,
+        borderColor: "#3f51b5",
+        borderWidth: 1,
+        backgroundColor: "#fff"
+    }
 
 
 

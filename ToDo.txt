@@ -10,18 +10,19 @@ ToDo:
         - A l'esquerra, les histories d'usuari en una columna. --DONE
         - Per cada una de les histories de usuari, una row amb les tasques. --DONE
         - Les tasques estaran agrupades per status --DONE
-        - Clicar Change Status per canviar status - DONE
-        - Clicar a una tasca per veure-la i assignar-la o editar-la 
-        - For some reason change status modal pops up randomly
+        - Clicar Change Status per canviar status --DONE
+        - For some reason change status modal pops up randomly --DONE
+        - Mostrar icono de persona assignada a tasca, clicar per canviar (igual de agil que status)
+        - Clicar a una tasca per veure-la i assignar-la o editar-la  -- WIP Modal edit
         
-    - Crear tasca (assignar a algun team member)
-        - Crear tasca bulk
+    - Crear tasca (assignar a algun team member) --DONE
+        - Crear tasca bulk --DONE
 
     - Show storyless tasks
     - Create storyless tasks
+    - Fix totes les fotos (check gravatar integration)
 
-- Reload user stories on add -- DONE? Revise
 
 - Els botons de gestio nomes han de sortir si ets admin del projecte (!important)
 - Token decyphering (!important)
-- Afegir feedback a totes les accions per al user
+- Afegir feedback a totes les accions per al user (loading, error, success, etc.) (!important)

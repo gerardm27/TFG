@@ -19,11 +19,15 @@ const CreateBulkTaskModal = ({ visible, setVisible, userStory, generateStoryBoar
     const {getAllTasksStatus, createTask} = useProjects();
     
     useEffect(() => {
-        const fetchStatuses = async () => {
-            const statuses = await getAllTasksStatus(userStory.project);
-            setStatuses(statuses);
+        try{
+            const fetchStatuses = async () => {
+                const _statuses = await getAllTasksStatus(userStory?.project);
+                setStatuses(_statuses);
+            }
+            fetchStatuses();
+        } catch (error) {
+            console.log("Error fetching data: ", error);
         }
-        fetchStatuses();
     }
     , []);
 
@@ -38,9 +42,9 @@ const CreateBulkTaskModal = ({ visible, setVisible, userStory, generateStoryBoar
             }
             const task = {
                 subject: subject,
-                project: userStory.project,
+                project: userStory?.project,
                 status: status,
-                user_story: userStory.id,
+                user_story: userStory?.id,
             }
             createTask(task);
         });

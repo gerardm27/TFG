@@ -29,7 +29,7 @@ const UserStoryModal = ({ userStory, visible, setVisible }) => {
             if (userStory == null) {
                 return;
             }
-            await getProjectPoints(userStory.project).then((points) => {
+            await getProjectPoints(userStory?.project).then((points) => {
                 setPointsIDs(points.map((point) => point.id));
                 setPointsValues(points.map((point) => point.name));
             });

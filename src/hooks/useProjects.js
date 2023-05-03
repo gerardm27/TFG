@@ -26,6 +26,9 @@ const useProjects = () => {
         if (response.status == 401) {
             signOut();
         }
+        if (response.status == 404 || response.status == 400 || response.status == 500) {
+            console.log("Error in getProjectBySlug");
+        }
         const data = response.data;
         return(data);
     }
@@ -39,6 +42,9 @@ const useProjects = () => {
         const response = await axios.get(`${API_HOST}/projects/${project_id}`);
         if (response.status == 401) {
             signOut();
+        }
+        if (response.status == 404 || response.status == 400 || response.status == 500) {
+            console.log("Error in getProjectById");
         }
         const data = response.data;
         return(data);
@@ -55,6 +61,9 @@ const useProjects = () => {
         if (response.status == 401) {
             signOut();
         }
+        if (response.status == 404 || response.status == 400 || response.status == 500) {
+            console.log("Error in getAllUserStories")
+        }
         const data = response.data;
         return(data);
     }        
@@ -63,6 +72,9 @@ const useProjects = () => {
         const response = await axios.get(`${API_HOST}/userstory-statuses?project=${project_id}`);
         if (response.status == 401) {
             signOut();
+        }
+        if (response.status == 404 || response.status == 400 || response.status == 500) {
+            console.log("Error in getAllUserStoriesStatus")
         }
         const data = response.data;
         return(data);
@@ -81,6 +93,9 @@ const useProjects = () => {
         if (response.status == 401) {
             signOut();
         }
+        if (response.status == 404 || response.status == 400 || response.status == 500) {
+            console.log("Error in updateUserStoryStatus")
+        }
         return response.data;
     }
 
@@ -88,6 +103,9 @@ const useProjects = () => {
         const response = await axios.get(`${API_HOST}/tasks?project=${project_id}`);
         if (response.status == 401) {
             signOut();
+        }
+        if (response.status == 404 || response.status == 400 || response.status == 500) {
+            console.log("Error in getAllTasks")
         }
         const data = response.data;
         return(data);
@@ -98,27 +116,29 @@ const useProjects = () => {
         if (response.status == 401) {
             signOut();
         }
+        if (response.status == 404 || response.status == 400 || response.status == 500) {
+            console.log("Error in getAllTasksStatus")
+        }
         const data = response.data;
         return(data);
     }
 
     const updateTaskStatus = async (taskId, version, newStatus) => {
-        console.log("updateTaskStatus");
-        console.log(taskId, version, newStatus);
 
         const token = await getAuth().auth_token;
         axios.headers = {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`
         }
-        console.log(`${API_HOST}/tasks/${taskId}`);
         const response = await axios.patch(`${API_HOST}/tasks/${taskId}`, {
             "status": newStatus,
             "version": version
         });
-        console.log(response);
         if (response.status == 401) {
             signOut();
+        }
+        if (response.status == 404 || response.status == 400 || response.status == 500) {
+            console.log("Error in updateTaskStatus")
         }
         return response.data;
     }
@@ -133,6 +153,9 @@ const useProjects = () => {
         if (response.status == 401) {
             signOut();
         }
+        if (response.status == 404 || response.status == 400 || response.status == 500) {
+            console.log("Error in createProject")
+        }
         return response.data;
     }
 
@@ -145,6 +168,9 @@ const useProjects = () => {
         const response = await axios.delete(`${API_HOST}/projects/${project_id}`);
         if (response.status == 401) {
             signOut();
+        }
+        if (response.status == 404 || response.status == 400 || response.status == 500) {
+            console.log("Error in deleteProject")
         }
         return response.data;
     }
@@ -159,6 +185,9 @@ const useProjects = () => {
         if (response.status == 401) {
             signOut();
         }
+        if (response.status == 404 || response.status == 400 || response.status == 500) {
+            console.log("Error in editProject")
+        }
         return response.data;
     }
 
@@ -166,6 +195,9 @@ const useProjects = () => {
         const response = await axios.get(`${API_HOST}/memberships?project=${project_id}`);
         if (response.status == 401) {
             signOut();
+        }
+        if (response.status == 404 || response.status == 400 || response.status == 500) {
+            console.log("Error in getProjectMembers")
         }
         const data = response.data;
         return(data);
@@ -175,6 +207,9 @@ const useProjects = () => {
         const response = await axios.get(`${API_HOST}/roles?project=${project_id}`);
         if (response.status == 401) {
             signOut();
+        }
+        if (response.status == 404 || response.status == 400 || response.status == 500) {
+            console.log("Error in getProjectRoles")
         }
         const data = response.data;
         return(data);
@@ -191,6 +226,9 @@ const useProjects = () => {
         });
         if (response.status == 401) {
             signOut();
+        }
+        if (response.status == 404 || response.status == 400 || response.status == 500) {
+            console.log("Error in setMemberRole")
         }
         return response.data;
     }
@@ -209,6 +247,9 @@ const useProjects = () => {
         if (response.status == 401) {
             signOut();
         }
+        if (response.status == 404 || response.status == 400 || response.status == 500) {
+            console.log("Error in inviteMember")
+        }
         return response.data;
     }
 
@@ -221,6 +262,9 @@ const useProjects = () => {
         const response = await axios.delete(`${API_HOST}/memberships/${member_id}`);
         if (response.status == 401) {
             signOut();
+        }
+        if (response.status == 404 || response.status == 400 || response.status == 500) {
+            console.log("Error in deleteProjectMember")
         }
         return response.data;
     }
@@ -235,13 +279,13 @@ const useProjects = () => {
         if (response.status == 401) {
             signOut();
         }
+        if (response.status == 404 || response.status == 400 || response.status == 500) {
+            console.log("Error in createUserStory")
+        }
         return response.data;
     }
 
     const createTask = async (task) => {
-        console.log('----------------------------------------------')
-        console.log(task);
-        console.log('----------------------------------------------')
         const token = await getAuth().auth_token;
         axios.headers = {
             'Content-Type': 'application/json',
@@ -251,7 +295,9 @@ const useProjects = () => {
         if (response.status == 401) {
             signOut();
         }
-        console.log(response);
+        if (response.status == 404 || response.status == 400 || response.status == 500) {
+            console.log("Error in createTask")
+        }
         return response.data;
     }
 
@@ -259,6 +305,9 @@ const useProjects = () => {
         const response = await axios.get(`${API_HOST}/points?project=${project_id}`);
         if (response.status == 401) {
             signOut();
+        }
+        if (response.status == 404 || response.status == 400 || response.status == 500) {
+            console.log("Error in getProjectPoints")
         }
         const data = response.data;
         return(data);
@@ -268,6 +317,9 @@ const useProjects = () => {
         const response = await axios.get(`${API_HOST}/userstories/${userStoryId}`);
         if (response.status == 401) {
             signOut();
+        }
+        if (response.status == 404 || response.status == 400 || response.status == 500) {
+            console.log("Error in getUserStory")
         }
         const data = response.data;
         return(data);
@@ -283,6 +335,9 @@ const useProjects = () => {
         if (response.status == 401) {
             signOut();
         }
+        if (response.status == 404 || response.status == 400 || response.status == 500) {
+            console.log("Error in editUserStory")
+        }
         return response.data;
     }
 
@@ -290,6 +345,9 @@ const useProjects = () => {
         const response = await axios.get(`${API_HOST}/milestones?project=${project_id}`);
         if (response.status == 401) {
             signOut();
+        }
+        if (response.status == 404 || response.status == 400 || response.status == 500) {
+            console.log("Error in getSprints")
         }
         const data = response.data;
         return(data);
@@ -300,8 +358,36 @@ const useProjects = () => {
         if (response.status == 401) {
             signOut();
         }
+        if (response.status == 404 || response.status == 400 || response.status == 500) {
+            console.log("Error in getTasksByUserStory")
+        }
         const data = response.data;
         return(data);
+    }
+
+    const editTask = async (taskId, task) => {
+        const token = await getAuth().auth_token;
+        console.log(taskId)
+        if(task.description == null || task.description == undefined) {
+            task.description = ""
+        }
+        axios.headers = {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }
+        if(task.assigned_to == null || task.assigned_to == undefined) {
+            delete task.assigned_to
+        }
+        console.log(task)
+        const response = await axios.patch(`${API_HOST}/tasks/${taskId}`, task);
+        console.log(response.data)
+        if (response.status == 401) {
+            signOut();
+        }
+        if (response.status == 404 || response.status == 500 || response.status == 400) {
+            console.log("Error in editTask")
+        }
+        return response.data;
     }
     
     return { 
@@ -329,7 +415,8 @@ const useProjects = () => {
         editUserStory,
         getSprints,
         getTasksByUserStory,
-        createTask
+        createTask,
+        editTask
     };
 }
 

@@ -22,7 +22,7 @@ const SprintChooseModal = ({ navigation, visible, setVisible, project_id}) => {
 
     const changeScreenToSprint = (sprint) => {
         navigation.navigate("Sprint", { sprint: sprint });
-        console.log("Navigating to sprint: " + sprint.name);
+        setVisible(false);
     }
 
     return (
