@@ -18,8 +18,6 @@ const ChangeTaskAssignedModal = ({ task, visible, setVisible, generateStoryBoard
         const fetchMembers = async () => {
             const _members = await getProjectMembers(task?.project);
             setMembers(_members);
-            _members.push(..._members)
-            _members.push(..._members)
             setMemberIds(_members.map(member => member.id));
             setMemberNames(_members.map(member => member.full_name));
             setMemberMails(_members.map(member => member.email));
@@ -29,11 +27,20 @@ const ChangeTaskAssignedModal = ({ task, visible, setVisible, generateStoryBoard
 
     const changeTaskAssigned = async (index) => {
         if (index != null) {
+            console.log(memberIds)
+            const _task = {
+                version: task.version,
+                assigned_to: memberIds[index]
+            }
+            await editTask(task.id, _task);
+            generateStoryBoard();
+            setVisible(false);
+        }
+        else {
             const version = task.version;
-            console.log(memberNames[index]);
-            //await editTask(task.id, version, {assigned_to: memberNames[index].id});
-            //generateStoryBoard();
-            //setVisible(false);
+            await editTask(task.id, version, {assigned_to: null});
+            generateStoryBoard();
+            setVisible(false);
         }
     }
 
@@ -44,26 +51,30 @@ const ChangeTaskAssignedModal = ({ task, visible, setVisible, generateStoryBoard
     return (
         <Modal transparent={true} visible={visible}>
             <View style={changeTaskAssignedModalStyles.mainModalView}>
-                <View style={[changeTaskAssignedModalStyles.modal, {minHeight: 150 + memberMails.length*30}]}>
+                <ScrollView contentContainerStyle={[changeTaskAssignedModalStyles.modal, {minHeight: 150 + (memberMails.length + 1)*30}]}>
                     <Text style={changeTaskAssignedModalStyles.modalTitle}>{t("sprint.changeTaskMember")}</Text>
                     <Text style={changeTaskAssignedModalStyles.modalSubtitle}>{t("sprint.changeTaskMemberSubtitle")}</Text>
                     <View style={changeTaskAssignedModalStyles.statusButtonsContainer}>
-                        {memberNames.map((member, index) => (
-                            members[index].is_user_active == false ? null :
-                            <TouchableOpacity key={index} style={[changeTaskAssignedModalStyles.statusButton, {borderColor: members[index].color}]} onPress={() => changeTaskAssigned(index)}>
+                        {memberNames?.map((member, index) => (
+                            members[index]?.is_user_active == false ? null :
+                            <TouchableOpacity key={index} style={[changeTaskAssignedModalStyles.statusButton, {borderColor: members[index]?.color}]} onPress={() => changeTaskAssigned(index)}>
                                 <Text style={changeTaskAssignedModalStyles.statusButtonText}>
                                     {member == null ? memberMails[index] : member}
                                 </Text>
                             </TouchableOpacity>
-                            
                         ))}
+                        <TouchableOpacity style={[changeTaskAssignedModalStyles.statusButton, {borderColor: "gray"}]} onPress={() => changeTaskAssigned(null)}>
+                            <Text style={changeTaskAssignedModalStyles.statusButtonText}>
+                                {t("sprint.changeTaskMemberNoOne")}
+                            </Text>
+                        </TouchableOpacity>
                         <TouchableOpacity style={[changeTaskAssignedModalStyles.statusButtonClose, {backgroundColor: "#c6c6c6", marginTop: 40}]} onPress={() => setVisible(false)}>
                             <Text style={changeTaskAssignedModalStyles.statusButtonText}>
                                 {t("project.cancel")}
                             </Text>
                         </TouchableOpacity>
                     </View>
-                </View>
+                </ScrollView>
             </View>
         </Modal>
     )
@@ -75,16 +86,16 @@ const changeTaskAssignedModalStyles = StyleSheet.create({
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: "rgba(0,0,0,0.5)"
+        backgroundColor: "rgba(0,0,0,0.5)",
     },
     modal: {
         backgroundColor: "#fff",
+        maxHeight: "80%",
         width: "80%",
         borderRadius: 10,
         padding: 20,
         alignItems: "center",
-        justifyContent: "center",
-        elevation: 5,
+        justifyContent: "flex-start",
     },
     modalTitle: {
         fontSize: 20,
@@ -95,33 +106,29 @@ const changeTaskAssignedModalStyles = StyleSheet.create({
         marginTop: 10
     },
     statusButtonsContainer: {
-        flex: 1,
         flexDirection: "column",
         marginTop: 10,
         width: "100%",
-        marginRight: 20,
+        height: "100%",
+        alignItems: "center",
+        justifyContent: "flex-start",
     },
     statusButton: {
         backgroundColor: "#e6e6e6",
         padding: 10,
         margin: 10,
         borderRadius: 10,
-        width: "100%",
+        minWidth: "80%",
         alignItems: "center",
         borderWidth: 2,
     },
     statusButtonClose: {
         backgroundColor: "#e6e6e6",
         padding: 10,
-        margin: 10,
         borderRadius: 10,
-        width: "100%",
+        minWidth: "80%",
         alignItems: "center",
-        borderWidth: 2,
-        position: "absolute",
-        bottom: 0,
-        left: 0,
-        right: 0,
+        borderWidth: 2,      
     },
     statusButtonText: {
         fontSize: 16,

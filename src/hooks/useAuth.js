@@ -5,7 +5,6 @@ import { AuthContext } from '../context/authContext';
 const useAuth = () => {
 
     const { auth, setAuth, logout, getAuthState } = useContext(AuthContext);
-
     const signIn = async (user) => {
         const { email, password } = user;
         const response = await fetch(`${API_HOST}/auth`, {
@@ -19,7 +18,6 @@ const useAuth = () => {
                 password: password,
             })
         });
-    
         
         const data = await response.json()
         setAuth(data);   

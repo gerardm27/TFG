@@ -15,9 +15,8 @@ const useProjects = () => {
         }
         catch(error){
             console.log(error);
-            if (error.response.status == 401) {
-                signOut();
-            }
+            if(request.status == 401) signOut();
+            
         }
     }
 
@@ -367,7 +366,6 @@ const useProjects = () => {
 
     const editTask = async (taskId, task) => {
         const token = await getAuth().auth_token;
-        console.log(taskId)
         if(task.description == null || task.description == undefined) {
             task.description = ""
         }

@@ -13,7 +13,7 @@ const useUser = () => {
             return(data);
         }
         catch(error){
-            if (error.response.status == 401) {
+            if (response.status == 401) {
                 signOut();
             }
         }

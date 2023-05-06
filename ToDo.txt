@@ -12,7 +12,7 @@ ToDo:
         - Les tasques estaran agrupades per status --DONE
         - Clicar Change Status per canviar status --DONE
         - For some reason change status modal pops up randomly --DONE
-        - Mostrar icono de persona assignada a tasca, clicar per canviar (igual de agil que status)
+        - Mostrar icono de persona assignada a tasca, clicar per canviar (igual de agil que status) -- WIP falla id member no id user
         - Clicar a una tasca per veure-la i assignar-la o editar-la  -- WIP Modal edit
         
     - Crear tasca (assignar a algun team member) --DONE
