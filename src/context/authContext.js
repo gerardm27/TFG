@@ -57,6 +57,7 @@ const AuthProvider = ({ children }) => {
             await AsyncStorage.setItem("auth", JSON.stringify(auth));
             configureAxiosHeaders(auth.auth_token);
             setAuthState(auth);
+            console.log(auth);
         } catch (error) {
             Promise.reject(error);  
         }

@@ -18,9 +18,9 @@ const useAuth = () => {
                 password: password,
             })
         });
-        
         const data = await response.json()
-        setAuth(data);   
+        console.log(data);
+        await setAuth(data);   
     }
     
 

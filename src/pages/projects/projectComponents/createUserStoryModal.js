@@ -174,17 +174,17 @@ const createUserStoryStyles = StyleSheet.create({
         height: 100
     },
     statusInputContainer: {
-        marginBottom: 10
+        marginBottom: 10,
     },
     statusInput: {
         borderWidth: 1,
         borderColor: "black",
         borderRadius: 5,
         padding: 5,
-        height: 40
+        height: 40,
     },  
     statusInputItem: {
-        justifyContent: "flex-start"
+        justifyContent: "flex-start",
     },
     assignContainer: {
         marginTop: 10,

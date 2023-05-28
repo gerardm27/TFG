@@ -5,7 +5,6 @@ import { API_HOST, IMGBB_API_KEY } from "@env";
 
 const useUser = () => {
     const { auth } = useContext(AuthContext);
-
     const getUser = async (user_id) => {
         try{
             const response = await axios.get(`${API_HOST}/users/${user_id}`);
@@ -13,9 +12,7 @@ const useUser = () => {
             return(data);
         }
         catch(error){
-            if (response.status == 401) {
-                signOut();
-            }
+            console.log(error);
         }
     }
 

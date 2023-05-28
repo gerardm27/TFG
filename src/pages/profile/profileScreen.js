@@ -14,7 +14,8 @@ function ProfileScreen({navigation}) {
     const STORE_LANGUAGE_KEY = "settings.lang";
 
 
-    const [projectNumber, setProjectNumber] = useState(0);
+    const [publicProjectNumber, setPublicProjectNumber] = useState(0);
+    const [privateProjectNumber, setPrivateProjectNumber] = useState(0);
     const [profileImage, setProfileImage] = useState(null);
     const [username, setUsername] = useState(null);
     const [bio, setBio] = useState(null);
@@ -25,8 +26,9 @@ function ProfileScreen({navigation}) {
     
     useEffect(() => {
         getAuth().then(user => {
-            getNumberOfProjects(user.id).then(async number => {
-                setProjectNumber(number);
+            getNumberOfProjects(user.id).then(async numbers => {
+                setPublicProjectNumber(numbers[0]);
+                setPrivateProjectNumber(numbers[1]);
                 //Profile image is a path, needs to be passed through a require
                 setProfileImage(user.photo);
                 setUsername(user.username);
@@ -50,34 +52,29 @@ function ProfileScreen({navigation}) {
     
     
 
-    const defaultImage = require('../../../assets/images/defaultProfile.png');
+    const defaultImage = require('../../../assets/images/awakt.jpg');
     
     return (
         <View style = {modalVisible ? profileStyles.pageContainerBlurred : profileStyles.pageContainer}>
+            <View style={profileStyles.topBar}>
+                <Text style={profileStyles.toBarTitle}>{fullName}</Text>
+                <Text style={profileStyles.toBarTitle}>[{email}]</Text>
+            </View>
             <View style={profileStyles.profileTopContainer}>
                 <View style={profileStyles.imageContainer}>                    
-                    <Image source={{uri: profileImage} ?? defaultImage} style={profileStyles.profileImage} />
+                    <Image source={/* {uri: profileImage} ??  */defaultImage} style={profileStyles.profileImage} />
                     <Text style={profileStyles.username}>{username}</Text>
                 </View>
                 <View style={profileStyles.infoTopContainer}>
                     <View style={profileStyles.numberContainer}>
                         <TouchableOpacity onPress={()=>{navigation.navigate('Project List')}}>
                             <View style={profileStyles.numberContainer}>
-                                <Text style={profileStyles.numberOfProjects}>{projectNumber}</Text>
+                                <Text style={profileStyles.numberOfProjects}>{publicProjectNumber + privateProjectNumber}</Text>
                                 <Text>
-                                    {t("profile.publicProjects")}
+                                    {t("profile.projects")}
                                 </Text>
                             </View>
-                        </TouchableOpacity>
-                    </View>
-                    <View style={profileStyles.numberContainer}>
-                        <TouchableOpacity onPress={()=>{navigation.navigate('Project List')}}>
-                            <View style={profileStyles.numberContainer}>
-                                <Text style={profileStyles.numberOfProjects}>{projectNumber}</Text>
-                                <Text>
-                                    {t("profile.privateProjects")}
-                                </Text>
-                            </View>
+
                         </TouchableOpacity>
                     </View>
                     <View style={profileStyles.numberContainer}>
@@ -90,27 +87,26 @@ function ProfileScreen({navigation}) {
                             </View>
                         </TouchableOpacity>
                     </View>
+                    <View style={profileStyles.editProfileContainer}>
+                        <TouchableOpacity 
+                            styles={profileStyles.editProfileButtonContainer} 
+                            onPress={()=>{navigation.navigate('Edit Profile', {fullName: fullName, username: username, bio: bio, email: email, profileImage: profileImage, language: language})}}
+                        >
+                            <View style={profileStyles.editProfileButton}>
+                                <Image source={require('../../../assets/images/edit.png')} style={profileStyles.editProfileImage}/>
+                                <Text style={profileStyles.editProfileText}>{t("profile.editProfile")}</Text>
+                            </View>
+                        </TouchableOpacity>
+                    </View>
                 </View>
             </View>
-            <View style={profileStyles.editProfileContainer}>
-                <TouchableOpacity 
-                    styles={profileStyles.editProfileButtonContainer} 
-                    onPress={()=>{navigation.navigate('Edit Profile', {fullName: fullName, username: username, bio: bio, email: email, profileImage: profileImage, language: language})}}
-                >
-                    <View style={profileStyles.editProfileButton}>
-                        <Image source={require('../../../assets/images/edit.png')} style={profileStyles.editProfileImage}/>
-                        <Text style={profileStyles.editProfileText}>{t("profile.editProfile")}</Text>
-                    </View>
-                </TouchableOpacity>
-            </View>
-            <View style={profileStyles.bioContainer}>
-                <Text style={profileStyles.bioHeader}>{t("profile.aboutMe")}</Text>
-                <Text style={profileStyles.bio}>{bio}</Text>
-            </View>
-            <View style={profileStyles.mailContainer}>
-                <Text style={profileStyles.mailHeader}>{t("profile.email")}</Text>
-                <Text style={profileStyles.mail}>{email}</Text>
-            </View>
+            {bio == null || bio == "" ?
+                null
+                : 
+                <View style={profileStyles.bioContainer}>
+                    <Text style={profileStyles.bio}>{bio}</Text>
+                </View> 
+            }
             <View style={profileStyles.linkButtonsContainer}>
                 <TouchableOpacity style={profileStyles.buttonContainer} onPress={() => {Linking.openURL('https://community.taiga.io/c/faq/21')}}>
                     <View style={profileStyles.linkButton}>
@@ -137,6 +133,7 @@ function ProfileScreen({navigation}) {
 
 const profileStyles = StyleSheet.create({
     pageContainer: {
+        marginTop: 30,
         flex: 1,
         backgroundColor: '#fff',
     },
@@ -145,40 +142,59 @@ const profileStyles = StyleSheet.create({
         backgroundColor: '#fff',
         opacity: 0.3,
     },
+    topBar: {
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+        padding: 10,
+        paddingTop: 20,
+    },
+    toBarTitle: {
+        fontSize: 20,
+        fontWeight: "bold",
+    },
     profileImage: {
         resizeMode: 'cover',
         width: 80,
         height: 80,
         borderRadius: 100,
-        borderWidth: 1,
-        borderColor: 'black',
+        borderWidth: 2,
+        borderColor: '#a3aaad',
     },
     username: {
         paddingVertical: 5,
         fontWeight: 'bold',
     },
     bio: {
-        paddingVertical: 15,
+        marginTop: 20,
+        backgroundColor: '#f2f2f2',
         borderRadius: 10,
-        borderWidth: 1,
-        borderColor: '#e0e0e0',
         paddingHorizontal: 10,
-        width: '85%',
+        width: '100%',
+        padding: 10,
         textAlign: 'justify',
     },
     bioHeader: {
         fontWeight: 'bold',
+        textDecorationLine: 'underline',
+        paddingBottom: 10,
+    },
+    name: {
+        borderRadius: 10,
+        width: '85%',
+    },
+    nameHeader: {
+        fontWeight: 'bold',
+        textDecorationLine: 'underline',
         paddingBottom: 10,
     },
     mail: {
         borderRadius: 10,
-        borderWidth: 1,
-        borderColor: '#e0e0e0',
-        padding: 10,
         width: '85%',
     },
     mailHeader: {
         fontWeight: 'bold',
+        textDecorationLine: 'underline',
         paddingBottom: 10,
     },
     imageContainer: {
@@ -197,9 +213,9 @@ const profileStyles = StyleSheet.create({
         justifyContent: 'space-around',
         paddingTop: 10,
         paddingHorizontal: 10,
-        borderBottomWidth: 1,
-        borderBottomColor: '#e0e0e0',
-        backgroundColor: '#f5f5f5',
+        borderBottomWidth: 2,
+        borderBottomColor: '#a3aaad',
+        backgroundColor: '#cfd8dc',
     },
     numberOfProjects: {
         fontSize: 18,
@@ -210,13 +226,19 @@ const profileStyles = StyleSheet.create({
         alignContent: 'center',
     },
     bioContainer: {
-        padding: 10,
-        alignItems: 'center',
+        padding: 20,
+        paddingTop: 0,
+        alignItems: 'flex-start',
     },
     mailContainer: {
-        padding: 10,
+        padding: 20,
         paddingTop: 0,
-        alignItems: 'center',
+        alignItems: 'flex-start',
+    },
+    nameContainer: {
+        padding: 20,
+        paddingTop: 20,
+        alignItems: 'flex-start',
     },
     linkButtonsContainer: {
         paddingTop: 50,
@@ -247,24 +269,17 @@ const profileStyles = StyleSheet.create({
         marginBottom: 10,
     },
     editProfileContainer: {
-        width: '80%',
         alignItems: 'center',
-        justifyContent: 'center',
-        alignSelf: 'center',
-        paddingVertical: 20,
+        alignContent: 'center',
     },
     editProfileButtonContainer: {
         width: '100%',
     },
     editProfileButton: {
         flexDirection: 'row',
-        backgroundColor: '#e0e0e0',
-        borderRadius: 10,
-        padding: 10,
-        width: '40%',
         alignItems: 'center',
         justifyContent: 'center',
-        alignSelf: 'center',
+        padding: 10,
     },
     editProfileImage: {
         width: 20,

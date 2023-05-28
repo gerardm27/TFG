@@ -9,7 +9,10 @@ import CreateProjectModal from './projectComponents/createProjectModal';
 import DeleteProjectModal from './projectComponents/deleteProjectModal';
 import EditProjectModal from './projectComponents/editProjectModal';
 import MembersModal from './projectComponents/membersModal';
+
 function ProjectListScreen({navigation}) {
+
+    const { t } = useTranslation();
 
     const [usuario, setUser] = useState(null);
     const [projects, setProjects] = useState(null);
@@ -73,10 +76,12 @@ function ProjectListScreen({navigation}) {
             setUser(item)
             new Promise(r => setTimeout(r, 100)).then(() => {
                 getAllProjects(item?.id).then(proj=>{
-                    setProjects(proj);
-                    if(!projectToEdit) setProjectToEdit(proj[0].id);
-                    if(!projectToSeeMembers) setProjectToSeeMembers(proj[0].id);
-                    if(!projectToDelete) setProjectToDelete(proj[0].id);
+                    if(proj) {
+                        setProjects(proj);
+                        if(!projectToEdit) setProjectToEdit(proj[0]?.id);
+                        if(!projectToSeeMembers) setProjectToSeeMembers(proj[0]?.id);
+                        if(!projectToDelete) setProjectToDelete(proj[0]?.id);
+                    }
                 })
             })
         })
@@ -85,6 +90,7 @@ function ProjectListScreen({navigation}) {
     
     return(
         <View style={[customStyles.mainContainer, {height: "100%"}]}>
+            <Text style={projectListStyles.title}>{t('projectList.title')}</Text>
             { projects ? 
                 <ScrollView>
                     <TouchableOpacity 
@@ -127,6 +133,15 @@ function ProjectListScreen({navigation}) {
 }
 
 const projectListStyles = StyleSheet.create({
+    title: {
+        marginTop: 50,
+        padding: 10,
+        fontSize: 30,
+        fontFamily: 'Montserrat-Bold',
+        color: "black",
+        textAlign: "center",
+        marginBottom: 10,
+    },
     coolBlockTitleContainer: {
         fontSize: 25,
         fontFamily: 'Montserrat-Bold',

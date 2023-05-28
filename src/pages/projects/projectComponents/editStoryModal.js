@@ -8,7 +8,7 @@ const EditStoryModal = ({visible, setVisible, userStory}) => {
     const { t } = useTranslation();
     const [subject, setSubject] = useState(null);
     const [description, setDescription] = useState(null);
-    const [points, setPoints] = useState(null);
+    const [points, setPoints] = useState(Array(4).fill(''));
     const [assignedMember, setAssignedMember] = useState(null);
     const [status, setStatus] = useState(null);
     const [projectUserIds, setProjectUserIds] = useState([]);
@@ -23,6 +23,7 @@ const EditStoryModal = ({visible, setVisible, userStory}) => {
         t("project.back"),];
     const [hasError, setHasError] = useState(false);
     const [pointsIds, setPointsIds] = useState([]);
+    const [pointsValues, setPointsValues] = useState([])
 
     const [open, setOpen] = useState(false);
     const [value, setValue] = useState(null);
@@ -30,13 +31,15 @@ const EditStoryModal = ({visible, setVisible, userStory}) => {
     const [openMember, setOpenMember] = useState(false);
     const [valueMember, setValueMember] = useState(null);
     
-    const { getAllUserStoriesStatus, getProjectMembers, editUserStory } = useProjects();
+    const { getAllUserStoriesStatus, getProjectMembers, editUserStory, getProjectPoints, getUserStory } = useProjects();
 
 
     useEffect(() => {
         const fetchMembers = async () => {
             const _members = await getProjectMembers(userStory?.project);
             setMembers(_members);
+            const _pointsValues = await getProjectPoints(userStory?.project);
+            setPointsValues(_pointsValues); //From this, get the VALUE to the IDS
         }
         fetchMembers();
     }, []);
@@ -66,19 +69,32 @@ const EditStoryModal = ({visible, setVisible, userStory}) => {
     }
     , []);
 
+    const handlePointsChange = (value, index) => {
+        const newPointsValues = pointsValues ? [...pointsValues] : [];
+        if (newPointsValues[index]) {
+          newPointsValues[index].value = value;
+        } else {
+          newPointsValues[index] = { value };
+        }
+        setPointsValues(newPointsValues);
+    };
+
     const generatePointsInput = () => {
         const pointsComponentsRowOne = [];
         const pointsComponentsRowTwo = [];
         for (let i = 0; i < 4; i++) {
-            let currentValue = pointsIds[i] + "";
+            let currentValue = pointsValues[i]?.value + "";
+            if (currentValue == "null") {
+                currentValue = "?";
+            }
             let component = (
                 <View key={i} style={editStoryModalStyles.pointsContainer}>
                     <Text style={editStoryModalStyles.pointsText}>{pointTexts[i]}</Text>
                     <TextInput
                         value={currentValue}
                         style={editStoryModalStyles.pointsInput}
-                        onChangeText={setPoints}
                         placeholderTextColor="#3f51b5"
+                        onChangeText={(value) => handlePointsChange(value, i)}
                     />
                 </View>
             );
@@ -102,34 +118,38 @@ const EditStoryModal = ({visible, setVisible, userStory}) => {
     }
 
     const editStory = async () => {
-        if (subject == '') {
+        if (subject == '' || subject == null) {
             setHasError(true);
             return;
         }
-        if (description == '') {
+        if (description == '' || description == null) {
             setDescription(userStory.description);
         }
-        if (points == '') {
+        if (points == '' || points == null) {
             setPoints(userStory.points);
         }
-        if (assignedMember == '') {
+        if (assignedMember == '' || assignedMember == null) {
             setAssignedMember(userStory.assigned_user);
         }
-        if (status == '') {
+        if (status == '' || status == null) {
             setStatus(userStory.status);
         }
         setHasError(false);
+        const story = await getUserStory(userStory.id);
+        const version = story.version;
         const newUserStory = {
             subject: subject,
             description: description,
             points: points,
             assigned_user: assignedMember,
-            status: status
+            status: status,
+            version: version
         }
 
         await editUserStory(userStory.id, newUserStory);
         setVisible(false);
     }
+
 
     return (
         <Modal transparent={true} visible={visible}>

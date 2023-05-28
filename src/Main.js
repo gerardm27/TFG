@@ -6,12 +6,14 @@ import { NavigationContainer } from '@react-navigation/native';
 import { AuthContext } from './context/authContext';
 import { SignInScreen, SignUpScreen, HomeScreen, EditProfileScreen, ProjectListScreen, ProjectScreen, KanbanScreen, ProfileScreen, BacklogScreen, SprintScreen } from './pages';
 import * as Font from 'expo-font';
-
+import { Ionicons } from '@expo/vector-icons';
+import { useTranslation } from "react-i18next";
 
 const Tab = createBottomTabNavigator();
 const Stack =  createStackNavigator();
 
 function Main() {
+    const { t } = useTranslation();
     const { auth } = useContext(AuthContext);
 
     const [isFontLoaded, setFontLoaded] = useState(false);
@@ -49,21 +51,15 @@ function Main() {
                     options={{
                         title: 'Sign In',
                         gestureEnabled: false,
+                        headerShown: false,
                     }}  
-                    />
-                    <Stack.Screen 
-                    name="SignUp" 
-                    component={SignUpScreen}
-                    options={{
-                        title: 'Sign Up',
-                    }}   
                     />
                 </Stack.Navigator>
             </NavigationContainer>
         ) : ( 
             <NavigationContainer>
                 <Tab.Navigator>
-                    <Tab.Screen 
+                    {/* <Tab.Screen 
                         name="Home" 
                         component={HomeScreen} 
                         options={
@@ -76,28 +72,20 @@ function Main() {
                                 //headerShown: false,
                             }
                         }
-                    />
+                    /> */}
                     <Tab.Screen 
                         name="Project List" 
                         component={ProjectListScreen}
                         options={
                             {
-                                // I want a header that is not the default name
-                                /* header : () => (
-                                    <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', backgroundColor: '#fff', height: 50, paddingHorizontal: 10}}>
-                                        <Text style={{fontSize: 20, fontWeight: 'bold'}}>Project List</Text>
-                                        <TouchableOpacity>
-                                            <Image source={require('../assets/images/logo.png')} style={{width: 30, height: 30}} />
-                                        </TouchableOpacity>
-                                    </View>
-                                ), */
-                            
-
+                                tabBarStyle: {height: 60},
                                 title: 'Project List',
-                                tabBarLabel: 'Project List',
+                                tabBarLabel: t('projectList.title'),
                                 tabBarIcon: ({ color, size }) => (
-                                    <Text style={{color: color, fontSize: size}}>Project List</Text>
+                                    <Ionicons name="list" size={size*1.5} color={color} />
                                 ),
+                                tabBarLabelStyle: {fontSize: 15},
+                                headerShown: false,
                             }
                         }
                     />
@@ -106,12 +94,14 @@ function Main() {
                         component={ProfileScreen} 
                         options={
                             {
-                                title: 'Profile',
-                                tabBarLabel: 'Profile',
+                                tabBarStyle: {height: 60},
+                                title: 'Profile',   
+                                tabBarLabel: t('profile.title'),
                                 tabBarIcon: ({ color, size }) => (
-                                    <Text style={{color: color, fontSize: size}}>Profile</Text>
+                                    <Ionicons name="person" size={size*1.5} color={color} />
                                 ),
-                                //headerShown: false,
+                                tabBarLabelStyle: {fontSize: 15},
+                                headerShown: false,
                             }
                         }
                     />
@@ -133,7 +123,7 @@ function Main() {
                             {
                                 title: 'Projects',
                                 tabBarItemStyle: {display: "none"},
-                                //headerShown: false,
+                                headerShown: false,
                             }
                         }
                     />
@@ -144,7 +134,7 @@ function Main() {
                             {
                                 title: 'Kanban',
                                 tabBarItemStyle: {display: "none"},
-                                //headerShown: false,
+                                headerShown: false,
                             }
                         }
                     />

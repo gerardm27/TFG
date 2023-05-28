@@ -1,9 +1,10 @@
-import { View, Text, Button, TextInput, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import { View, Text, Button, TextInput, StyleSheet, TouchableOpacity, Image, Linking } from 'react-native';
 import React, { useState, useContext } from 'react';
 import useAuth from '../../../hooks/useAuth';
-import { AuthContext } from '../../../context/authContext';
+import { useTranslation } from "react-i18next";
 
 function SignInScreen({ navigation }) {
+    const { t } = useTranslation();
 
     const { signIn } = useAuth();
 
@@ -32,14 +33,14 @@ function SignInScreen({ navigation }) {
             //Form Error
             setError({
                 error: true,
-                message: 'Please fill in all fields'
+                message: t('login.fillFields')
             });
         }else {
             setLoading(true);
             signIn(user)
                 .then()
                 .catch(err => {
-                    setError({error:true, message: 'There is an error with your password or email'});
+                    setError({error:true, message: t('login.errorLogin')});
                     console.log(err);
                 })
                 .finally(()=> setLoading(false));
@@ -53,14 +54,22 @@ function SignInScreen({ navigation }) {
                     source={require('../../../../assets/images/logo.png')}
                     style={[styles.logo]}
                 />
+                <View style={styles.logoTextContainer}>
+                    <Text style={styles.logoTextOne}>
+                        Taiga
+                    </Text>
+                    <Text style={styles.logoTextTwo}>
+                        App
+                    </Text>
+                </View>
             </View>
             <View style={[styles.topContainer]}>
                 <View>
                     <Text style={styles.title}>
-                        Sign In
+                        {t('login.title')}
                     </Text>
                     <Text style={styles.subtitle}>
-                        Enter your credentials below
+                        {t('login.subtitle')}
                     </Text>
                 </View>
                 {error.error ?
@@ -75,7 +84,7 @@ function SignInScreen({ navigation }) {
                     value={email}
                     style={styles.input}
                     name="email"
-                    placeholder="Email:"
+                    placeholder={t('login.email')}
                     autoCapitalize='none'
                 />
                 <View style={styles.passwordContainer}>
@@ -84,7 +93,7 @@ function SignInScreen({ navigation }) {
                         value={password}
                         style={[styles.input, {marginBottom: 0, width: '90%'}]}
                         name="password"
-                        placeholder="Password:"
+                        placeholder={t('login.password')}
                         textContentType="password"
                         autoCapitalize='none'
                         secureTextEntry={showPassword}
@@ -102,30 +111,23 @@ function SignInScreen({ navigation }) {
                     </View>
 
                 </View>
-                <Button
+                <TouchableOpacity
                     onPress={()=> SignIn()}
-                    title={isLoading ? 'Loading...' : 'Sign In'}
                     disabled={isLoading}
-                />
+                    style={styles.button}
+                >
+                    <Text style={styles.buttonText}>
+                        {isLoading ? t('login.loading') : t('login.title')}
+                    </Text>
+                </TouchableOpacity>
             </View>
-            <Text>
-                or one of your social profiles
-            </Text>
-            <View style={{flexDirection:'row', justifyContent: 'space-around', width: '100%'}}>
-                <Button
-                title='Facebook'
-                />
-                <Button
-                title='Google'
-                />
-            </View>
-            <View style={{flexDirection: 'row'}}>
+            <View style={styles.footer}>
                 <Text>
-                    Don't have an account?
+                    {t('login.noAccount')}
                 </Text>
                 <View style={{marginLeft: 5}}>
-                    <Text style={{color: 'blue'}} onPress={() => {navigation.navigate("SignUp")}}>
-                        Sign Up
+                    <Text style={{color: '#966bed', fontWeight: 'bold'}} onPress={() => {Linking.openURL('https://tree.taiga.io/register')}}>
+                        {t('login.signup')}
                     </Text>
                 </View>
             </View>
@@ -138,23 +140,40 @@ function SignInScreen({ navigation }) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'space-between',
+        justifyContent: 'flex-start',
         alignItems: 'center',
         padding: 20,
     },
     topContainer: {
+        width: '90%',
+    },
+    logoContainer: {
+        marginVertical: "20%",
     },
     showPwd: {
         width: 40,
         height: 40,
     },
-    logoContainer: {
-        marginBottom: 20,
-    },
     logo: {
-        width: 100,
-        height: 100,
+        width: 150,
+        height: 150,
         alignSelf: 'center',
+    },
+    logoTextOne: {
+        fontSize: 35,
+        fontWeight: 'bold',
+        alignSelf: 'center',
+        color: '#7ea684',
+    },
+    logoTextTwo: {
+        fontSize: 35,
+        fontWeight: 'bold',
+        alignSelf: 'center',
+        color: '#837094',
+    },
+    logoTextContainer: {
+        flexDirection: 'row',
+        justifyContent: 'center',
     },
     title: {
         fontSize: 25,
@@ -162,10 +181,6 @@ const styles = StyleSheet.create({
     },
     subtitle: {
         marginBottom: 10,
-    },
-    button: {
-        width: '50%',
-        alignSelf: 'center',
     },
     passwordContainer: {
         flexDirection: 'row',
@@ -180,6 +195,19 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         paddingLeft: 10,
     },
+    button: {
+        width: '100%',
+        alignSelf: 'center',
+        marginTop: 20,
+        padding: 10,
+        borderRadius: 5,
+        alignItems: 'center',
+        backgroundColor: '#c0a7f2',
+    },
+    buttonText: {
+        color: 'black',
+        fontWeight: 'bold',
+    },
     error: {
         color: 'red',
     },
@@ -189,6 +217,11 @@ const styles = StyleSheet.create({
         borderColor: 'red',
         backgroundColor:'#ff00001c',
         padding: 5,
+    },
+    footer: {
+        flexDirection: 'row',
+        marginTop: 20,
+        alignSelf: 'center',
     }
 })
 

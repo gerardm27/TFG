@@ -2,7 +2,6 @@ import React, { useContext } from 'react';
 import axios from 'axios';
 import {API_HOST} from '@env';
 import useAuth from './useAuth';
-import RNRestart from 'react-native-restart';
 
 const useProjects = () => {
     const {signOut, getAuth} = useAuth();
@@ -10,12 +9,12 @@ const useProjects = () => {
     const getAllProjects = async (user_id) => {
         try{
             const response = await axios.get(`${API_HOST}/projects?member=${user_id}`);
-            const data = response.data;
+            const data = await response.data;
             return(data);
         }
         catch(error){
             console.log(error);
-            if(request.status == 401) signOut();
+            signOut();
             
         }
     }
@@ -52,7 +51,10 @@ const useProjects = () => {
 
     const getNumberOfProjects = async( user_id ) => {
         const projects = await getAllProjects(user_id);
-        return projects.length;
+        //Return private and public projects separately
+        const privateProjects = projects.filter(project => project.is_private == true);
+        const publicProjects = projects.filter(project => project.is_private == false);
+        return [privateProjects.length, publicProjects.length];
     }
 
     const getAllUserStories = async (project_id) => {
@@ -119,6 +121,7 @@ const useProjects = () => {
             console.log("Error in getAllTasksStatus")
         }
         const data = response.data;
+        console.log("getAllTasksStatus")
         return(data);
     }
 
@@ -320,24 +323,29 @@ const useProjects = () => {
         if (response.status == 404 || response.status == 400 || response.status == 500) {
             console.log("Error in getUserStory")
         }
+        console.log("getUserStory")
         const data = response.data;
         return(data);
     }
 
     const editUserStory = async (userStoryId, userStory) => {
-        const token = await getAuth().auth_token;
-        axios.headers = {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
-        }
-        const response = await axios.patch(`${API_HOST}/userstories/${userStoryId}`, userStory);
-        if (response.status == 401) {
-            signOut();
-        }
-        if (response.status == 404 || response.status == 400 || response.status == 500) {
+        try{
+            const token = await getAuth().auth_token;
+            axios.headers = {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            }
+            console.log(userStory)
+            console.log(`${API_HOST}/userstories/${userStoryId}`)
+            const response = await axios.patch(`${API_HOST}/userstories/${userStoryId}`, userStory);
+            if (response.status == 401) {
+                signOut();
+            }
+            return response.data;
+        } catch (e) {
             console.log("Error in editUserStory")
+            console.log(e)
         }
-        return response.data;
     }
 
     const getSprints = async (project_id) => {
@@ -361,6 +369,7 @@ const useProjects = () => {
             console.log("Error in getTasksByUserStory")
         }
         const data = response.data;
+        console.log("getTasksByUserStory")
         return(data);
     }
 

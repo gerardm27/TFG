@@ -6,6 +6,7 @@ import ModalDeleteAccount from './profileComponents/modalDeleteAccount';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import useUser from '../../hooks/useUser';
 import * as ImagePicker from 'expo-image-picker';
+import { ScrollView } from "react-native-gesture-handler";
 
 function EditProfileScreen({navigation, route}) {
   const { t, i18n } = useTranslation();
@@ -37,7 +38,7 @@ function EditProfileScreen({navigation, route}) {
     }
   }
 
-  const defaultImage = require('../../../assets/images/defaultProfile.png');
+  const defaultImage = require('../../../assets/images/awakt.jpg');
 
   const changeUserDetails = () => {
     editUser(
@@ -78,7 +79,7 @@ function EditProfileScreen({navigation, route}) {
   const [deleteAccountModalVisible, setDeleteAccountModalVisible] = useState(false);
 
   return (
-    <View style={deleteAccountModalVisible ? editProfileStyles.editProfileContainerBlurred : editProfileStyles.editProfileContainer}>
+    <ScrollView contentContainerStyle={deleteAccountModalVisible ? editProfileStyles.editProfileContainerBlurred : editProfileStyles.editProfileContainer}>
       <View style={editProfileStyles.topBar}>
         <TouchableOpacity 
           onPress = {() => {
@@ -105,7 +106,7 @@ function EditProfileScreen({navigation, route}) {
           onPress={() => addImage()}
         >
           
-          <Image source={profileImage == null ? defaultImage : {uri: profileImage}} style={editProfileStyles.profileImage}/>
+          <Image source={/* profileImage != null ? {uri: profileImage} : */ defaultImage} style={editProfileStyles.profileImage}/>
           <Image source={require('../../../assets/images/edit.png')} style={editProfileStyles.editProfileImage} />
         </TouchableOpacity>
         <View style={editProfileStyles.topRightContainer}>
@@ -198,18 +199,19 @@ function EditProfileScreen({navigation, route}) {
         modalVisible={deleteAccountModalVisible}
         setModalVisible={setDeleteAccountModalVisible}
       />
-    </View>
+    </ScrollView>
   );
 }
 
 const editProfileStyles = StyleSheet.create({
   editProfileContainer: {
-    flex: 1,
+    marginTop: 20,
     width: "100%",
     height: "100%",
     backgroundColor: "white",
   },
   editProfileContainerBlurred: {
+    marginTop: 20,
     flex: 1,
     width: "100%",
     height: "100%",
@@ -403,7 +405,7 @@ const editProfileStyles = StyleSheet.create({
     paddingHorizontal: 20,
   },
   defaultButton: {
-    width: "65%",
+    width: "90%",
     height: 40,
     backgroundColor: "#eae4f6",
     color: "white",

@@ -75,7 +75,6 @@ const EditTaskModal = ({visible, setVisible, task, generateStoryBoard}) => {
             setStatus(task.status);
         }
         setHasError(false);
-        console.log("Task version : " + task.version);
         const newTask = {
             subject: subject,
             description: description,

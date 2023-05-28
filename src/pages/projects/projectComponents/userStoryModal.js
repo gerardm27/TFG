@@ -132,7 +132,7 @@ const userStoryModalStyles = StyleSheet.create({
     },
     modal: {
         width: '90%',
-        height: '40%',
+        height: '50%',
         backgroundColor: '#fff',
         borderRadius: 10,
         padding: 10
@@ -232,7 +232,8 @@ const userStoryModalStyles = StyleSheet.create({
         borderWidth: 1,
         borderColor: '#ccc',
         borderRadius: 5,
-        padding: 5
+        padding: 5,
+        marginBottom: 10
     },
     pointItemContainer: {
         width: "100%",

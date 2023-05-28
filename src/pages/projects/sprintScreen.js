@@ -39,9 +39,7 @@ function SprintScreen({navigation, route}) {
         for (let i = 0; i < sprint.user_stories.length; i++) {
             try {
                 const userStory = await getUserStory(sprint.user_stories[i].id);
-                
                 const tasks = await getTasksByUserStory(sprint.user_stories[i].id);
-                
                 if (i == 0){
                     setSelectedUserStory(userStory);
                     setSelectedTask(tasks[0]);
@@ -136,24 +134,18 @@ function SprintScreen({navigation, route}) {
                     <TouchableOpacity
                         onPress={() => activateCreateTaskModal(userStory)}
                     >
-                        <Text style={sprintStyles.createTaskButton}>Create Task</Text>
+                        <Text style={sprintStyles.createTaskButton}>{t('project.createTask')}</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
                         onPress={() => activateCreateBulkTaskModal(userStory)}
                     >
-                        <Text style={sprintStyles.createBulkTaskButton}>Create Bulk Task</Text>
+                        <Text style={sprintStyles.createBulkTaskButton}>{t('project.createBulkTask')}</Text>
                     </TouchableOpacity>
                 </View>
                 <ScrollView contentContainerStyle={sprintStyles.userStoriesList}>
                     {statuses.map((status, index) => (
                         <View key={index} style={sprintStyles.taskContainer}>
                             <Text style={sprintStyles.statusName}>{status}</Text>
-                            {/* {userStoryTasks.map((task) => (
-                                console.log(task.status, statusIds[index], task.status == statusIds[index])
-
-                                Crear metodo en notificationservice para listar las notificaciones filtradas por usuario de forma paginada
-
-                            ))} */}
                             {userStoryTasks.map((task) => (
                                 task.status == statusIds[index]?
                                     <TouchableOpacity 
@@ -166,6 +158,7 @@ function SprintScreen({navigation, route}) {
                                         <View style={sprintStyles.taskButtonContainer}> 
                                             <TouchableOpacity
                                                 onPress={() => activateModal(task)}
+                                                style={sprintStyles.taskChangeStatusButton}
                                             >
                                                 <Text style={sprintStyles.taskChangeStatus}>Change Status</Text>
                                             </TouchableOpacity>
@@ -181,6 +174,7 @@ function SprintScreen({navigation, route}) {
                             ))}                                    
                         </View>
                     ))}
+                    
                 </ScrollView>
             </ScrollView>
           );
@@ -190,12 +184,12 @@ function SprintScreen({navigation, route}) {
             
     return (
         <View style={sprintStyles.mainView}>
+            <View style={sprintStyles.topInfoContainer}>
+                <Text style={sprintStyles.sprintName}>{sprint.name}</Text>
+                <Text style={sprintStyles.sprintDescription}>{sprint.description}</Text>
+            </View>
             {sprint?
                 <View style={sprintStyles.sprintContainer}>
-                    <View style={sprintStyles.topInfoContainer}>
-                        <Text style={sprintStyles.sprintName}>{sprint.name}</Text>
-                        <Text style={sprintStyles.sprintDescription}>{sprint.description}</Text>
-                    </View>
                     <ScrollView contentContainerStyle={sprintStyles.userStoriesContainer}>
                         <Text style={sprintStyles.userStoriesTitle}>{t("sprint.userStories")}</Text>
                         {userStories ? 
@@ -230,6 +224,12 @@ function SprintScreen({navigation, route}) {
                         userStory={selectedUserStory}
                         generateStoryBoard={generateStoryBoardAux}
                     />
+                    <EditTaskModal
+                        visible={taskModalVisible}
+                        setVisible={setTaskModalVisible}
+                        task={selectedTask}
+                        generateStoryBoard={generateStoryBoardAux}
+                    />
                 </View>
                 :
                 <Text>{t("sprint.noInfo")}</Text>
@@ -248,13 +248,21 @@ const sprintStyles = StyleSheet.create({
     },
     sprintContainer: {
         width: "100%",
-        height: "100%",
-        display: "flex",
+        height: "95%",
         flexDirection: "column",
         justifyContent: "space-between",
         alignItems: "center",
+        marginBottom: "15%",
+        borderRadius: 10,
         padding: 10,
-        paddingTop: 20,
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 5,        
     },
     topInfoContainer: {
         width: "100%",
@@ -262,12 +270,14 @@ const sprintStyles = StyleSheet.create({
         flexDirection: "column",
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: "#3f51b5",
-        paddingTop: 20,
+        marginTop: 50,
+        padding: 10,
     },
     sprintName: {
-        fontSize: 20,
-        fontWeight: "bold",
+        fontSize: 30,
+        fontFamily: 'Montserrat-Bold',
+        color: "black",
+        textAlign: "center",
     },
     sprintDescription: {
         fontSize: 16,
@@ -292,6 +302,9 @@ const sprintStyles = StyleSheet.create({
         justifyContent: "flex-start",
         alignItems: "center",
         marginBottom: 20,
+        padding: 10,
+        backgroundColor: "#c9c9c9",
+        borderRadius: 10,
     },
     titleAndButtonsContainer: {
         width: "100%",
@@ -353,11 +366,20 @@ const sprintStyles = StyleSheet.create({
     taskChangeStatus: {
         fontSize: 12,
         fontWeight: "bold",
-        color: "#fff",
-        backgroundColor: "#3f51b5",
-        padding: 5,
+        color: "black",
         borderRadius: 5
     },
+    taskChangeStatusButton: {
+        fontSize: 12,
+        fontWeight: "bold",
+        color: "#fff",
+        backgroundColor: "white",
+        borderWidth: 1,
+        borderColor: "#3f51b5",
+        padding: 5,
+        borderRadius: 5,
+    },
+
     createTaskButton: {
         fontSize: 16,
         fontWeight: "bold",

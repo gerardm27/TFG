@@ -21,7 +21,7 @@ function BacklogScreen({navigation, route}) {
     const [statusIds, setStatusIds] = useState([]);
     const [userStoryModalVisible, setUserStoryModalVisible] = useState(false);
 
-    const { getAllUserStories, updateUserStoryStatus, getAllUserStoriesStatus } = useProjects();
+    const { getAllUserStories, editUserStory, getAllUserStoriesStatus, getSprints } = useProjects();
     const defaultLogo = require("../../../assets/images/logo.png");
     const screenWidth = Dimensions.get('window').width;
     const [selectedUserStory, setSelectedUserStory] = useState(backlogUserStories && backlogUserStories[0]);
@@ -30,6 +30,19 @@ function BacklogScreen({navigation, route}) {
     const [createBulkModalVisible, setCreateBulkModalVisible] = useState(false);
     const [sprintChooseModalVisible, setSprintChooseModalVisible] = useState(false);
     
+    const assignToCurrentSprint = async (userStory) => {
+        const fetchSprints = async () => {
+            const sprints = await getSprints(route.params.project.id);
+            const version = userStory.version;
+            const new_story = {
+                "subject": userStory.subject,
+                "milestone": sprints[0].id,
+                "version": version
+            }
+            await editUserStory(userStory.id, new_story);
+        }
+        fetchSprints();
+    }
 
     const generateUserStoryList = (backlogUserStories) => {
         if (!backlogUserStories) {
@@ -55,7 +68,7 @@ function BacklogScreen({navigation, route}) {
                         </TouchableOpacity>
                         <TouchableOpacity style={backlogScreenStyles.sendToSprintButton}
                             onPress={() => {
-                                console.log("Set to current sprint")
+                                assignToCurrentSprint(userStory)
                             }}
                         >
                             <Text style={backlogScreenStyles.sendToSprintButtonText}>{t('project.setToCurrentSprint')}</Text>
@@ -98,6 +111,7 @@ function BacklogScreen({navigation, route}) {
     
     return(
         <View style={{height: '100%'}}>
+            <Text style={backlogScreenStyles.title}>{t('project.backlog')}</Text>
             { project ? 
                 <ScrollView style={backlogScreenStyles.projectContainer}>
                     <View style={backlogScreenStyles.topInfoContainer}>
@@ -170,6 +184,14 @@ function BacklogScreen({navigation, route}) {
 }
 
 const backlogScreenStyles = StyleSheet.create({
+    title: {
+        marginTop: 50,
+        padding: 10,
+        fontSize: 30,
+        fontFamily: 'Montserrat-Bold',
+        color: "black",
+        textAlign: "center",
+    },
     projectContainer: {
         flex: 1,
         flexDirection: "column",
@@ -260,7 +282,7 @@ const backlogScreenStyles = StyleSheet.create({
         flex: 1,
         flexDirection: "row",
         backgroundColor: "#3f51b5",
-        padding: 10,
+        padding: 20,
         borderRadius: 5,
         margin: 10,
         width: "45%",
@@ -277,6 +299,7 @@ const backlogScreenStyles = StyleSheet.create({
         color: "white",
         fontWeight: "bold",
         fontSize: 15,
+        marginRight: 10,
     },
     userStoriesContainer: {
         flex: 1,
