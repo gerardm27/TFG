@@ -42,6 +42,7 @@ function BacklogScreen({navigation, route}) {
             await editUserStory(userStory.id, new_story);
         }
         fetchSprints();
+        await getAllUserStories(route.params.project.id);
     }
 
     const generateUserStoryList = (backlogUserStories) => {
@@ -116,7 +117,7 @@ function BacklogScreen({navigation, route}) {
                 <ScrollView style={backlogScreenStyles.projectContainer}>
                     <View style={backlogScreenStyles.topInfoContainer}>
                         <View style={backlogScreenStyles.imageContainer}>
-                            <Image source={{uri: project.logo_big_url} ?? defaultLogo} style={backlogScreenStyles.projectImage}/>
+                            <Image source={/* {uri: project.logo_big_url}  ??*/ defaultLogo} style={backlogScreenStyles.projectImage}/>
                         </View>
                         <View style={backlogScreenStyles.projectInfoContainer}>
                             <Text style={backlogScreenStyles.projectTitle}>{project.name}</Text>

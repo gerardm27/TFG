@@ -54,14 +54,30 @@ const createTaskModal = ({visible, setVisible, userStory, generateStoryBoard}) =
         }
         setHasError(false);
         const auth = await getAuth();
-        const task = {
-            subject: subject,
-            project: userStory?.project,
-            user_story: userStory?.id,
-            description: description,
-            status: status,
-            //assigned_to: assignedMember,
+        var task = null;
+        if (userStory?.id == "-1") {
+            console.log("Storyless task");
+            task = {
+                subject: subject,
+                project: userStory.project_id,
+                user_story: null,
+                milestone: userStory?.sprint_id,
+                description: description,
+                status: status,
+                //assigned_to: assignedMember,
+            }
         }
+        else {
+            task = {
+                subject: subject,
+                project: userStory?.project,
+                user_story: userStory?.id,
+                description: description,
+                status: status,
+                //assigned_to: assignedMember,
+            }
+        }
+        console.log(task);
         createTask(task);
         generateStoryBoard();
         setVisible(false);

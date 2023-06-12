@@ -97,7 +97,7 @@ function ProjectListScreen({navigation}) {
                         style={projectListStyles.createProjectButton}
                         onPress={() => setCreateModalVisible(true)}
                     >
-                        <Text style={projectListStyles.createProjectButtonText}>Create new project</Text>
+                        <Text style={projectListStyles.createProjectButtonText}>{t('project.createProject')}</Text>
                     </TouchableOpacity>
 
                     {generateProjectList(projects)}

@@ -7,6 +7,7 @@ const useAuth = () => {
     const { auth, setAuth, logout, getAuthState } = useContext(AuthContext);
     const signIn = async (user) => {
         const { email, password } = user;
+        console.log(user);
         const response = await fetch(`${API_HOST}/auth`, {
             method: 'POST',
             headers: {

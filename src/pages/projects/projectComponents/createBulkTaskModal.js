@@ -6,7 +6,12 @@ import useProjects from '../../../hooks/useProjects';
 import DropDownPicker from 'react-native-dropdown-picker';
 
 const CreateBulkTaskModal = ({ visible, setVisible, userStory, generateStoryBoard }) => {
-
+    if (userStory == null) {
+        return null;
+    }
+    if (userStory == "-1") {
+        // Storyless task
+    }
     const { t } = useTranslation();
     const [subjects, setSubjects] = useState([]);
     const [status, setStatus] = useState(null);

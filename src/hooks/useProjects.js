@@ -373,6 +373,18 @@ const useProjects = () => {
         return(data);
     }
 
+    const getTasksBySprint = async (sprintId) => {
+        const response = await axios.get(`${API_HOST}/tasks?sprint=${sprintId}`);
+        if (response.status == 401) {
+            signOut();
+        }
+        if (response.status == 404 || response.status == 500 || response.status == 400) {
+            console.log("Error in getTasksBySprint")
+        }
+        const data = response.data;
+        return(data);
+    }
+
     const editTask = async (taskId, task) => {
         const token = await getAuth().auth_token;
         if(task.description == null || task.description == undefined) {
@@ -423,7 +435,8 @@ const useProjects = () => {
         getSprints,
         getTasksByUserStory,
         createTask,
-        editTask
+        editTask,
+        getTasksBySprint
     };
 }
 

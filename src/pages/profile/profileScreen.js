@@ -10,7 +10,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 function ProfileScreen({navigation}) {
     const { t, i18n } = useTranslation();
     const { getNumberOfProjects } = useProjects();
-    const { getAuth } = useAuth();
+    const { getAuth, signOut } = useAuth();
     const STORE_LANGUAGE_KEY = "settings.lang";
 
 
@@ -121,6 +121,14 @@ function ProfileScreen({navigation}) {
                     </View>
                 </TouchableOpacity>
             </View>
+            <View style={profileStyles.logoutContainer}>
+                <TouchableOpacity style={profileStyles.buttonContainer} onPress={() => {signOut()}}>
+                    <View style={profileStyles.logoutButton}>
+                        <Image source={require('../../../assets/images/logout.png')} style={profileStyles.logoutButtonImage}/>
+                        <Text style={profileStyles.logoutButtonText}>{t("profile.logout")}</Text>
+                    </View>
+                </TouchableOpacity>
+            </View>
             <ModalLanguage
                 language={language}
                 setLanguage={setLanguage}
@@ -133,12 +141,15 @@ function ProfileScreen({navigation}) {
 
 const profileStyles = StyleSheet.create({
     pageContainer: {
+        flexDirection: "column",
         marginTop: 30,
         flex: 1,
         backgroundColor: '#fff',
     },
     pageContainerBlurred: {
         flex: 1,
+        marginTop: 30,
+        flexDirection: "column",
         backgroundColor: '#fff',
         opacity: 0.3,
     },
@@ -290,6 +301,29 @@ const profileStyles = StyleSheet.create({
     editProfileText: {
         fontWeight: 'bold',
     },  
+    logoutContainer: {
+        marginTop: 50,
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        padding: 10,
+        width: '100%',
+    },
+    logoutButton: {
+        backgroundColor: '#e0e0e0',
+        borderRadius: 10,
+        padding: 10,
+        alignItems: 'center',
+        width: '100%',
+    },
+    logoutButtonText: {
+        fontWeight: 'bold',
+    },
+    logoutButtonImage: {
+        width: 30,
+        height: 30,
+        resizeMode: 'contain',
+        marginBottom: 10,
+    },
 })
 
 export {ProfileScreen};

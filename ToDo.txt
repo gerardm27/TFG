@@ -1,20 +1,15 @@
 ToDo:
 
-- Backlog:
-        - EditStoryModal no funciona be els points.
+- NO ES PODEN CREAR HISTORIES USUARI
+
+- Escollir sprint no canvia segons el projecte seleccionat. No va. (!Important)
 
 - Sprint:
-    - Fer pagina sprint on es mostri:
-        - Mostrar icono de persona assignada a tasca, clicar per canviar (igual de agil que status) -- WIP falla id member no id user
-        - Clicar a una tasca per veure-la i assignar-la o editar-la  -- WIP Modal edit [POINTS CANT BE EDITED]
-        - Boto per tornar backlog
+        - Clicar per canviar persona asignada a tasca -- WIP falla id member no id user
+        - Display storyless tasks -> no es mostren totes, i es mostra alguna que no es
         
-        
-    - Show storyless tasks
-    - Create storyless tasks
     - Fix totes les fotos (check gravatar integration) [Profile and edit profile - Remove Hardcoded]
 
-- Arreglar estils
 - Els botons de gestio nomes han de sortir si ets admin del projecte (!important)
-- Token decyphering (!important)
+- Token decyphering (important?)
 - Afegir feedback a totes les accions per al user (loading, error, success, etc.) (!important)

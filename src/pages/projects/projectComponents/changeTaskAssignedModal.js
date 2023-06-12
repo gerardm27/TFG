@@ -27,7 +27,6 @@ const ChangeTaskAssignedModal = ({ task, visible, setVisible, generateStoryBoard
 
     const changeTaskAssigned = async (index) => {
         if (index != null) {
-            console.log(memberIds)
             const _task = {
                 version: task.version,
                 assigned_to: memberIds[index]
@@ -38,7 +37,11 @@ const ChangeTaskAssignedModal = ({ task, visible, setVisible, generateStoryBoard
         }
         else {
             const version = task.version;
-            await editTask(task.id, version, {assigned_to: null});
+            const task = {
+                version: version,
+                assigned_to: null
+            }
+            await editTask(task.id, task);
             generateStoryBoard();
             setVisible(false);
         }
@@ -90,11 +93,11 @@ const changeTaskAssignedModalStyles = StyleSheet.create({
     },
     modal: {
         backgroundColor: "#fff",
-        maxHeight: "80%",
+        marginTop: "50%",
         width: "80%",
         borderRadius: 10,
         padding: 20,
-        alignItems: "center",
+        alignItems: "center", 
         justifyContent: "flex-start",
     },
     modalTitle: {
