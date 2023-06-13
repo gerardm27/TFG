@@ -1,4 +1,4 @@
-import { View, Text, Image, StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
+import { Alert, View, Text, Image, StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
 import React, { useState, createContext, useEffect } from 'react';
 import useAuth from '../../hooks/useAuth';
 import useProjects from '../../hooks/useProjects';
@@ -44,6 +44,13 @@ function BacklogScreen({navigation, route}) {
         fetchSprints();
         await getAllUserStories(route.params.project.id);
     }
+
+    const fetchUserStories = async () => {
+        var _userStories = await getAllUserStories(route.params.project.id)
+        _userStories = _userStories.sort((a, b) => a.ref - b.ref)
+        setUserStories(_userStories);
+        filterStories(_userStories);
+    };
 
     const generateUserStoryList = (backlogUserStories) => {
         if (!backlogUserStories) {
@@ -98,10 +105,7 @@ function BacklogScreen({navigation, route}) {
             setStatuses(tempStatuses)
             setStatusColors(tempStatusColors)
             setStatusIds(tempStatusIds)
-            var _userStories = await getAllUserStories(route.params.project.id)
-            _userStories = _userStories.sort((a, b) => a.ref - b.ref)
-            setUserStories(_userStories);
-            filterStories(_userStories);
+            fetchUserStories();
         })
     }, [route.params]);
 
@@ -151,15 +155,17 @@ function BacklogScreen({navigation, route}) {
                             {generateUserStoryList(backlogUserStories)}
                         </View>
                     </View>
-                    <CreateUserStoryModal
+                    <CreateUserStoryModal   
                         visible={createModalVisible}
                         setVisible={setCreateModalVisible}
-                        project_id={project.id}
+                        project_id={project.id}       
+                        onCreated={fetchUserStories}                 
                     />
                     <CreateBulkUserStoryModal
                         visible={createBulkModalVisible}
                         setVisible={setCreateBulkModalVisible}
                         project_id={project.id}
+                        onCreated={fetchUserStories}
                     />
                     {selectedUserStory ?
                         <UserStoryModal

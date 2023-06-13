@@ -394,10 +394,10 @@ const useProjects = () => {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`
         }
-        if(task.assigned_to == null || task.assigned_to == undefined) {
+        if(task.assigned_to == undefined) {
             delete task.assigned_to
         }
-        console.log(task)
+        console.log(taskId)
         const response = await axios.patch(`${API_HOST}/tasks/${taskId}`, task);
         console.log(response.data)
         if (response.status == 401) {

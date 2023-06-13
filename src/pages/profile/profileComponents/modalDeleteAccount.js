@@ -6,12 +6,9 @@ const ModalDeleteAccount = ({ modalVisible, setModalVisible }) => {
     const { t } = useTranslation();
     return (
         <Modal
-        animationType="slide"
+        animationType='fade'
         transparent={true}
         visible={modalVisible}
-        onRequestClose={() => {
-            Alert.alert("Modal has been closed.");
-        }}
         >
         <View style={deleteAccountModalStyles.centeredView}>
             <View style={deleteAccountModalStyles.modalView}>

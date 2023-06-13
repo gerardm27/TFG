@@ -100,6 +100,7 @@ const MembersModal = ({ project, visible, setVisible}) => {
                             <Image style={memberModalStyles.memberDeleteButtonImage} source={require('../../../../assets/images/delete.png')}/>
                         </TouchableOpacity>
                         <Modal
+                            animationType='fade'
                             style={memberModalStyles.memberDetailsModal}
                             transparent={true}
                             visible={memberDetailsModalVisible}
@@ -159,7 +160,7 @@ const MembersModal = ({ project, visible, setVisible}) => {
     }
 
     return (
-        <Modal transparent={true} visible={visible}>
+        <Modal transparent={true} visible={visible} animationType='fade'>
             <View style={memberModalStyles.mainModalView}>
                 <View style={memberModalStyles.modal}>
                     <Text style={memberModalStyles.modalTitle}>{t("project.members")}</Text>
@@ -182,6 +183,7 @@ const MembersModal = ({ project, visible, setVisible}) => {
                         style={memberModalStyles.inviteModal}
                         transparent={true}
                         visible={inviteModalVisible}
+                        animationType='fade'
                     >
                         <View style={memberModalStyles.mainModalView}>
                             <View style={memberModalStyles.modal}>

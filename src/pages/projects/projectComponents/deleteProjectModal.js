@@ -8,7 +8,7 @@ const DeleteProjectModal = ({ projectToDelete, deleteProject, visible, setVisibl
         
 
     return (
-        <Modal transparent={true} visible={visible}>
+        <Modal transparent={true} visible={visible} animationType='fade'>
             <View style={deleteProjectModalStyles.mainModalView}>
                 <View style={deleteProjectModalStyles.modal}>
                     <Text style={deleteProjectModalStyles.modalTitle}>{t("project.deleteProject")}</Text>

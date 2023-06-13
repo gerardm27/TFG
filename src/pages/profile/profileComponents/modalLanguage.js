@@ -28,13 +28,9 @@ const ModalLanguage = ({ modalVisible, setModalVisible, language, setLanguage })
 
     return (
         <Modal
-            animationType="slide"
+            animationType='fade'
             transparent={true}
             visible={modalVisible}
-            onRequestClose={() => {
-                Alert.alert("Modal has been closed.");
-                setModalVisible(!modalVisible);
-            }}
         >
             <View style={modalStyles.modalContainer}>
                 <View style={modalStyles.modalView}>

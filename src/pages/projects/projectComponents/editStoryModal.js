@@ -152,7 +152,7 @@ const EditStoryModal = ({visible, setVisible, userStory}) => {
 
 
     return (
-        <Modal transparent={true} visible={visible}>
+        <Modal transparent={true} visible={visible} animationType='fade'>
             <View style={editStoryModalStyles.mainModalView}>
                 <View style={editStoryModalStyles.modal}>
                     <Text style={editStoryModalStyles.modalTitle}>{t("project.editStory")} #{userStory.ref}</Text>

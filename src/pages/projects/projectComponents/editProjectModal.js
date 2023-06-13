@@ -46,7 +46,7 @@ const EditProjectModal = ({ projectToEdit, visible, setVisible}) => {
     }
 
     return (
-        <Modal transparent={true} visible={visible}>
+        <Modal transparent={true} visible={visible} animationType='fade'>
             <View style={editProjectModalStyles.mainModalView}>
                 <View style={editProjectModalStyles.modal}>
                     <Text style={editProjectModalStyles.modalTitle}>{t("project.editProject")}</Text>

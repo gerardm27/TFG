@@ -13,6 +13,7 @@ const ChangeTaskAssignedModal = ({ task, visible, setVisible, generateStoryBoard
     const [memberNames, setMemberNames] = useState([]);
     const [memberIds, setMemberIds] = useState([]);
     const [memberMails, setMemberMails] = useState([]);
+    const [memberUserID, setMemberUserID] = useState(null);
 
     useEffect(() => {
         const fetchMembers = async () => {
@@ -21,15 +22,17 @@ const ChangeTaskAssignedModal = ({ task, visible, setVisible, generateStoryBoard
             setMemberIds(_members.map(member => member.id));
             setMemberNames(_members.map(member => member.full_name));
             setMemberMails(_members.map(member => member.email));
+            setMemberUserID(_members.map(member => member.user));
         }
         fetchMembers();
     }, []);
 
     const changeTaskAssigned = async (index) => {
         if (index != null) {
+
             const _task = {
                 version: task.version,
-                assigned_to: memberIds[index]
+                assigned_to: memberUserID[index]
             }
             await editTask(task.id, _task);
             generateStoryBoard();
@@ -52,7 +55,7 @@ const ChangeTaskAssignedModal = ({ task, visible, setVisible, generateStoryBoard
     }
 
     return (
-        <Modal transparent={true} visible={visible}>
+        <Modal transparent={true} visible={visible} animationType='fade'>
             <View style={changeTaskAssignedModalStyles.mainModalView}>
                 <ScrollView contentContainerStyle={[changeTaskAssignedModalStyles.modal, {minHeight: 150 + (memberMails.length + 1)*30}]}>
                     <Text style={changeTaskAssignedModalStyles.modalTitle}>{t("sprint.changeTaskMember")}</Text>

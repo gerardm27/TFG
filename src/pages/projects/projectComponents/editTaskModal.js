@@ -90,7 +90,7 @@ const EditTaskModal = ({visible, setVisible, task, generateStoryBoard}) => {
     return (
         <View>
             {task == null ? <Text>Task is null</Text> :
-            <Modal transparent={true} visible={visible}>
+            <Modal transparent={true} visible={visible} animationType='fade'>
                 <View style={editTaskModalStyles.mainModalView}>
                     <View style={editTaskModalStyles.modal}>
                         <Text style={editTaskModalStyles.modalTitle}>{t("project.editTask")} #{task.ref}</Text>

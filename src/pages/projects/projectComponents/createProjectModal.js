@@ -30,7 +30,7 @@ const CreateProjectModal = ({ visible, setVisible, createProject }) => {
     }
 
     return (
-        <Modal transparent={true} visible={visible}>
+        <Modal transparent={true} visible={visible} animationType='fade'>
             <View style={createProjectModalStyles.mainModalView}>
                 <View style={createProjectModalStyles.modal}>
                     <Text style={createProjectModalStyles.modalTitle}>{t("project.createProject")}</Text>

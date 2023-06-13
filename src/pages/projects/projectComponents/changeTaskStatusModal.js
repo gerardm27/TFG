@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import useProjects from '../../../hooks/useProjects';
 
 
-const ChangeTaskStatusModal = ({ task, visible, setVisible, statuses, statusColors, statusIds, generateStoryBoard }) => {
+const ChangeTaskStatusModal = ({ task, visible, setVisible, statuses, statusColors, statusIds, generateStoryBoard}) => {
     const { t } = useTranslation();
 
     const { updateTaskStatus } = useProjects();
@@ -23,7 +23,7 @@ const ChangeTaskStatusModal = ({ task, visible, setVisible, statuses, statusColo
     }
 
     return (
-        <Modal transparent={true} visible={visible}>
+        <Modal transparent={true} animationType='fade' visible={visible}>
             <View style={changeTaskStatusModalStyles.mainModalView}>
                 <View style={changeTaskStatusModalStyles.modal}>
                     <Text style={changeTaskStatusModalStyles.modalTitle}>{t("sprint.changeTaskStatus")}</Text>

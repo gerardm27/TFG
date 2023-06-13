@@ -87,6 +87,7 @@ const createTaskModal = ({visible, setVisible, userStory, generateStoryBoard}) =
         <Modal
             transparent={true}
             visible={visible}
+            animationType='fade'
         >
             <View style={createTaskStyles.mainModalView}>
                 <View style={createTaskStyles.modal}>

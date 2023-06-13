@@ -70,7 +70,7 @@ const UserStoryModal = ({ userStory, visible, setVisible }) => {
       }
 
     return (
-        <Modal transparent={true} visible={visible}>
+        <Modal transparent={true} visible={visible} animationType='fade'>
             <View style={userStoryModalStyles.mainModalView}>
                 <View style={userStoryModalStyles.modal}>
                     <View style={userStoryModalStyles.modalContentContainer}>

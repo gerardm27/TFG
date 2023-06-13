@@ -5,7 +5,7 @@ import { TextInput } from 'react-native-gesture-handler';
 import useProjects from '../../../hooks/useProjects';
 import DropDownPicker from 'react-native-dropdown-picker';
 
-const CreateBulkUserStoryModal = ({ visible, setVisible, project_id }) => {
+const CreateBulkUserStoryModal = ({ visible, setVisible, project_id, onCreated }) => {
 
     const { t } = useTranslation();
     const [subjects, setSubjects] = useState([]);
@@ -43,6 +43,7 @@ const CreateBulkUserStoryModal = ({ visible, setVisible, project_id }) => {
             }
             createUserStory(userStory);
         });
+        onCreated();
         setVisible(false);
         setSubjects([]);
         setValue(null); 
@@ -52,6 +53,7 @@ const CreateBulkUserStoryModal = ({ visible, setVisible, project_id }) => {
         <Modal
             transparent={true}
             visible={visible}
+            animationType='fade'
         >
             <View style={createUserStoryStyles.mainModalView}>
                 <View style={createUserStoryStyles.modal}>

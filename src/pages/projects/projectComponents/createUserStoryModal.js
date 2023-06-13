@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, TouchableOpacity, Modal, Image, ScrollView, StyleSheet } from 'react-native';
+import { Alert, View, Text, TouchableOpacity, Modal, Image, ScrollView, StyleSheet } from 'react-native';
 import { useTranslation } from "react-i18next";
 import { TextInput } from 'react-native-gesture-handler';
 import useProjects from '../../../hooks/useProjects';
 import DropDownPicker from 'react-native-dropdown-picker';
 import useAuth from '../../../hooks/useAuth';
 
-const createUserStoryModal = ({visible, setVisible, project_id}) => {
-    
+const createUserStoryModal = ({ visible, setVisible, project_id, onCreated }) => {
+
     const { t } = useTranslation();
     const [subject, setSubject] = useState('');
     const [description, setDescription] = useState('');
@@ -23,8 +23,8 @@ const createUserStoryModal = ({visible, setVisible, project_id}) => {
     const [statuses, setStatuses] = useState([]);
     const [members, setMembers] = useState([]);
 
-    const {getAllUserStoriesStatus, createUserStory, getProjectMembers} = useProjects();
-    const {getAuth} = useAuth();
+    const { getAllUserStoriesStatus, createUserStory, getProjectMembers } = useProjects();
+    const { getAuth } = useAuth();
 
     useEffect(() => {
         const fetchStatuses = async () => {
@@ -33,7 +33,7 @@ const createUserStoryModal = ({visible, setVisible, project_id}) => {
         }
         fetchStatuses();
     }
-    , []);
+        , []);
 
     useEffect(() => {
         const fetchMembers = async () => {
@@ -57,7 +57,8 @@ const createUserStoryModal = ({visible, setVisible, project_id}) => {
             status: status,
             assigned_to: assignedMember
         }
-        createUserStory(userStory);
+        const temp = await createUserStory(userStory);
+        onCreated();
         setVisible(false);
     }
 
@@ -65,12 +66,13 @@ const createUserStoryModal = ({visible, setVisible, project_id}) => {
         <Modal
             transparent={true}
             visible={visible}
+            animationType='fade'
         >
             <View style={createUserStoryStyles.mainModalView}>
                 <View style={createUserStoryStyles.modal}>
                     <Text style={createUserStoryStyles.modalTitle}>{t("project.createUserStory")}</Text>
                     <Text style={createUserStoryStyles.modalText}>{t("project.requiredFields")}</Text>
-                    <Text style={[createUserStoryStyles.warningText, hasError ? {color: "red"} : {color: "white"}]}>{t("project.error")}</Text>
+                    <Text style={[createUserStoryStyles.warningText, hasError ? { color: "red" } : { color: "white" }]}>{t("project.error")}</Text>
                     <View style={createUserStoryStyles.subjectInputContainer}>
                         <Text style={createUserStoryStyles.modalText}>{t("project.subject")} *</Text>
                         <TextInput style={createUserStoryStyles.subjectInput} onChangeText={text => setSubject(text)}></TextInput>
@@ -83,11 +85,11 @@ const createUserStoryModal = ({visible, setVisible, project_id}) => {
                         <Text style={createUserStoryStyles.modalText}>{t("project.status")}</Text>
                         <DropDownPicker
                             items={statuses.map(status => {
-                                return {label: status.name, value: status.id}
+                                return { label: status.name, value: status.id }
                             }
                             )}
                             defaultValue={status}
-                            containerStyle={{height: 40}}
+                            containerStyle={{ height: 40 }}
                             style={createUserStoryStyles.statusInput}
                             itemStyle={createUserStoryStyles.statusInputItem}
                             open={open}
@@ -101,10 +103,10 @@ const createUserStoryModal = ({visible, setVisible, project_id}) => {
                         <Text style={createUserStoryStyles.modalText}>{t("project.assignTo")}</Text>
                         <DropDownPicker
                             items={members.map(member => {
-                                return {label: member.full_name, value: member.id}
+                                return { label: member.full_name, value: member.id }
                             }
                             )}
-                            containerStyle={{height: 40}}
+                            containerStyle={{ height: 40 }}
                             style={createUserStoryStyles.memberInput}
                             itemStyle={createUserStoryStyles.memberInputItem}
                             open={openMember}
@@ -182,7 +184,7 @@ const createUserStoryStyles = StyleSheet.create({
         borderRadius: 5,
         padding: 5,
         height: 40,
-    },  
+    },
     statusInputItem: {
         justifyContent: "flex-start",
     },
@@ -225,7 +227,7 @@ const createUserStoryStyles = StyleSheet.create({
         fontWeight: "bold"
     }
 })
- 
+
 
 export default createUserStoryModal;
 
@@ -233,5 +235,5 @@ export default createUserStoryModal;
 
 
 
-                
+
 

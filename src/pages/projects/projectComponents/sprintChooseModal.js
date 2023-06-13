@@ -18,7 +18,7 @@ const SprintChooseModal = ({ navigation, visible, setVisible, project_id}) => {
         }
         fetchSprints();
     }
-    , []);
+    , [project_id]);
 
     const changeScreenToSprint = (sprint) => {
         navigation.navigate("Sprint", { sprint: sprint });
@@ -26,7 +26,7 @@ const SprintChooseModal = ({ navigation, visible, setVisible, project_id}) => {
     }
 
     return (
-        <Modal transparent={true} visible={visible}>
+        <Modal transparent={true} visible={visible} animationType='fade'>
             <View style={sprintChooseModalStyles.mainModalView}>
                 <View style={sprintChooseModalStyles.modal}>
                     <Text style={sprintChooseModalStyles.modalTitle}>{t("project.sprintChoose")}</Text>

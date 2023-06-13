@@ -273,31 +273,31 @@ function SprintScreen({navigation, route}) {
                         statuses={statuses}
                         statusColors={statusColors}
                         statusIds={statusIds}
-                        generateStoryBoard={generateStoryBoardAux}
+                        generateStoryBoard={fetchUserStoriesAndTasks}
                     />
                     <ChangeTaskAssignedModal
                         visible={changeAssignedModalVisible}
                         setVisible={setChangeAssignedModalVisible}
                         task={selectedTask}
-                        generateStoryBoard={generateStoryBoardAux}
+                        generateStoryBoard={fetchUserStoriesAndTasks}
                     />
                     <CreateTaskModal
                         visible={createTaskModalVisible}
                         setVisible={setCreateTaskModalVisible}
                         userStory={selectedUserStory}
-                        generateStoryBoard={generateStoryBoardAux}
+                        generateStoryBoard={fetchUserStoriesAndTasks}
                     />
                     <CreateBulkTaskModal
                         visible={createBulkTaskModalVisible}
                         setVisible={setCreateBulkTaskModalVisible}
                         userStory={selectedUserStory}
-                        generateStoryBoard={generateStoryBoardAux}
+                        generateStoryBoard={fetchUserStoriesAndTasks}
                     />
                     <EditTaskModal
                         visible={taskModalVisible}
                         setVisible={setTaskModalVisible}
                         task={selectedTask}
-                        generateStoryBoard={generateStoryBoardAux}
+                        generateStoryBoard={fetchUserStoriesAndTasks}
                     />
                 </View>
                 :
